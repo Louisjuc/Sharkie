@@ -1,16 +1,27 @@
 class World {
   character = new Character();
   enemies = [new Fish(), new Fish(), new Fish()];
-
+  keyboard;
   canvas;
   ctx;
-
-  backgroundObjects = [new BackgroundObject("../img/3. Background/Dark/1.png", 0)];
+  light = [new Light()];
+  backgroundObjects = [
+    new BackgroundObject("../img/3. Background/Layers/5. Water/D1.png", 0),
+    new BackgroundObject("../img/3. Background/Layers/4.Fondo 2/D1.png", 0),
+    new BackgroundObject("../img/3. Background/Layers/3.Fondo 1/D1.png", 0),
+    new BackgroundObject("../img/3. Background/Layers/2. Floor/D1.png", 0),
+  ];
 
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.draw();
+    this.keyboard = keyboard;
+    this.setWorld();
+  }
+
+  setWorld(){
+    this.character.world = this;
   }
 
   // Draw function
@@ -19,7 +30,7 @@ class World {
     this.addObjecttoMap(this.backgroundObjects);
     this.addToMap(this.character);
     this.addObjecttoMap(this.enemies);
-  
+    this.addObjecttoMap(this.light);
 
     // Draw() wird dadurch immer wieder aufgerufen
     self = this;
@@ -28,8 +39,8 @@ class World {
     });
   }
 
-  addObjecttoMap(obj){
-      obj.forEach((o) => {
+  addObjecttoMap(obj) {
+    obj.forEach((o) => {
       this.addToMap(o);
     });
   }
