@@ -1,16 +1,12 @@
 class World {
-  character = new Character();
-  enemies = [new Fish(), new Fish(), new Fish()];
+ character = new Character();
+  level = level1;
   keyboard;
   canvas;
   ctx;
   light = [new Light()];
-  backgroundObjects = [
-    new BackgroundObject("../img/3. Background/Layers/5. Water/D1.png", 0),
-    new BackgroundObject("../img/3. Background/Layers/4.Fondo 2/D1.png", 0),
-    new BackgroundObject("../img/3. Background/Layers/3.Fondo 1/D1.png", 0),
-    new BackgroundObject("../img/3. Background/Layers/2. Floor/D1.png", 0),
-  ];
+  camera_x = 0;
+  backgroundObjects = this.level.backgroundObjects;
 
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
@@ -20,17 +16,19 @@ class World {
     this.setWorld();
   }
 
-  setWorld(){
+  setWorld() {
     this.character.world = this;
   }
 
   // Draw function
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.addObjecttoMap(this.backgroundObjects);
-    this.addToMap(this.character);
-    this.addObjecttoMap(this.enemies);
+    this.ctx.translate(this.camera_x, 0);
+    this.addObjecttoMap(this.level.backgroundObjects);
     this.addObjecttoMap(this.light);
+    this.addToMap(this.character);
+    this.addObjecttoMap(this.level.enemies);
+    this.ctx.translate(-this.camera_x, 0);
 
     // Draw() wird dadurch immer wieder aufgerufen
     self = this;
@@ -46,6 +44,16 @@ class World {
   }
 
   addToMap(mo) {
+    if (mo.otherDirection) {
+      this.ctx.save();
+      this.ctx.translate(mo.width, 0);
+      this.ctx.scale(-1, 1);
+      mo.x = mo.x * -1;
+    }
     this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    if (mo.otherDirection) {
+      mo.x = mo.x * -1;
+      this.ctx.restore();
+    }
   }
 }
