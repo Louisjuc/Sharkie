@@ -22,6 +22,13 @@ class moveableObject {
     });
   }
 
+    applyGravity(){
+    setInterval(() => {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
+    }, 1000 / 25);
+  }
+
   moveLeft() {
     setInterval(() => {
       this.x -= this.speed;

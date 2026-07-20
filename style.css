@@ -2,6 +2,28 @@ body{
     display:flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'LuckiestGuy', sans-serif;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('img/3. Background/Mesa de trabajo 1.png');
+  background-size: cover;
+  opacity: 0.8;
+  z-index: -1;
+}
+
+h1{
+    font-size: clamp(32px, 2.5vw + 24px, 60px); 
+    color: #2b2b2b;
+}
+
+@font-face {
+  font-family: 'LuckiestGuy';
+  src: url('img/5.Font/Luckiest_Guy/LuckiestGuy-Regular.ttf') format('truetype'); /* NEU */
+  font-display: swap;
 }
 
 canvas{
