@@ -18,6 +18,7 @@ const level1 = new Level(
         new Fish(), 
         new Fish(), 
         new Fish(),
+        new Endboss()
     ],
     createBackgroundObjects()
 );
