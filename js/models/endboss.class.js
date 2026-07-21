@@ -5,6 +5,14 @@ class Endboss extends moveableObject {
   speedY = 0; 
   acceleration = 1;
 
+
+    offset = {
+    top: 160,
+    left: 60,
+    right: 60,
+    bottom: 90
+  };
+
   IMAGES_WALKING = [
     "../img/2.Enemy/3 Final Enemy/1.Introduce/1.png",
     "../img/2.Enemy/3 Final Enemy/1.Introduce/2.png",
@@ -18,7 +26,7 @@ class Endboss extends moveableObject {
     "../img/2.Enemy/3 Final Enemy/1.Introduce/10.png",
   ];
 
-  IMAGES_FLOATING = [
+  IMAGES_FLOATING =[
     "../img/2.Enemy/3 Final Enemy/2.floating/1.png",
     "../img/2.Enemy/3 Final Enemy/2.floating/2.png",
     "../img/2.Enemy/3 Final Enemy/2.floating/3.png",
@@ -40,6 +48,7 @@ class Endboss extends moveableObject {
     this.x = 2100;
     this.loadImages(this.IMAGES_FLOATING);
     this.checkProximity();
+    this.drawOffset = true;
   }
 
   checkProximity() {
