@@ -46,12 +46,12 @@ class Character extends moveableObject {
     "../img/1.Sharkie/5.Hurt/1.Poisoned/4.png",
   ];
 
-  offset = {
-    top: 160,
-    left: 60,
-    right: 60,
-    bottom: 90,
-  };
+offset = {
+  top: 180,
+  left: 100,
+  right: 100, // <- verkleinert, damit Hitbox weiter nach rechts reicht
+  bottom: 70,
+};
 
   world;
 
@@ -62,7 +62,6 @@ class Character extends moveableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
     this.animate();
-    this.drawOffset = true;
   }
 
   animate() {
@@ -100,18 +99,35 @@ class Character extends moveableObject {
     }, 50);
   }
 
-  attack() {
+attack() {
+    console.log("attack() aufgerufen");
+
     if (this.isAttacking) return;
+
     this.isAttacking = true;
+    console.log("isAttacking =", this.isAttacking);
+
     this.currentImage = 0;
+
     let interval = setInterval(() => {
-      if (this.currentImage >= this.IMAGES_ATTACK.length) {
-        clearInterval(interval);
-        this.isAttacking = false;
-        this.otherDirection = false;
-        return;
-      }
-      this.playAnimation(this.IMAGES_ATTACK);
+        if (this.currentImage >= this.IMAGES_ATTACK.length) {
+            clearInterval(interval);
+            this.isAttacking = false;
+            console.log("Attack beendet");
+            return;
+        }
+        this.playAnimation(this.IMAGES_ATTACK);
     }, 40);
-  }
+}
+
+isAttackColliding(enemy) {
+  let attackRange = 60;
+
+  return (
+    this.x + this.width - this.offset.right + attackRange > enemy.x + enemy.offset.left &&
+    this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right &&
+    this.y + this.height - this.offset.bottom > enemy.y + enemy.offset.top &&
+    this.y + this.offset.top < enemy.y + enemy.height - enemy.offset.bottom
+  );
+}
 }

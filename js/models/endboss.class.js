@@ -45,10 +45,9 @@ class Endboss extends moveableObject {
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
-    this.x = 2100;
+    this.x = 2900;
     this.loadImages(this.IMAGES_FLOATING);
     this.checkProximity();
-    this.drawOffset = true;
   }
 
   checkProximity() {

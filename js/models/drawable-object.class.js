@@ -28,34 +28,24 @@ class drawableObject {
     });
   }
 
-  drawCTX(ctx) {
+drawCTX(ctx) {
+    ctx.save();
+    ctx.globalAlpha = this.opacity;
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  }
+    ctx.restore();
+}
 
   drawFrame(ctx) {
-    if (
-      this instanceof Character ||
-      this instanceof Fish ||
-      this instanceof Endboss
-    ) {
-      ctx.beginPath();
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "blue";
-      ctx.rect(this.x, this.y, this.width, this.height);
-      ctx.stroke();
-    }
-
-    if (this.drawOffset) {
-      ctx.beginPath();
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "red";
-      ctx.rect(
-        this.x + this.offset.left,
-        this.y + this.offset.top,
-        this.width - this.offset.left - this.offset.right,
-        this.height - this.offset.top - this.offset.bottom,
-      );
-      ctx.stroke();
-    }
+//  if (
+//       this instanceof Character ||
+ //      this instanceof Fish ||
+ //      this instanceof Endboss
+ //    ) {
+ //      ctx.beginPath();
+ //      ctx.lineWidth = "5";
+  //     ctx.strokeStyle = "blue";
+  //     ctx.rect(this.x, this.y, this.width, this.height);
+  //     ctx.stroke();
+  //   } 
   }
 }

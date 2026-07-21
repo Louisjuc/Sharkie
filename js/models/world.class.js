@@ -16,18 +16,42 @@ class World {
     this.keyboard = keyboard;
     this.setWorld();
     this.checkCollisions();
+    this.checkAttackCollisions();
+    
   }
 
-  checkCollisions(){
+checkCollisions() {
+  setInterval(() => {
+    this.level.enemies.forEach((enemy) => {
+
+      if (enemy.isDead()) return;
+
+      if (this.character.isColliding(enemy)) {
+        this.character.hit();
+        this.statusbar.setPercentage(this.character.energy);
+      }
+
+    });
+  }, 200);
+}
+
+  checkAttackCollisions() {
     setInterval(() => {
       this.level.enemies.forEach((enemy) => {
-        if (  this.character.isColliding(enemy)) {
-          this.character.hit();
-          this.statusbar.setPercentage(this.character.energy);
+        if (
+          !this.character.isAttacking ||
+          !this.character.isAttackColliding(enemy)
+        ) {
+          return;
         }
-      
+
+        if (enemy.isDead()) return;
+
+        if (!enemy.isHurt()) {
+          enemy.hit();
+        }
       });
-    }, 200);
+    }, 1000 / 60);
   }
 
   setWorld() {
@@ -38,7 +62,7 @@ class World {
   }
 
   // Draw function
-draw() {
+  draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     // Kamera-Translate umschließt jetzt die Welt-Objekte
@@ -54,7 +78,7 @@ draw() {
 
     self = this;
     requestAnimationFrame(() => self.draw());
-}
+  }
 
   addObjecttoMap(obj) {
     obj.forEach((o) => {
