@@ -46,20 +46,21 @@ class Keyboard {
         event.preventDefault();
         this.DOWN = true;
       });
-
-    btnUp.addEventListener("touchend", (event) => {
+    btnDown.addEventListener("touchend", (event) => {
       event.preventDefault();
       this.DOWN = false;
     });
 
-document.getElementById("btnAtk").addEventListener("touchstart", (event) => {
-  event.preventDefault();
-  this.SPACE = true;
-});
+    document
+      .getElementById("btnAtk")
+      .addEventListener("touchstart", (event) => {
+        event.preventDefault();
+        this.SPACE = true;
+      });
 
-document.getElementById("btnAtk").addEventListener("touchend", (event) => {
-  event.preventDefault();
-  this.SPACE = false;
-});
+    document.getElementById("btnAtk").addEventListener("touchend", (event) => {
+      event.preventDefault();
+      this.SPACE = false;
+    });
   }
 }

@@ -9,6 +9,15 @@
   <body onload="init()">
     <!-- NEU: Wrapper um Canvas + Overlay -->
     <div class="game-wrapper">
+            <div class="HUD">
+        <div class="d-pad">
+        <button id="btnLeft">&#8592;</button>  <!-- geändert: ← -->
+<button id="btnRight">&#8594;</button> <!-- geändert: → -->
+<button id="btnUp">&#8593;</button>    <!-- geändert: ↑ -->
+<button id="btnDown">&#8595;</button>
+          </div>
+          <button id="btnAtk">Attack</button>
+      </div>
       <div id="startScreen" class="start-screen">
         <h1>Sharkie</h1>
         <button onclick="startGame()" class="btn">Start Game</button>
@@ -27,15 +36,6 @@
         <button onclick="restartGame()" class="btn">Try Again</button>
       </div>
       <canvas id="canvas" width="760" height="480"></canvas>
-      <div class="HUD">
-        <div>
-        <button id="btnLeft">L</button>
-        <button id="btnRight">R</button>
-        <button id="btnUp">U</button>
-          <button id="btnDown">D</button>
-          </div>
-          <button id="btnAtk">Attack</button>
-      </div>
     </div>
     <script src="./js/models/utils.js"></script>
     <script src="./js/models/drawable-object.class.js"></script>

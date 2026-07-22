@@ -12,10 +12,10 @@ class Statusbar extends drawableObject {
   constructor() {
     super();
     this.loadImages(this.IMAGES_HEALTH);
-    this.x = 20;
+     this.x = 20;
     this.y = 0;
-    this.width = 300;
-    this.height = 80;
+       this.width = 180;
+    this.height = 55;
     this.setPercentage(100);
   }
 
@@ -26,17 +26,17 @@ class Statusbar extends drawableObject {
   }
   resolveImageIndex() {
     if (this.percentage == 100) {
-      return 0; // NEU
+      return 0;
     } else if (this.percentage > 80) {
-      return 1; // NEU
+      return 1; 
     } else if (this.percentage > 60) {
-      return 2; // NEU
+      return 2; 
     } else if (this.percentage > 40) {
-      return 3; // NEU
+      return 3; 
     } else if (this.percentage > 20) {
-      return 4; // NEU
+      return 4; 
     } else {
-      return 5; // NEU
+      return 5; 
     }
   }
 }

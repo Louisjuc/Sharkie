@@ -10,16 +10,16 @@ class Coinbar extends drawableObject {
 
   coinSound = new Audio("./audio/coin.mp3");
 
-  collected = 0; // NEU – aktuell eingesammelte Münzen
-  total = 5; // NEU – Gesamtanzahl Münzen im Level
+  collected = 0; 
+  total = 5; 
 
   constructor(total = 5) {
     super();
     this.loadImages(this.IMAGES_COIN);
-    this.x = 40;
-    this.y = 70;
-    this.width = 130;
-    this.height = 35;
+      this.x = 20;
+    this.y = 40;
+    this.width = 180;
+    this.height = 55;
     this.total = total;
     this.setPercentage(0);
   }
@@ -30,12 +30,11 @@ class Coinbar extends drawableObject {
     this.img = this.imageCache[path];
   }
 
-  // NEU – zählt eine Münze hoch und berechnet den Prozentwert neu
   addCoin() {
     this.collected++;
     this.setPercentage((this.collected / this.total) * 100);
-    this.coinSound.currentTime = 0; // NEU – falls Sound noch läuft, neu starten
-    this.coinSound.play(); // NEU
+    this.coinSound.currentTime = 0;
+    this.coinSound.play();
   }
 
   resolveImageIndex() {

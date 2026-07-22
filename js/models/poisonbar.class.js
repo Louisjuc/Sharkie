@@ -15,10 +15,10 @@ class Poisonbar extends drawableObject {
   constructor(total = 5) {
     super();
     this.loadImages(this.IMAGES_POISON);
-    this.x = 180;
-    this.y = 70;
-    this.width = 130;
-    this.height = 35;
+     this.x = 20;
+    this.y = 85;
+    this.width = 180;
+    this.height = 55;
     this.total = total;
     this.setPercentage(0);
   }

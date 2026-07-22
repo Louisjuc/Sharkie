@@ -13,7 +13,6 @@ class World {
   poisonbar = new Poisonbar();
   endboss = this.level.enemies.find((e) => e instanceof Endboss);
   collectedCoins = 0;
-  bars = [this.statusbar, this.coinbar, this.poisonbar]; // NEU
   
 
   constructor(canvas) {
@@ -155,7 +154,7 @@ checkCoinCollisions() {
     if (mo.otherDirection) {
       this.flipImage(mo);
     }
-    if (this.bars.includes(mo)) this.ctx.globalAlpha = 0.5; // NEU
+
     mo.drawCTX(this.ctx);
     mo.drawFrame(this.ctx);
     this.ctx.globalAlpha = 1; // NEU

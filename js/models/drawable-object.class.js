@@ -30,7 +30,6 @@ class drawableObject {
 
 drawCTX(ctx) {
     ctx.save();
-    ctx.globalAlpha = this.opacity;
     try{
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }catch(e){

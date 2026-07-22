@@ -47,8 +47,9 @@ window.addEventListener("keydown", (event) => {
     keyboard.DOWN = true;
   }
   if (event.keyCode == 32) {
+    event.preventDefault();
     keyboard.SPACE = true;
-    world.character.attack();
+    
   }
 });
 

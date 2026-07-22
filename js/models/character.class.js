@@ -83,6 +83,7 @@ class Character extends moveableObject {
       if (this.world.keyboard.DOWN && this.y < 550 - this.height) {
         this.y += this.speed;
       }
+      if (this.world.keyboard.SPACE) this.attack(); 
       this.world.camera_x = -this.x + 20;
     }, 1000 / 60);
 
