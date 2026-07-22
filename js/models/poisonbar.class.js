@@ -1,12 +1,12 @@
 class Poisonbar extends drawableObject {
 
   IMAGES_POISON = [
-    "../img/4. Marcadores/Purple/poison/100_.png",
-    "../img/4. Marcadores/Purple/poison/80_.png",
-    "../img/4. Marcadores/Purple/poison/60_.png",
-    "../img/4. Marcadores/Purple/poison/40_.png",
-    "../img/4. Marcadores/Purple/poison/20_.png",
-    "../img/4. Marcadores/Purple/poison/0_.png",
+    "img/4. Marcadores/Purple/poison/100_.png",
+    "img/4. Marcadores/Purple/poison/80_.png",
+    "img/4. Marcadores/Purple/poison/60_.png",
+    "img/4. Marcadores/Purple/poison/40_.png",
+    "img/4. Marcadores/Purple/poison/20_.png",
+    "img/4. Marcadores/Purple/poison/0_.png",
   ];
 
   collected = 0; // NEU – aktuell eingesammelte Münzen
@@ -15,10 +15,10 @@ class Poisonbar extends drawableObject {
   constructor(total = 5) {
     super();
     this.loadImages(this.IMAGES_POISON);
-    this.x = 20;
-    this.y = 100;
-    this.width = 200;
-    this.height = 50;
+    this.x = 180;
+    this.y = 70;
+    this.width = 130;
+    this.height = 35;
     this.total = total;
     this.setPercentage(0);
   }

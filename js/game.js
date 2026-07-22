@@ -1,10 +1,21 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let backgroundMusic = new Audio("audio/maintheme.mp3"); 
+backgroundMusic.loop = true; 
+backgroundMusic.volume = 0.5;
+
+let clickSound = new Audio("audio/click.mp3");
+
+document.addEventListener("click", () => { 
+  clickSound.currentTime = 0;
+  clickSound.play();
+});
 
 function init() {
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
+  backgroundMusic.play();
 }
 
 function startGame() {
@@ -19,6 +30,7 @@ function restartGame() {
   level1 = createLevel1(); // NEU – unbedingt vor init() aufrufen
   init();
   document.getElementById("winScreen").style.display = "none";
+  document.getElementById("loseScreen").style.display = "none"; 
 }
 
 window.addEventListener("keydown", (event) => {

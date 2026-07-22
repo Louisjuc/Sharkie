@@ -7,20 +7,28 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body onload="init()">
-<!-- NEU: Wrapper um Canvas + Overlay -->
-<div class="game-wrapper">
-  <div id="startScreen" class="start-screen">
-    <h1>Sharkie</h1>
-    <button onclick="startGame()" class="btn">Start Game</button>
-  </div>
-    <div id="winScreen" class="win-screen" style="display: none;">
+    <!-- NEU: Wrapper um Canvas + Overlay -->
+    <div class="game-wrapper">
+      <div id="startScreen" class="start-screen">
+        <h1>Sharkie</h1>
+        <button onclick="startGame()" class="btn">Start Game</button>
+        <button class="btn" commandFor="example-dialog" command="show-modal" type="button" id="open-dialog">Controls</button>
+          <dialog id="example-dialog">
+        <img src="img/6.Botones/Instructions 2.png" alt="Control Instructions" class="instructions-img">
+        <button commandfor="example-dialog" command="close" type="button" class="btn">Close Controls</button>
+    </dialog>
+      </div>
+      <div id="winScreen" class="win-screen" style="display: none">
         <p>Coins eingesammelt: <span id="coinCount">0</span></p>
-<button onclick="restartGame()" class="btn">Play Again</button>
-</div>
-  <canvas id="canvas" width="760" height="480"></canvas>
-
-</div>
-  <script src="./js/models/utils.js"></script>
+        <button onclick="restartGame()" class="btn">Play Again</button>
+      </div>
+      <div id="loseScreen" class="lose-screen" style="display: none">
+        <p>You lost!</p>
+        <button onclick="restartGame()" class="btn">Try Again</button>
+      </div>
+      <canvas id="canvas" width="760" height="480"></canvas>
+    </div>
+    <script src="./js/models/utils.js"></script>
     <script src="./js/models/drawable-object.class.js"></script>
     <script src="./js/models/moveable-object.class.js"></script>
     <script src="./js/models/coin.class.js"></script>
@@ -29,14 +37,14 @@
     <script src="./js/models/statusbar.class.js"></script>
     <script src="./js/models/coinbar.class.js"></script>
     <script src="./js/models/poisonbar.class.js"></script>
-      <script src="./js/models/poison.class.js"></script>
+    <script src="./js/models/poison.class.js"></script>
     <script src="./js/models/light.class.js"></script>
     <script src="./js/models/endboss.class.js"></script>
     <script src="./js/models/background-object.class.js"></script>
     <script src="./js/models/keyboard.class.js"></script>
     <script src="./js/models/level.class.js"></script>
     <script src="./js/models/levels/level1.js"></script>
-     <script src="./js/models/world.class.js"></script>
+    <script src="./js/models/world.class.js"></script>
     <script src="./js/game.js"></script>
   </body>
 </html>

@@ -12,6 +12,7 @@ class World {
   poisonbar = new Poisonbar();
   endboss = this.level.enemies.find((e) => e instanceof Endboss);
   collectedCoins = 0;
+  bars = [this.statusbar, this.coinbar, this.poisonbar]; // NEU
 
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
@@ -24,13 +25,27 @@ class World {
     this.checkCoinCollisions();
     this.checkWin();
     this.checkPoisonCollisions();
+    this.checkLose();
   }
 
 checkWin() {
+  let winTriggered = false; // NEU
+
   setStoppableInterval(() => {
-    if (this.endboss.isDead()) {
-      document.getElementById("winScreen").style.display = "flex";
-      document.getElementById("coinCount").innerText = this.collectedCoins; 
+    if (this.endboss.isDead() && !winTriggered) { // GEÄNDERT
+      winTriggered = true; // NEU
+      setTimeout(() => { // NEU – wartet, bis Dead-Animation durchgelaufen ist
+        document.getElementById("winScreen").style.display = "flex";
+        document.getElementById("coinCount").innerText = this.collectedCoins;
+      }, 5000); // – Zeit in ms anpassen, je nach Länge deiner Dead-Animation
+    }
+  }, 500);
+}
+
+checkLose() {
+  setStoppableInterval(() => { // NEU
+    if (this.character.isDead()) {
+      document.getElementById("loseScreen").style.display = "flex";
     }
   }, 500);
 }
@@ -40,7 +55,6 @@ checkWin() {
     for (let i = this.level.poison.length - 1; i >= 0; i--) {
       let poison = this.level.poison[i];
       if (this.character.isColliding(poison)) {
-        console.log("Kollision erkannt!"); // TEMPORÄR
         this.level.poison.splice(i, 1);
         this.character.hit();
         this.statusbar.setPercentage(this.character.energy);
@@ -138,8 +152,10 @@ checkCoinCollisions() {
     if (mo.otherDirection) {
       this.flipImage(mo);
     }
+    if (this.bars.includes(mo)) this.ctx.globalAlpha = 0.5; // NEU
     mo.drawCTX(this.ctx);
     mo.drawFrame(this.ctx);
+    this.ctx.globalAlpha = 1; // NEU
 
     if (mo.otherDirection) {
       this.flipImageBack(mo);

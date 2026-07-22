@@ -1,13 +1,13 @@
 class Poison extends moveableObject {
   IMAGES_POISON = [
-    "../img/4. Marcadores/Posion/Animada/1.png",
-    "../img/4. Marcadores/Posion/Animada/2.png",
-    "../img/4. Marcadores/Posion/Animada/3.png",
-    "../img/4. Marcadores/Posion/Animada/4.png",
-    "../img/4. Marcadores/Posion/Animada/5.png",
-    "../img/4. Marcadores/Posion/Animada/6.png",
-    "../img/4. Marcadores/Posion/Animada/7.png",
-    "../img/4. Marcadores/Posion/Animada/8.png",
+    "img/4. Marcadores/Posion/Animada/1.png",
+    "img/4. Marcadores/Posion/Animada/2.png",
+    "img/4. Marcadores/Posion/Animada/3.png",
+    "img/4. Marcadores/Posion/Animada/4.png",
+    "img/4. Marcadores/Posion/Animada/5.png",
+    "img/4. Marcadores/Posion/Animada/6.png",
+    "img/4. Marcadores/Posion/Animada/7.png",
+    "img/4. Marcadores/Posion/Animada/8.png",
   ];
 
   offset = { top: 0, left: 0, right: 0, bottom: 0 }; 
@@ -15,7 +15,7 @@ class Poison extends moveableObject {
   constructor() {
     super().loadImage(this.IMAGES_POISON[0]);
     this.x = 400 + Math.random() * 2700;
-    this.y = 300 + Math.random() * 480; 
+    this.y = 0 + Math.random() * 400; 
     this.height = 60;
     this.width = 60;
     this.loadImages(this.IMAGES_POISON);
@@ -25,6 +25,8 @@ class Poison extends moveableObject {
   animate() {
     setStoppableInterval(() => { 
       this.playAnimation(this.IMAGES_POISON);
+      this.y += 1;
+      this.x -= 10;
     }, 200);
   }
   checkPoisonCollisions() {

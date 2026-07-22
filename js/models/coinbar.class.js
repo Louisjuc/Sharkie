@@ -1,12 +1,12 @@
 class Coinbar extends drawableObject {
 
   IMAGES_COIN = [
-    "../img/4. Marcadores/Purple/coin/100__1.png",
-    "../img/4. Marcadores/Purple/coin/80_ _1.png",
-    "../img/4. Marcadores/Purple/coin/60_ _1.png",
-    "../img/4. Marcadores/Purple/coin/40_ _1.png",
-    "../img/4. Marcadores/Purple/coin/20_ .png",
-    "../img/4. Marcadores/Purple/coin/0_ _1.png",
+    "img/4. Marcadores/Purple/coin/100__1.png",
+    "img/4. Marcadores/Purple/coin/80_ _1.png",
+    "img/4. Marcadores/Purple/coin/60_ _1.png",
+    "img/4. Marcadores/Purple/coin/40_ _1.png",
+    "img/4. Marcadores/Purple/coin/20_ .png",
+    "img/4. Marcadores/Purple/coin/0_ _1.png",
   ];
 
   collected = 0; // NEU – aktuell eingesammelte Münzen
@@ -15,10 +15,10 @@ class Coinbar extends drawableObject {
   constructor(total = 5) {
     super();
     this.loadImages(this.IMAGES_COIN);
-    this.x = 20;
-    this.y = 60;
-    this.width = 200;
-    this.height = 50;
+    this.x = 40;
+    this.y = 70;
+    this.width = 130;
+    this.height = 35;
     this.total = total;
     this.setPercentage(0);
   }
