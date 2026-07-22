@@ -14,7 +14,7 @@
         <button onclick="startGame()" class="btn">Start Game</button>
         <button class="btn" commandFor="example-dialog" command="show-modal" type="button" id="open-dialog">Controls</button>
           <dialog id="example-dialog">
-        <img src="img/6.Botones/Instructions 2.png" alt="Control Instructions" class="instructions-img">
+        <img src="./img/6.Botones/Instructions 2.png" alt="Control Instructions" class="instructions-img">
         <button commandfor="example-dialog" command="close" type="button" class="btn">Close Controls</button>
     </dialog>
       </div>
@@ -27,6 +27,15 @@
         <button onclick="restartGame()" class="btn">Try Again</button>
       </div>
       <canvas id="canvas" width="760" height="480"></canvas>
+      <div class="HUD">
+        <div>
+        <button id="btnLeft">L</button>
+        <button id="btnRight">R</button>
+        <button id="btnUp">U</button>
+          <button id="btnDown">D</button>
+          </div>
+          <button id="btnAtk">Attack</button>
+      </div>
     </div>
     <script src="./js/models/utils.js"></script>
     <script src="./js/models/drawable-object.class.js"></script>

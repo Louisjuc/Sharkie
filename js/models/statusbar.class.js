@@ -1,11 +1,11 @@
 class Statusbar extends drawableObject {
   IMAGES_HEALTH = [
-    "img/4. Marcadores/Purple/life/100_ .png",
-    "img/4. Marcadores/Purple/life/80_ .png",
-    "img/4. Marcadores/Purple/life/60_ .png",
-    "img/4. Marcadores/Purple/life/40_ .png",
-    "img/4. Marcadores/Purple/life/20_1 .png",
-    "img/4. Marcadores/Purple/life/0_ .png",
+    "./img/4. Marcadores/Purple/life/100_ .png",
+    "./img/4. Marcadores/Purple/life/80_ .png",
+    "./img/4. Marcadores/Purple/life/60_ .png",
+    "./img/4. Marcadores/Purple/life/40_ .png",
+    "./img/4. Marcadores/Purple/life/20_1 .png",
+    "./img/4. Marcadores/Purple/life/0_ .png",
   ];
   percentage = 100;
 

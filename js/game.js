@@ -1,11 +1,11 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-let backgroundMusic = new Audio("audio/maintheme.mp3"); 
+let backgroundMusic = new Audio("./audio/maintheme.mp3"); 
 backgroundMusic.loop = true; 
 backgroundMusic.volume = 0.5;
 
-let clickSound = new Audio("audio/click.mp3");
+let clickSound = new Audio("./audio/click.mp3");
 
 document.addEventListener("click", () => { 
   clickSound.currentTime = 0;
@@ -69,3 +69,5 @@ window.addEventListener("keyup", (event) => {
     keyboard.SPACE = false;
   }
 });
+
+

@@ -1,9 +1,9 @@
 class Coin extends moveableObject {
   IMAGES_COIN = [
-    "img/4. Marcadores/1. Coins/1.png",
-    "img/4. Marcadores/1. Coins/2.png",
-    "img/4. Marcadores/1. Coins/3.png",
-    "img/4. Marcadores/1. Coins/4.png",
+    "./img/4. Marcadores/1. Coins/1.png",
+    "./img/4. Marcadores/1. Coins/2.png",
+    "./img/4. Marcadores/1. Coins/3.png",
+    "./img/4. Marcadores/1. Coins/4.png",
   ];
 
   offset = { top: 10, left: 10, right: 10, bottom: 10 }; 

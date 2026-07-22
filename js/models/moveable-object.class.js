@@ -4,6 +4,8 @@ class moveableObject extends drawableObject {
   energy = 80;
   lastHit = 0;
   opacity = 1;
+  hurtSound = new Audio("./audio/hurt.mp3"); // NEU
+
 
   applyGravity() {
     setStoppableInterval(() => {
@@ -12,14 +14,15 @@ class moveableObject extends drawableObject {
     }, 1000 / 25);
   }
 
-isColliding(mo) {
-  return (
-    this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-    this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
-    this.x + this.offset.left < mo.x + mo.width - mo.offset.right && // <- korrigiert
-    this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
-  );
-}
+  isColliding(mo) {
+    return (
+      this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+      this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+      this.x + this.offset.left < mo.x + mo.width - mo.offset.right && // <- korrigiert
+      this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
+    );
+ 
+  }
 
   hit() {
     this.energy -= 5;
@@ -28,6 +31,8 @@ isColliding(mo) {
     } else {
       this.lastHit = new Date().getTime();
     }
+  this.hurtSound.currentTime = 0;
+  this.hurtSound.play();
   }
 
   isHurt() {
@@ -53,27 +58,27 @@ isColliding(mo) {
     this.currentImage++;
   }
 
-animate() {
-  this.currentImage = 0;
-  setStoppableInterval(() => {
-    if (this.isDead()) {
-      if (!this.deadAnimationPlayed) {
-        this.playAnimation(this.IMAGES_DEAD);
+  animate() {
+    this.currentImage = 0;
+    setStoppableInterval(() => {
+      if (this.isDead()) {
+        if (!this.deadAnimationPlayed) {
+          this.playAnimation(this.IMAGES_DEAD);
 
-        if (this.currentImage >= this.IMAGES_DEAD.length) {
-          this.deadAnimationPlayed = true;
+          if (this.currentImage >= this.IMAGES_DEAD.length) {
+            this.deadAnimationPlayed = true;
+          }
         }
-      }
-      if (this.deadAnimationPlayed) {
-        this.opacity -= 0.05;
-        this.y += 1;
+        if (this.deadAnimationPlayed) {
+          this.opacity -= 0.05;
+          this.y += 1;
 
-        if (this.opacity < 0) {
-          this.opacity = 0;
+          if (this.opacity < 0) {
+            this.opacity = 0;
+          }
         }
+        return;
       }
-      return;
-    }
-  }, 100);
-}
+    }, 100);
+  }
 }

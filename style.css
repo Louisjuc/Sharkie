@@ -102,6 +102,11 @@ dialog .btn{
 .btn:hover{
   background-color: #7FFFE0;
   color: #531A82;
+  cursor: pointer;
+}
+
+.HUD{
+display:none;
 }
 
 canvas{
@@ -110,13 +115,21 @@ canvas{
 }
 
 @media only screen and (max-width: 760px){
-  canvas{
+  canvas, .game-wrapper{
     width: 100%
   }
+  .HUD{
+ position: absolute;
+  padding: 0 40px;
+  bottom: 20px;
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+}
 }
 
 @media only screen and (max-height: 480px){
-    canvas{
+    canvas, .game-wrapper{
     height: 100vh;
   }
 }

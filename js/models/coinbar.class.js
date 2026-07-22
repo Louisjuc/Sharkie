@@ -1,13 +1,14 @@
 class Coinbar extends drawableObject {
-
   IMAGES_COIN = [
-    "img/4. Marcadores/Purple/coin/100__1.png",
-    "img/4. Marcadores/Purple/coin/80_ _1.png",
-    "img/4. Marcadores/Purple/coin/60_ _1.png",
-    "img/4. Marcadores/Purple/coin/40_ _1.png",
-    "img/4. Marcadores/Purple/coin/20_ .png",
-    "img/4. Marcadores/Purple/coin/0_ _1.png",
+    "./img/4. Marcadores/Purple/coin/100__1.png",
+    "./img/4. Marcadores/Purple/coin/80_ _1.png",
+    "./img/4. Marcadores/Purple/coin/60_ _1.png",
+    "./img/4. Marcadores/Purple/coin/40_ _1.png",
+    "./img/4. Marcadores/Purple/coin/20_ .png",
+    "./img/4. Marcadores/Purple/coin/0_ _1.png",
   ];
+
+  coinSound = new Audio("./audio/coin.mp3");
 
   collected = 0; // NEU – aktuell eingesammelte Münzen
   total = 5; // NEU – Gesamtanzahl Münzen im Level
@@ -33,6 +34,8 @@ class Coinbar extends drawableObject {
   addCoin() {
     this.collected++;
     this.setPercentage((this.collected / this.total) * 100);
+    this.coinSound.currentTime = 0; // NEU – falls Sound noch läuft, neu starten
+    this.coinSound.play(); // NEU
   }
 
   resolveImageIndex() {

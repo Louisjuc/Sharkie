@@ -1,12 +1,12 @@
 class Poisonbar extends drawableObject {
 
   IMAGES_POISON = [
-    "img/4. Marcadores/Purple/poison/100_.png",
-    "img/4. Marcadores/Purple/poison/80_.png",
-    "img/4. Marcadores/Purple/poison/60_.png",
-    "img/4. Marcadores/Purple/poison/40_.png",
-    "img/4. Marcadores/Purple/poison/20_.png",
-    "img/4. Marcadores/Purple/poison/0_.png",
+    "./img/4. Marcadores/Purple/poison/100_.png",
+    "./img/4. Marcadores/Purple/poison/80_.png",
+    "./img/4. Marcadores/Purple/poison/60_.png",
+    "./img/4. Marcadores/Purple/poison/40_.png",
+    "./img/4. Marcadores/Purple/poison/20_.png",
+    "./img/4. Marcadores/Purple/poison/0_.png",
   ];
 
   collected = 0; // NEU – aktuell eingesammelte Münzen

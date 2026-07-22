@@ -1,7 +1,8 @@
 class World {
   character = new Character();
   level = level1;
-  keyboard;
+ keyboard = new Keyboard();
+
   canvas;
   ctx;
   light = [new Light()];
@@ -13,12 +14,14 @@ class World {
   endboss = this.level.enemies.find((e) => e instanceof Endboss);
   collectedCoins = 0;
   bars = [this.statusbar, this.coinbar, this.poisonbar]; // NEU
+  
 
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.draw();
     this.keyboard = keyboard;
+    this.keyboard.bindBtnPressEvents();
     this.setWorld();
     this.checkCollisions();
     this.checkAttackCollisions();
