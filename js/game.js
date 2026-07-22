@@ -8,6 +8,7 @@ function init() {
 }
 
 function startGame() {
+  document.getElementById("winScreen").style.display = "none";
   document.getElementById("startScreen").style.display = "none";
   init();
 }

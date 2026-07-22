@@ -35,7 +35,7 @@ h1{
   position: relative;
 }
 
-.start-screen {
+.start-screen, .win-screen {
   position: absolute;
   top: 0;
   left: 0;
@@ -48,6 +48,14 @@ h1{
   background-image: url('img/3. Background/Mesa de trabajo 1.png');
   background-position: center center;
   color: white;
+}
+
+.win-screen{
+  color: #000;
+  background-image: url('img/6.Botones/Try again/Mesa de trabajo 1.png');
+  background-size: contain;
+  background-position: top -100px center;
+  background-color: #FCEE21;
 }
 
 .btn{

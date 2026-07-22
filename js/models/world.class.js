@@ -16,71 +16,75 @@ class World {
     this.draw();
     this.keyboard = keyboard;
     this.setWorld();
-    console.log("Endboss:", this.endboss);
     this.checkCollisions();
     this.checkAttackCollisions();
-    
+    this.checkWin();
   }
-  
 
-checkCollisions() {
-  setInterval(() => {
-    this.level.enemies.forEach((enemy) => {
-      if (enemy.isDead()) return;
-      if (this.character.isColliding(enemy)) {
+  checkWin() {
+    setInterval(() => {
+      if (this.endboss.isDead()) {
+        document.getElementById("winScreen").style.display = "flex";
+      }
+    }, 500);
+  }
+
+  checkCollisions() {
+    setInterval(() => {
+      this.level.enemies.forEach((enemy) => {
+        if (enemy.isDead()) return;
+        if (this.character.isColliding(enemy)) {
+          this.character.hit();
+          this.statusbar.setPercentage(this.character.energy);
+        }
+      });
+
+      if (
+        !this.endboss.isDead() &&
+        this.endboss.isAttacking &&
+        this.endboss.isBossAttackColliding(this.character)
+      ) {
         this.character.hit();
         this.statusbar.setPercentage(this.character.energy);
       }
-    });
+    }, 200);
+  }
 
-    // NEU – Endboss verursacht ebenfalls Schaden am Charakter
-    if (!this.endboss.isDead() && this.character.isColliding(this.endboss)) {
-      this.character.hit();
-      this.statusbar.setPercentage(this.character.energy);
-    }
-  }, 200);
-}
+  checkAttackCollisions() {
+    setInterval(() => {
+      this.level.enemies.forEach((enemy) => {
+        if (!this.character.isAttacking || !this.character.isAttackColliding(enemy)) {
+          return;
+        }
+        if (enemy.isDead()) return;
+        if (!enemy.isHurt()) {
+          enemy.hit();
+        }
+      });
 
-checkAttackCollisions() {
-  setInterval(() => {
+      if (this.character.isAttacking && this.character.isAttackColliding(this.endboss) && !this.endboss.isHurt()) {
+        this.endboss.hit();
+      }
+    }, 1000 / 60);
+  }
+
+  setWorld() {
+    this.character.world = this;
+    this.endboss.world = this;
     this.level.enemies.forEach((enemy) => {
-      if (!this.character.isAttacking || !this.character.isAttackColliding(enemy)) {
-        return;
-      }
-      if (enemy.isDead()) return;
-      if (!enemy.isHurt()) {
-        enemy.hit();
-      }
+      enemy.world = this;
     });
-
-    // NEU – Endboss-Angriff prüfen
-if (this.character.isAttacking && this.character.isAttackColliding(this.endboss) && !this.endboss.isHurt()) {
-  this.endboss.hit();
-}
-  }, 1000 / 60);
-}
-
-setWorld() {
-  this.character.world = this;
-  this.endboss.world = this;
-  this.level.enemies.forEach((enemy) => {
-    enemy.world = this;
-  });
-}
+  }
 
   // Draw function
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-    // Kamera-Translate umschließt jetzt die Welt-Objekte
     this.ctx.translate(this.camera_x, 0);
     this.addObjecttoMap(this.level.backgroundObjects);
     this.addObjecttoMap(this.light);
     this.addToMap(this.character);
     this.addObjecttoMap(this.level.enemies);
     this.ctx.translate(-this.camera_x, 0);
-
-    // Statusbar bleibt UNVERÄNDERT fix im Bildschirm
     this.addToMap(this.statusbar);
 
     self = this;

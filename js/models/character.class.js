@@ -116,16 +116,15 @@ class Character extends moveableObject {
     }, 40);
   }
 
-// GEÄNDERT – endboss-Parameter entfernt, funktioniert jetzt für jeden Gegner-Typ
-isAttackColliding(target) {
+isAttackColliding(enemy) {
   let attackRange = 60;
 
   return (
     this.x + this.width - this.offset.right + attackRange >
-      target.x + target.offset.left &&
-    this.x + this.offset.left < target.x + target.width - target.offset.right &&
-    this.y + this.height - this.offset.bottom > target.y + target.offset.top &&
-    this.y + this.offset.top < target.y + target.height - target.offset.bottom
+      enemy.x + enemy.offset.left &&
+    this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right &&
+    this.y + this.height - this.offset.bottom > enemy.y + enemy.offset.top &&
+    this.y + this.offset.top < enemy.y + enemy.height - enemy.offset.bottom
   );
 }
 }
