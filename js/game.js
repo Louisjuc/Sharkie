@@ -13,6 +13,14 @@ function startGame() {
   init();
 }
 
+function restartGame() {
+  stopGame();
+  intervalIDs = [];
+  level1 = createLevel1(); // NEU – unbedingt vor init() aufrufen
+  init();
+  document.getElementById("winScreen").style.display = "none";
+}
+
 window.addEventListener("keydown", (event) => {
   if (event.keyCode == 39) {
     keyboard.RIGHT = true;

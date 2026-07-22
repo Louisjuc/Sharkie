@@ -65,7 +65,7 @@ class Character extends moveableObject {
   }
 
   animate() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.x += this.speed;
         this.otherDirection = false;
@@ -83,7 +83,7 @@ class Character extends moveableObject {
       this.world.camera_x = -this.x + 20;
     }, 1000 / 60);
 
-    setInterval(() => {
+    setStoppableInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
       } else if (this.isHurt()) {
@@ -106,7 +106,7 @@ class Character extends moveableObject {
 
     this.currentImage = 0;
 
-    let interval = setInterval(() => {
+    let interval = setStoppableInterval(() => {
       if (this.currentImage >= this.IMAGES_ATTACK.length) {
         clearInterval(interval);
         this.isAttacking = false;

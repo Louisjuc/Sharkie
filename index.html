@@ -14,16 +14,22 @@
     <button onclick="startGame()" class="btn">Start Game</button>
   </div>
     <div id="winScreen" class="win-screen" style="display: none;">
-<button onclick="location.reload()" class="btn">Play Again</button>
+        <p>Coins eingesammelt: <span id="coinCount">0</span></p>
+<button onclick="restartGame()" class="btn">Play Again</button>
 </div>
-  <canvas id="canvas" width="720" height="480"></canvas>
+  <canvas id="canvas" width="760" height="480"></canvas>
 
 </div>
+  <script src="./js/models/utils.js"></script>
     <script src="./js/models/drawable-object.class.js"></script>
     <script src="./js/models/moveable-object.class.js"></script>
+    <script src="./js/models/coin.class.js"></script>
     <script src="./js/models/character.class.js"></script>
     <script src="./js/models/fish.class.js"></script>
     <script src="./js/models/statusbar.class.js"></script>
+    <script src="./js/models/coinbar.class.js"></script>
+    <script src="./js/models/poisonbar.class.js"></script>
+      <script src="./js/models/poison.class.js"></script>
     <script src="./js/models/light.class.js"></script>
     <script src="./js/models/endboss.class.js"></script>
     <script src="./js/models/background-object.class.js"></script>

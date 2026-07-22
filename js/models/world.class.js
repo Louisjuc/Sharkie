@@ -8,7 +8,10 @@ class World {
   camera_x = 0;
   backgroundObjects = this.level.backgroundObjects;
   statusbar = new Statusbar();
+  coinbar = new Coinbar();
+  poisonbar = new Poisonbar();
   endboss = this.level.enemies.find((e) => e instanceof Endboss);
+  collectedCoins = 0;
 
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
@@ -18,19 +21,37 @@ class World {
     this.setWorld();
     this.checkCollisions();
     this.checkAttackCollisions();
+    this.checkCoinCollisions();
     this.checkWin();
+    this.checkPoisonCollisions();
   }
 
-  checkWin() {
-    setInterval(() => {
-      if (this.endboss.isDead()) {
-        document.getElementById("winScreen").style.display = "flex";
+checkWin() {
+  setStoppableInterval(() => {
+    if (this.endboss.isDead()) {
+      document.getElementById("winScreen").style.display = "flex";
+      document.getElementById("coinCount").innerText = this.collectedCoins; 
+    }
+  }, 500);
+}
+
+  checkPoisonCollisions() {
+  setStoppableInterval(() => {
+    for (let i = this.level.poison.length - 1; i >= 0; i--) {
+      let poison = this.level.poison[i];
+      if (this.character.isColliding(poison)) {
+        console.log("Kollision erkannt!"); // TEMPORÄR
+        this.level.poison.splice(i, 1);
+        this.character.hit();
+        this.statusbar.setPercentage(this.character.energy);
+        this.poisonbar.addPoison();
       }
-    }, 500);
-  }
+    }
+  }, 200);
+}
 
   checkCollisions() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.level.enemies.forEach((enemy) => {
         if (enemy.isDead()) return;
         if (this.character.isColliding(enemy)) {
@@ -50,8 +71,21 @@ class World {
     }, 200);
   }
 
+checkCoinCollisions() {
+  setStoppableInterval(() => {
+    for (let i = this.level.coins.length - 1; i >= 0; i--) { // GEÄNDERT
+      let coin = this.level.coins[i];
+      if (this.character.isColliding(coin)) {
+        this.level.coins.splice(i, 1);
+        this.coinbar.addCoin();
+        this.collectedCoins++;
+      }
+    }
+  }, 200);
+}
+
   checkAttackCollisions() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.level.enemies.forEach((enemy) => {
         if (!this.character.isAttacking || !this.character.isAttackColliding(enemy)) {
           return;
@@ -84,9 +118,12 @@ class World {
     this.addObjecttoMap(this.light);
     this.addToMap(this.character);
     this.addObjecttoMap(this.level.enemies);
+     this.addObjecttoMap(this.level.coins);
+     this.addObjecttoMap(this.level.poison);
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusbar);
-
+    this.addToMap(this.coinbar);
+    this.addToMap(this.poisonbar);
     self = this;
     requestAnimationFrame(() => self.draw());
   }

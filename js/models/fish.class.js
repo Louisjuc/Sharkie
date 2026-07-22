@@ -26,7 +26,7 @@ class Fish extends moveableObject {
     super().loadImage(
       "../img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png",
     );
-    this.x = 400 + Math.random() * 500;
+    this.x = 400 + Math.random() * 2300;
     this.speed = 0.15 + Math.random() * 0.25;
     this.height = 90;
     this.width = 90;
@@ -38,7 +38,7 @@ class Fish extends moveableObject {
   animate() {
     this.moveLeft();
 
-    setInterval(() => {
+    setStoppableInterval(() => {
       if (this.isDead()) {
         if (!this.deadAnimationPlayed) {
           this.playAnimation(this.IMAGES_DEAD);

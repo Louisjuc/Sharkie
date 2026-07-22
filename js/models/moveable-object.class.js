@@ -1,12 +1,12 @@
 class moveableObject extends drawableObject {
   speed = 0.15;
   otherDirection = false;
-  energy = 100;
+  energy = 80;
   lastHit = 0;
   opacity = 1;
 
   applyGravity() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.y -= this.speedY;
       this.speedY -= this.acceleration;
     }, 1000 / 25);
@@ -41,7 +41,7 @@ isColliding(mo) {
   }
 
   moveLeft() {
-    setInterval(() => {
+    setStoppableInterval(() => {
       this.x -= this.speed;
     }, 1000 / 60);
   }
@@ -55,7 +55,7 @@ isColliding(mo) {
 
 animate() {
   this.currentImage = 0;
-  setInterval(() => {
+  setStoppableInterval(() => {
     if (this.isDead()) {
       if (!this.deadAnimationPlayed) {
         this.playAnimation(this.IMAGES_DEAD);

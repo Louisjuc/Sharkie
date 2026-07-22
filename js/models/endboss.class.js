@@ -81,7 +81,7 @@ class Endboss extends moveableObject {
   }
 
   checkProximity() {
-    let interval = setInterval(() => {
+    let interval = setStoppableInterval(() => {
       if (this.world && this.world.character.x > this.x - 900) {
         // NEU – Abstand anpassen
         clearInterval(interval); // NEU – Prüfung stoppen
@@ -92,7 +92,7 @@ class Endboss extends moveableObject {
 
   introduce() {
     this.currentImage = 0; // NEU – Intro immer bei Frame 0 starten
-    let interval = setInterval(() => {
+    let interval = setStoppableInterval(() => {
       if (this.currentImage >= this.IMAGES_WALKING.length) {
         clearInterval(interval); // NEU – stoppt Intro nach letztem Frame
         this.animate(); // NEU – wechselt danach zu Floating
@@ -104,7 +104,7 @@ class Endboss extends moveableObject {
 
   animate() {
     this.currentImage = 0;
-    setInterval(() => {
+    setStoppableInterval(() => {
       if (this.isDead()) {
         if (!this.deadAnimationPlayed) {
           this.playAnimation(this.IMAGES_DEAD);
@@ -135,7 +135,7 @@ class Endboss extends moveableObject {
 
   // NEU – Angriff alle 3 Sekunden, wenn Character nah genug ist
 checkAttack() {
-  setInterval(() => {
+  setStoppableInterval(() => {
     if (!this.world) return; // NEU – verhindert Absturz falls world noch nicht gesetzt
 
     let distance = Math.abs(this.x - this.world.character.x);
@@ -151,7 +151,7 @@ attack() {
   this.isAttacking = true;
   this.currentImage = 0;
 
-  let interval = setInterval(() => {
+  let interval = setStoppableInterval(() => {
     if (this.currentImage >= this.IMAGES_ATTACK.length) {
       clearInterval(interval);
       this.isAttacking = false;

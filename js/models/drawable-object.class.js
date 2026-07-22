@@ -31,7 +31,12 @@ class drawableObject {
 drawCTX(ctx) {
     ctx.save();
     ctx.globalAlpha = this.opacity;
+    try{
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }catch(e){
+      console.warn('Error loading Image', e);
+      console.log('Could not load Imgae', this.image.src);
+    }
     ctx.restore();
 }
 

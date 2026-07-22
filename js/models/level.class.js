@@ -1,9 +1,13 @@
 class Level {
-    enemies;
-    level_end_x = 3000;
+  enemies;
+  coins;
+  poison;
+  level_end_x = 3000;
 
-    constructor(enemies, backgroundObjects){
-        this.enemies = enemies;
-        this.backgroundObjects = backgroundObjects;
-    }
+  constructor(enemies, coins, backgroundObjects, poison) { // GEÄNDERT – coins ergänzt
+    this.enemies = enemies;
+    this.coins = coins; // NEU
+     this.poison = poison; // NEU
+    this.backgroundObjects = backgroundObjects;
+  }
 }

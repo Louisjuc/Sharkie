@@ -1,0 +1,43 @@
+class Poison extends moveableObject {
+  IMAGES_POISON = [
+    "../img/4. Marcadores/Posion/Animada/1.png",
+    "../img/4. Marcadores/Posion/Animada/2.png",
+    "../img/4. Marcadores/Posion/Animada/3.png",
+    "../img/4. Marcadores/Posion/Animada/4.png",
+    "../img/4. Marcadores/Posion/Animada/5.png",
+    "../img/4. Marcadores/Posion/Animada/6.png",
+    "../img/4. Marcadores/Posion/Animada/7.png",
+    "../img/4. Marcadores/Posion/Animada/8.png",
+  ];
+
+  offset = { top: 0, left: 0, right: 0, bottom: 0 }; 
+
+  constructor() {
+    super().loadImage(this.IMAGES_POISON[0]);
+    this.x = 400 + Math.random() * 2700;
+    this.y = 300 + Math.random() * 480; 
+    this.height = 60;
+    this.width = 60;
+    this.loadImages(this.IMAGES_POISON);
+    this.animate();
+  }
+
+  animate() {
+    setStoppableInterval(() => { 
+      this.playAnimation(this.IMAGES_POISON);
+    }, 200);
+  }
+  checkPoisonCollisions() {
+  setStoppableInterval(() => {
+    for (let i = this.level.poison.length - 1; i >= 0; i--) { // NEU
+      let poison = this.level.poison[i];
+      if (this.character.isColliding(poison)) {
+        this.level.poison.splice(i, 1);       // Flasche verschwindet
+        this.character.hit();                  // Schaden
+        this.statusbar.setPercentage(this.character.energy);
+        this.poisonbar.addPoison();             // Poisonbar füllen
+      }
+    }
+  }, 200);
+}
+}
