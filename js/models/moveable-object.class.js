@@ -3,6 +3,7 @@ class moveableObject extends drawableObject {
   otherDirection = false;
   energy = 100;
   lastHit = 0;
+  opacity = 1;
 
   applyGravity() {
     setInterval(() => {
@@ -51,4 +52,28 @@ isColliding(mo) {
     this.img = this.imageCache[path];
     this.currentImage++;
   }
+
+animate() {
+  this.currentImage = 0;
+  setInterval(() => {
+    if (this.isDead()) {
+      if (!this.deadAnimationPlayed) {
+        this.playAnimation(this.IMAGES_DEAD);
+
+        if (this.currentImage >= this.IMAGES_DEAD.length) {
+          this.deadAnimationPlayed = true;
+        }
+      }
+      if (this.deadAnimationPlayed) {
+        this.opacity -= 0.05;
+        this.y += 1;
+
+        if (this.opacity < 0) {
+          this.opacity = 0;
+        }
+      }
+      return;
+    }
+  }, 100);
+}
 }

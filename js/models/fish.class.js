@@ -48,13 +48,13 @@ class Fish extends moveableObject {
           }
         }
         if (this.deadAnimationPlayed) {
-  this.opacity -= 0.05;
-    this.y += 1;
+          this.opacity -= 0.05;
+          this.y += 1;
 
-    if (this.opacity < 0) {
-        this.opacity = 0;
-    }
-}
+          if (this.opacity < 0) {
+            this.opacity = 0;
+          }
+        }
 
         return;
       }

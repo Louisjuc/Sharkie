@@ -46,12 +46,12 @@ class Character extends moveableObject {
     "../img/1.Sharkie/5.Hurt/1.Poisoned/4.png",
   ];
 
-offset = {
-  top: 180,
-  left: 100,
-  right: 100, // <- verkleinert, damit Hitbox weiter nach rechts reicht
-  bottom: 70,
-};
+  offset = {
+    top: 180,
+    left: 100,
+    right: 100, // <- verkleinert, damit Hitbox weiter nach rechts reicht
+    bottom: 70,
+  };
 
   world;
 
@@ -99,35 +99,33 @@ offset = {
     }, 50);
   }
 
-attack() {
-    console.log("attack() aufgerufen");
-
+  attack() {
     if (this.isAttacking) return;
 
     this.isAttacking = true;
-    console.log("isAttacking =", this.isAttacking);
 
     this.currentImage = 0;
 
     let interval = setInterval(() => {
-        if (this.currentImage >= this.IMAGES_ATTACK.length) {
-            clearInterval(interval);
-            this.isAttacking = false;
-            console.log("Attack beendet");
-            return;
-        }
-        this.playAnimation(this.IMAGES_ATTACK);
+      if (this.currentImage >= this.IMAGES_ATTACK.length) {
+        clearInterval(interval);
+        this.isAttacking = false;
+        return;
+      }
+      this.playAnimation(this.IMAGES_ATTACK);
     }, 40);
-}
+  }
 
-isAttackColliding(enemy) {
+// GEÄNDERT – endboss-Parameter entfernt, funktioniert jetzt für jeden Gegner-Typ
+isAttackColliding(target) {
   let attackRange = 60;
 
   return (
-    this.x + this.width - this.offset.right + attackRange > enemy.x + enemy.offset.left &&
-    this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right &&
-    this.y + this.height - this.offset.bottom > enemy.y + enemy.offset.top &&
-    this.y + this.offset.top < enemy.y + enemy.height - enemy.offset.bottom
+    this.x + this.width - this.offset.right + attackRange >
+      target.x + target.offset.left &&
+    this.x + this.offset.left < target.x + target.width - target.offset.right &&
+    this.y + this.height - this.offset.bottom > target.y + target.offset.top &&
+    this.y + this.offset.top < target.y + target.height - target.offset.bottom
   );
 }
 }

@@ -8,6 +8,7 @@ class World {
   camera_x = 0;
   backgroundObjects = this.level.backgroundObjects;
   statusbar = new Statusbar();
+  endboss = this.level.enemies.find((e) => e instanceof Endboss);
 
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
@@ -15,51 +16,57 @@ class World {
     this.draw();
     this.keyboard = keyboard;
     this.setWorld();
+    console.log("Endboss:", this.endboss);
     this.checkCollisions();
     this.checkAttackCollisions();
     
   }
+  
 
 checkCollisions() {
   setInterval(() => {
     this.level.enemies.forEach((enemy) => {
-
       if (enemy.isDead()) return;
-
       if (this.character.isColliding(enemy)) {
         this.character.hit();
         this.statusbar.setPercentage(this.character.energy);
       }
-
     });
+
+    // NEU – Endboss verursacht ebenfalls Schaden am Charakter
+    if (!this.endboss.isDead() && this.character.isColliding(this.endboss)) {
+      this.character.hit();
+      this.statusbar.setPercentage(this.character.energy);
+    }
   }, 200);
 }
 
-  checkAttackCollisions() {
-    setInterval(() => {
-      this.level.enemies.forEach((enemy) => {
-        if (
-          !this.character.isAttacking ||
-          !this.character.isAttackColliding(enemy)
-        ) {
-          return;
-        }
-
-        if (enemy.isDead()) return;
-
-        if (!enemy.isHurt()) {
-          enemy.hit();
-        }
-      });
-    }, 1000 / 60);
-  }
-
-  setWorld() {
-    this.character.world = this;
+checkAttackCollisions() {
+  setInterval(() => {
     this.level.enemies.forEach((enemy) => {
-      enemy.world = this;
+      if (!this.character.isAttacking || !this.character.isAttackColliding(enemy)) {
+        return;
+      }
+      if (enemy.isDead()) return;
+      if (!enemy.isHurt()) {
+        enemy.hit();
+      }
     });
-  }
+
+    // NEU – Endboss-Angriff prüfen
+if (this.character.isAttacking && this.character.isAttackColliding(this.endboss) && !this.endboss.isHurt()) {
+  this.endboss.hit();
+}
+  }, 1000 / 60);
+}
+
+setWorld() {
+  this.character.world = this;
+  this.endboss.world = this;
+  this.level.enemies.forEach((enemy) => {
+    enemy.world = this;
+  });
+}
 
   // Draw function
   draw() {
