@@ -6,7 +6,7 @@ class Endboss extends moveableObject {
   acceleration = 1;
   energy = 100;
   isAttacking = false;
-
+  attackSound = new Audio("./audio/orca_attack.mp3");
 
   offset = {
     top: 160,
@@ -65,8 +65,8 @@ class Endboss extends moveableObject {
     "./img/2.Enemy/3 Final Enemy/Attack/3.png",
     "./img/2.Enemy/3 Final Enemy/Attack/4.png",
     "./img/2.Enemy/3 Final Enemy/Attack/5.png",
-    "./img/2.Enemy/3 Final Enemy/Attack/6.png"
-  ]
+    "./img/2.Enemy/3 Final Enemy/Attack/6.png",
+  ];
 
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
@@ -75,16 +75,16 @@ class Endboss extends moveableObject {
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_FLOATING);
     this.loadImages(this.IMAGES_DEAD);
-     this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_ATTACK);
     this.checkProximity();
     this.checkAttack();
+    registerSound(this.attackSound);
   }
 
   checkProximity() {
     let interval = setStoppableInterval(() => {
       if (this.world && this.world.character.x > this.x - 900) {
-  
-        clearInterval(interval); 
+        clearInterval(interval);
         this.introduce();
       }
     }, 200);
@@ -94,84 +94,85 @@ class Endboss extends moveableObject {
     this.currentImage = 0;
     let interval = setStoppableInterval(() => {
       if (this.currentImage >= this.IMAGES_WALKING.length) {
-        clearInterval(interval); 
-        this.animate(); 
+        clearInterval(interval);
+        this.animate();
         return;
       }
       this.playAnimation(this.IMAGES_WALKING);
     }, 100);
   }
 
-  animate() {
+animate() {
     this.currentImage = 0;
     setStoppableInterval(() => {
-      if (this.isDead()) {
-        if (!this.deadAnimationPlayed) {
-          this.playAnimation(this.IMAGES_DEAD);
-
-          if (this.currentImage >= this.IMAGES_DEAD.length) {
-            this.deadAnimationPlayed = true;
-          }
-        }
-        if (this.deadAnimationPlayed) {
-          this.opacity -= 0.05;
-          this.y += 1;
-
-          if (this.opacity < 0) {
-            this.opacity = 0;
-          }
-        }
-        return;
-      }  else if (this.isAttacking) { // NEU
-  this.playAnimation(this.IMAGES_ATTACK); // NEU
-} else if (this.isHurt()) {
-        // NEU
-        this.playAnimation(this.IMAGES_HURT); // NEU
-      } else {
-        this.playAnimation(this.IMAGES_FLOATING);
-      }
+      this.handleBossState(); // NEU
     }, 100);
   }
 
 
-checkAttack() {
-  setStoppableInterval(() => {
-    if (!this.world) return; // NEU – verhindert Absturz falls world noch nicht gesetzt
-
-    let distance = Math.abs(this.x - this.world.character.x);
-    let notBusy = !this.isAttacking && !this.isHurt() && !this.isDead();
-
-    if (distance < 400 && notBusy) {
-      this.attack();
-    }
-  }, 3000);
-}
-
-attack() {
-  this.isAttacking = true;
-  this.currentImage = 0;
-
-  let interval = setStoppableInterval(() => {
-    if (this.currentImage >= this.IMAGES_ATTACK.length) {
-      clearInterval(interval);
-      this.isAttacking = false;
+  handleBossState() {
+    if (this.isDead()) {
+      this.handleDead(1, 0, 0.05); 
       return;
     }
-    this.playAnimation(this.IMAGES_ATTACK);
-  }, 100);
-}
+    this.playCurrentAction();
+  }
 
-// NEU – eigene Kollisionsprüfung mit Reichweite für den Boss-Angriff
-isBossAttackColliding(character) {
-  let attackRange = 100;
+  
+  playCurrentAction() {
+    if (this.isAttacking) {
+      this.playAnimation(this.IMAGES_ATTACK);
+    } else if (this.isHurt()) {
+      this.playAnimation(this.IMAGES_HURT);
+    } else {
+      this.playAnimation(this.IMAGES_FLOATING);
+    }
+  }
 
-  return (
-    this.x + this.offset.left - attackRange < character.x + character.width - character.offset.right &&
-    this.x + this.width - this.offset.right + attackRange > character.x + character.offset.left &&
-    this.y + this.height - this.offset.bottom > character.y + character.offset.top &&
-    this.y + this.offset.top < character.y + character.height - character.offset.bottom
-  );
-}
+  checkAttack() {
+    setStoppableInterval(() => {
+      if (!this.world) return; 
 
+      let distance = Math.abs(this.x - this.world.character.x);
+      let notBusy = !this.isAttacking && !this.isHurt() && !this.isDead();
 
+      if (distance < 400 && notBusy) {
+        this.attack();
+        this.attackSound.currentTime = 0;
+        this.attackSound.play();
+      }
+    }, 3000);
+  }
+
+  attack() {
+    this.isAttacking = true;
+    this.currentImage = 0;
+
+    let interval = setStoppableInterval(() => {
+      if (this.currentImage >= this.IMAGES_ATTACK.length) {
+        clearInterval(interval);
+        this.isAttacking = false;
+        return;
+      }
+      this.playAnimation(this.IMAGES_ATTACK);
+      this.x -= 60 + Math.random() * 0.25;
+    
+    }, 100);
+  }
+
+  // NEU – eigene Kollisionsprüfung mit Reichweite für den Boss-Angriff
+  isBossAttackColliding(character) {
+    let attackRange = 100;
+
+    return (
+      this.x + this.offset.left - attackRange <
+        character.x + character.width - character.offset.right &&
+      this.x + this.width - this.offset.right + attackRange >
+        character.x + character.offset.left &&
+      this.y + this.height - this.offset.bottom >
+        character.y + character.offset.top &&
+      this.y + this.offset.top <
+        character.y + character.height - character.offset.bottom
+    );
+  }
 }

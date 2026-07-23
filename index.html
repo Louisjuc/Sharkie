@@ -6,26 +6,40 @@
     <title>Sharkie</title>
     <link rel="stylesheet" href="./style.css" />
   </head>
-  <body onload="init()">
-    <!-- NEU: Wrapper um Canvas + Overlay -->
+
+<div class="rotate-hint">
+   <p>Please rotate your device to landscape mode</p>
+</div>
     <div class="game-wrapper">
+<button id="muteBtn" class="btn" onclick="handleMuteClick()">Mute</button>
             <div class="HUD">
         <div class="d-pad">
-        <button id="btnLeft">&#8592;</button>  <!-- geändert: ← -->
-<button id="btnRight">&#8594;</button> <!-- geändert: → -->
-<button id="btnUp">&#8593;</button>    <!-- geändert: ↑ -->
+        <button id="btnLeft">&#8592;</button>  
+<button id="btnRight">&#8594;</button> 
+<button id="btnUp">&#8593;</button>    
 <button id="btnDown">&#8595;</button>
           </div>
           <button id="btnAtk">Attack</button>
+          
       </div>
       <div id="startScreen" class="start-screen">
         <h1>Sharkie</h1>
+        <div class="start-inner">
         <button onclick="startGame()" class="btn">Start Game</button>
         <button class="btn" commandFor="example-dialog" command="show-modal" type="button" id="open-dialog">Controls</button>
           <dialog id="example-dialog">
         <img src="./img/6.Botones/Instructions 2.png" alt="Control Instructions" class="instructions-img">
         <button commandfor="example-dialog" command="close" type="button" class="btn">Close Controls</button>
     </dialog>
+
+       <button class="btn" commandFor="imprint-dialog" command="show-modal" type="button" id="open-dialog">Imprint</button>
+          <dialog id="imprint-dialog">
+            <p>Name: Louis</p>
+            <p>Adress: Munich</p>
+            <p>E-Mail: louis.juchem@web.de</p>
+            <button commandfor="imprint-dialog" command="close" type="button" class="btn">Close</button>
+    </dialog>
+</div>
       </div>
       <div id="winScreen" class="win-screen" style="display: none">
         <p>Coins eingesammelt: <span id="coinCount">0</span></p>
@@ -43,6 +57,7 @@
     <script src="./js/models/coin.class.js"></script>
     <script src="./js/models/character.class.js"></script>
     <script src="./js/models/fish.class.js"></script>
+     <script src="./js/models/jellyfish.class.js"></script>
     <script src="./js/models/statusbar.class.js"></script>
     <script src="./js/models/coinbar.class.js"></script>
     <script src="./js/models/poisonbar.class.js"></script>

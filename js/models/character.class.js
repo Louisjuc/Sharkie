@@ -3,7 +3,7 @@ class Character extends moveableObject {
   width = 300;
   speed = 10;
   isAttacking = false;
-  attackSound = new Audio("./audio/attack.mp3"); // NEU
+  attackSound = new Audio("./audio/attack.mp3");
 
   IMAGES_WALKING = [
     "./img/1.Sharkie/3.Swim/1.png",
@@ -65,52 +65,63 @@ class Character extends moveableObject {
     this.loadImages(this.IMAGES_HURT);
     this.attackSound.volume = 0.3;
     this.animate();
+    registerSound(this.attackSound);
   }
 
   animate() {
     setStoppableInterval(() => {
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-        this.x += this.speed;
-        this.otherDirection = false;
-      }
-      if (this.world.keyboard.LEFT && this.x > 0) {
-        this.x -= this.speed;
-        this.otherDirection = true;
-      }
-      if (this.world.keyboard.UP && this.y > -150) {
-        this.y -= this.speed;
-      }
-      if (this.world.keyboard.DOWN && this.y < 550 - this.height) {
-        this.y += this.speed;
-      }
-      if (this.world.keyboard.SPACE) this.attack(); 
-      this.world.camera_x = -this.x + 20;
+      this.handleMovement();
     }, 1000 / 60);
 
     setStoppableInterval(() => {
-      if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DEAD);
-      } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
-      } else if (
-        this.world.keyboard.RIGHT ||
-        this.world.keyboard.LEFT ||
-        this.world.keyboard.UP ||
-        this.world.keyboard.DOWN
-      ) {
-        this.playAnimation(this.IMAGES_WALKING);
-      }
+      this.handleCharacterAnimation();
     }, 50);
+  }
+
+  handleMovement() {
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+      this.x += this.speed;
+      this.otherDirection = false;
+    }
+    if (this.world.keyboard.LEFT && this.x > 0) {
+      this.x -= this.speed;
+      this.otherDirection = true;
+    }
+    if (this.world.keyboard.UP && this.y > -150) {
+      this.y -= this.speed;
+    }
+    if (this.world.keyboard.DOWN && this.y < 550 - this.height) {
+      this.y += this.speed;
+    }
+    if (this.world.keyboard.SPACE) this.attack();
+    this.world.camera_x = -this.x + 20;
+  }
+
+  handleCharacterAnimation() {
+    if (this.isDead()) {
+      this.playAnimation(this.IMAGES_DEAD);
+    } else if (this.isHurt()) {
+      this.playAnimation(this.IMAGES_HURT);
+    } else if (this.isMoving()) {
+      this.playAnimation(this.IMAGES_WALKING);
+    }
+  }
+
+  isMoving() {
+    return (
+      this.world.keyboard.RIGHT ||
+      this.world.keyboard.LEFT ||
+      this.world.keyboard.UP ||
+      this.world.keyboard.DOWN
+    );
   }
 
   attack() {
     if (this.isAttacking) return;
-
     this.isAttacking = true;
-  this.attackSound.currentTime = 0; // NEU – falls Sound noch läuft, neu starten
-  this.attackSound.play(); // NEU
+    this.attackSound.currentTime = 0;
+    this.attackSound.play();
     this.currentImage = 0;
-
     let interval = setStoppableInterval(() => {
       if (this.currentImage >= this.IMAGES_ATTACK.length) {
         clearInterval(interval);
@@ -121,15 +132,15 @@ class Character extends moveableObject {
     }, 40);
   }
 
-isAttackColliding(enemy) {
-  let attackRange = 60;
+  isAttackColliding(enemy) {
+    let attackRange = 60;
 
-  return (
-    this.x + this.width - this.offset.right + attackRange >
-      enemy.x + enemy.offset.left &&
-    this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right &&
-    this.y + this.height - this.offset.bottom > enemy.y + enemy.offset.top &&
-    this.y + this.offset.top < enemy.y + enemy.height - enemy.offset.bottom
-  );
-}
+    return (
+      this.x + this.width - this.offset.right + attackRange >
+        enemy.x + enemy.offset.left &&
+      this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right &&
+      this.y + this.height - this.offset.bottom > enemy.y + enemy.offset.top &&
+      this.y + this.offset.top < enemy.y + enemy.height - enemy.offset.bottom
+    );
+  }
 }

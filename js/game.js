@@ -6,7 +6,8 @@ backgroundMusic.loop = true;
 backgroundMusic.volume = 0.5;
 
 let clickSound = new Audio("./audio/click.mp3");
-
+registerSound(backgroundMusic); // ÄNDERUNG
+registerSound(clickSound); 
 document.addEventListener("click", () => { 
   clickSound.currentTime = 0;
   clickSound.play();
@@ -32,6 +33,13 @@ function restartGame() {
   document.getElementById("winScreen").style.display = "none";
   document.getElementById("loseScreen").style.display = "none"; 
 }
+
+function checkOrientation() {
+  const isPortrait = window.innerHeight > window.innerWidth;
+  gamePaused = isPortrait && window.innerWidth <= 760;
+}
+window.addEventListener("resize", checkOrientation);
+checkOrientation();
 
 window.addEventListener("keydown", (event) => {
   if (event.keyCode == 39) {

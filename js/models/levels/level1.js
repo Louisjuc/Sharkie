@@ -15,11 +15,24 @@ function createBackgroundObjects() {
   return objects;
 }
 
-function createLevel1() { // NEU – wieder ergänzt
+function createLevel1() {
+  // NEU – wieder ergänzt
   return new Level(
-    [new Fish(), new Fish(), new Fish(), new Fish(), new Fish(), new Endboss()],
+    [
+      new Fish(),
+      new Fish(),
+      new Fish(),
+      new Fish(),
+      new Fish(),
+      new Jellyfish(),
+      new Jellyfish(),
+      new Jellyfish(),
+      new Jellyfish(),
+
+      new Endboss(),
+    ],
     Array.from({ length: 15 }, () => new Coin()),
     createBackgroundObjects(),
     Array.from({ length: 10 }, () => new Poison()),
   );
-} 
+}

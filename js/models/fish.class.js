@@ -27,7 +27,7 @@ class Fish extends moveableObject {
       "./img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png",
     );
     this.x = 400 + Math.random() * 2300;
-    this.speed = 0.15 + Math.random() * 0.25;
+    this.speed = 0.5 + Math.random() * 0.25;
     this.height = 90;
     this.width = 90;
     this.loadImages(this.IMAGES_WALKING);
@@ -35,32 +35,20 @@ class Fish extends moveableObject {
     this.animate();
   }
 
-  animate() {
+  handleAnimationState() {
+    if (this.isDead()) {
+      this.handleDead();
+      return;
+    }
+    this.playAnimation(this.IMAGES_WALKING); // ANPASSEN: exakter Array-Name
+}
+
+ animate() {
     this.moveLeft();
-
+    this.startY = this.y;
+    this.direction = 1;
     setStoppableInterval(() => {
-      if (this.isDead()) {
-        if (!this.deadAnimationPlayed) {
-          this.playAnimation(this.IMAGES_DEAD);
-
-          if (this.currentImage >= this.IMAGES_DEAD.length) {
-            this.deadAnimationPlayed = true;
-          }
-        }
-        if (this.deadAnimationPlayed) {
-          this.opacity -= 0.05;
-          this.y += 20;
-          this.x -= 10;
-
-          if (this.opacity < 0) {
-            this.opacity = 0;
-          }
-        }
-
-        return;
-      }
-
-      this.playAnimation(this.IMAGES_WALKING);
+      this.handleAnimationState();
     }, 100);
   }
 }

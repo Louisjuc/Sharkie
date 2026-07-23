@@ -29,15 +29,15 @@ class Poison extends moveableObject {
       this.x -= 10;
     }, 200);
   }
-  checkPoisonCollisions() {
+checkPoisonCollisions() {
   setStoppableInterval(() => {
-    for (let i = this.level.poison.length - 1; i >= 0; i--) { // NEU
+    for (let i = this.level.poison.length - 1; i >= 0; i--) {
       let poison = this.level.poison[i];
       if (this.character.isColliding(poison)) {
-        this.level.poison.splice(i, 1);       // Flasche verschwindet
-        this.character.hit();                  // Schaden
+        this.level.poison.splice(i, 1);
+        this.character.hit();
         this.statusbar.setPercentage(this.character.energy);
-        this.poisonbar.addPoison();             // Poisonbar füllen
+        this.poisonbar.addPoison();
       }
     }
   }, 200);

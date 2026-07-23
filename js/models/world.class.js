@@ -45,11 +45,12 @@ checkWin() {
 }
 
 checkLose() {
-  setStoppableInterval(() => { // NEU
+  setStoppableInterval(() => {
     if (this.character.isDead()) {
       document.getElementById("loseScreen").style.display = "flex";
+      if (!isMuted) handleMuteClick();
     }
-  }, 500);
+  }, 1000);
 }
 
   checkPoisonCollisions() {
@@ -66,25 +67,38 @@ checkLose() {
   }, 200);
 }
 
-  checkCollisions() {
+checkCollisions() {
     setStoppableInterval(() => {
-      this.level.enemies.forEach((enemy) => {
-        if (enemy.isDead()) return;
-        if (this.character.isColliding(enemy)) {
-          this.character.hit();
-          this.statusbar.setPercentage(this.character.energy);
-        }
-      });
-
-      if (
-        !this.endboss.isDead() &&
-        this.endboss.isAttacking &&
-        this.endboss.isBossAttackColliding(this.character)
-      ) {
-        this.character.hit();
-        this.statusbar.setPercentage(this.character.energy);
-      }
+      this.checkEnemyCollisions(); // NEU
+      this.checkBossAttackCollision(); // NEU
     }, 200);
+  }
+
+  // prüft Kollisionen mit normalen Gegnern
+  checkEnemyCollisions() {
+    this.level.enemies.forEach((enemy) => {
+      if (enemy.isDead()) return;
+      if (this.character.isColliding(enemy)) {
+        this.applyDamage(); // NEU
+      }
+    });
+  }
+
+  // prüft Kollision mit Endboss-Angriff
+  checkBossAttackCollision() {
+    if (
+      !this.endboss.isDead() &&
+      this.endboss.isAttacking &&
+      this.endboss.isBossAttackColliding(this.character)
+    ) {
+      this.applyDamage(); // NEU
+    }
+  }
+
+  // gemeinsame Schadenslogik (DRY)
+  applyDamage() {
+    this.character.hit();
+    this.statusbar.setPercentage(this.character.energy);
   }
 
 checkCoinCollisions() {

@@ -22,6 +22,7 @@ class Coinbar extends drawableObject {
     this.height = 55;
     this.total = total;
     this.setPercentage(0);
+    registerSound(this.coinSound);
   }
 
   setPercentage(percentage) {

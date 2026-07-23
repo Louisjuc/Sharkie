@@ -6,6 +6,12 @@ class moveableObject extends drawableObject {
   opacity = 1;
   hurtSound = new Audio("./audio/hurt.mp3"); // NEU
 
+ constructor() {
+    super();
+    registerSound(this.hurtSound); // ÄNDERUNG
+     this.hurtSound.volume = 0.3;
+  }
+
 
   applyGravity() {
     setStoppableInterval(() => {
@@ -13,6 +19,8 @@ class moveableObject extends drawableObject {
       this.speedY -= this.acceleration;
     }, 1000 / 25);
   }
+
+ 
 
   isColliding(mo) {
     return (
@@ -42,7 +50,7 @@ class moveableObject extends drawableObject {
   }
 
   isDead() {
-    return this.energy == 0;
+    return this.energy <= 0;
   }
 
   moveLeft() {
@@ -58,27 +66,23 @@ class moveableObject extends drawableObject {
     this.currentImage++;
   }
 
-  animate() {
-    this.currentImage = 0;
-    setStoppableInterval(() => {
-      if (this.isDead()) {
-        if (!this.deadAnimationPlayed) {
-          this.playAnimation(this.IMAGES_DEAD);
-
-          if (this.currentImage >= this.IMAGES_DEAD.length) {
-            this.deadAnimationPlayed = true;
-          }
-        }
-        if (this.deadAnimationPlayed) {
-          this.opacity -= 0.05;
-          this.y += 1;
-
-          if (this.opacity < 0) {
-            this.opacity = 0;
-          }
-        }
-        return;
+  // In moveableObject.class.js
+handleDead() {
+    if (!this.deadAnimationPlayed) {
+      this.playAnimation(this.IMAGES_DEAD);
+      if (this.currentImage >= this.IMAGES_DEAD.length) {
+        this.deadAnimationPlayed = true;
       }
-    }, 100);
-  }
+    }
+    if (this.deadAnimationPlayed) {
+      this.opacity -= 0.05;
+      this.y += 20;
+      this.x -= 10;
+      if (this.opacity < 0) {
+        this.opacity = 0;
+      }
+    }
+}
+
+
 }
