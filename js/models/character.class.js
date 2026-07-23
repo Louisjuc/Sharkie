@@ -5,14 +5,35 @@ class Character extends moveableObject {
   isAttacking = false;
   attackSound = new Audio("./audio/attack.mp3");
 
+IMAGES_IDLE = [
+  "./img/1.Sharkie/1.IDLE/1.png",
+  "./img/1.Sharkie/1.IDLE/2.png",
+  "./img/1.Sharkie/1.IDLE/3.png",
+  "./img/1.Sharkie/1.IDLE/4.png",
+  "./img/1.Sharkie/1.IDLE/5.png",
+  "./img/1.Sharkie/1.IDLE/6.png",
+  "./img/1.Sharkie/1.IDLE/7.png",
+  "./img/1.Sharkie/1.IDLE/8.png",
+  "./img/1.Sharkie/1.IDLE/9.png",
+  "./img/1.Sharkie/1.IDLE/10.png",
+  "./img/1.Sharkie/1.IDLE/11.png",
+  "./img/1.Sharkie/1.IDLE/12.png",
+  "./img/1.Sharkie/1.IDLE/13.png",
+  "./img/1.Sharkie/1.IDLE/14.png",
+  "./img/1.Sharkie/1.IDLE/15.png",
+  "./img/1.Sharkie/1.IDLE/16.png",
+  "./img/1.Sharkie/1.IDLE/17.png",
+  "./img/1.Sharkie/1.IDLE/18.png",
+];
+
   IMAGES_WALKING = [
-    "./img/1.Sharkie/3.Swim/1.png",
+     "./img/1.Sharkie/3.Swim/1.png",
     "./img/1.Sharkie/3.Swim/2.png",
     "./img/1.Sharkie/3.Swim/3.png",
     "./img/1.Sharkie/3.Swim/4.png",
     "./img/1.Sharkie/3.Swim/5.png",
     "./img/1.Sharkie/3.Swim/6.png",
-  ];
+  ]
 
   IMAGES_ATTACK = [
     "./img/1.Sharkie/4.Attack/Fin slap/1.png",
@@ -63,20 +84,23 @@ class Character extends moveableObject {
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
+    this.loadImages(this.IMAGES_IDLE);
     this.attackSound.volume = 0.3;
     this.animate();
     registerSound(this.attackSound);
   }
 
-  animate() {
-    setStoppableInterval(() => {
-      this.handleMovement();
-    }, 1000 / 60);
+animate() {
+  setStoppableInterval(() => this.handleMovement(), 1000 / 60);
+  setStoppableInterval(() => this.handleCharacterAnimation(), 50);
+  setStoppableInterval(() => this.handleIdleAnimation(), 150); // NEU
+}
 
-    setStoppableInterval(() => {
-      this.handleCharacterAnimation();
-    }, 50);
+handleIdleAnimation() {
+  if (!this.isDead() && !this.isHurt() && !this.isMoving()) {
+    this.playAnimation(this.IMAGES_IDLE);
   }
+}
 
   handleMovement() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -97,15 +121,15 @@ class Character extends moveableObject {
     this.world.camera_x = -this.x + 20;
   }
 
-  handleCharacterAnimation() {
-    if (this.isDead()) {
-      this.playAnimation(this.IMAGES_DEAD);
-    } else if (this.isHurt()) {
-      this.playAnimation(this.IMAGES_HURT);
-    } else if (this.isMoving()) {
-      this.playAnimation(this.IMAGES_WALKING);
-    }
+handleCharacterAnimation() {
+  if (this.isDead()) {
+    this.playAnimation(this.IMAGES_DEAD);
+  } else if (this.isHurt()) {
+    this.playAnimation(this.IMAGES_HURT);
+  } else if (this.isMoving()) {
+    this.playAnimation(this.IMAGES_WALKING);
   }
+}
 
   isMoving() {
     return (
