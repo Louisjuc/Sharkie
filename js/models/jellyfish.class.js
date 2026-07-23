@@ -8,6 +8,7 @@ class Jellyfish extends moveableObject {
     right: 15,
     bottom: 15,
   };
+  
   IMAGES_WALKING = [
     "./img/2.Enemy/2 Jelly fish/Regular damage/Yellow 1.png",
     "./img/2.Enemy/2 Jelly fish/Regular damage/Yellow 2.png",
@@ -41,9 +42,9 @@ class Jellyfish extends moveableObject {
     }
     this.bobUpAndDown();
     this.playAnimation(this.IMAGES_WALKING);
-}
+  }
 
- animate() {
+  animate() {
     this.moveLeft();
     this.startY = this.y;
     this.direction = 1;

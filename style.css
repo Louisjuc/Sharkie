@@ -183,6 +183,7 @@ canvas {
     color: #fff;
     border: none;
     padding: 10px;
+    touch-action: manipulation;
   }
 
   #btnAtk {

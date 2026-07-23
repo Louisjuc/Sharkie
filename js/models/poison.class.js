@@ -26,8 +26,7 @@ class Poison extends moveableObject {
     setStoppableInterval(() => { 
       this.playAnimation(this.IMAGES_POISON);
       this.y += 1;
-      this.x -= 10;
-    }, 200);
+    }, 100);
   }
 checkPoisonCollisions() {
   setStoppableInterval(() => {

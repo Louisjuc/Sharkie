@@ -116,9 +116,10 @@ class Character extends moveableObject {
     );
   }
 
-  attack() {
-    if (this.isAttacking) return;
+attack() {
+    if (this.isAttacking || this.isOnCooldown()) return; // GEÄNDERT
     this.isAttacking = true;
+    this.lastAttack = new Date().getTime();
     this.attackSound.currentTime = 0;
     this.attackSound.play();
     this.currentImage = 0;
@@ -130,6 +131,12 @@ class Character extends moveableObject {
       }
       this.playAnimation(this.IMAGES_ATTACK);
     }, 40);
+  }
+
+  // prüft ob Cooldown (z.B. 500ms) noch aktiv ist
+  isOnCooldown() {
+    let cooldown = 1000;
+    return this.lastAttack && new Date().getTime() - this.lastAttack < cooldown;
   }
 
   isAttackColliding(enemy) {
