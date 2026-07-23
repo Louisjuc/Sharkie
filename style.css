@@ -1,6 +1,7 @@
 * {
   font-family: "LuckiestGuy", sans-serif;
   margin: 0;
+  border-radius: 20px;
 }
 
 body {
@@ -50,6 +51,7 @@ h1 {
   display: flex; /* ÄNDERUNG */
   align-items: center; /* ÄNDERUNG */
   justify-content: center; /* ÄNDERUNG */
+  border: 4px solid #fff;
 }
 
 .start-screen,
@@ -124,6 +126,16 @@ dialog {
   margin: clamp(6px, 1.5vw, 10px) 0;
 }
 
+.btn-fullscreen {
+  padding: 18px 30px 12px 30px;
+  background-color: #531a82;
+  color: #fff;
+  border: 4px solid #fff;
+  border-radius: 20px;
+  font-size: 30px;
+  margin: 40px 0;
+}
+
 #muteBtn{
   font-size: 18px;
       position: absolute;
@@ -137,7 +149,7 @@ dialog .btn {
   margin: 15px auto;
 }
 
-.btn:hover {
+.btn:hover, .btn-fullscreen:hover {
   background-color: #7fffe0;
   color: #531a82;
   cursor: pointer;
@@ -161,6 +173,8 @@ canvas {
     height: 100dvh; /* ÄNDERUNG */
     max-width: 100vw; /* ÄNDERUNG */
   }
+
+
   .HUD {
     bottom: 20px;
     display: flex;
@@ -176,6 +190,10 @@ canvas {
     -webkit-user-select: none;
     -webkit-touch-callout: none;
   }
+
+  * {
+  border-radius: 0px;
+}
 
   .HUD button {
     border-radius: 10px;
@@ -225,6 +243,18 @@ canvas {
   .game-wrapper {
     height: 100dvh;
   }
+
+    .game-wrapper {
+  border: none;
+}
+
+    .btn-fullscreen {
+  display: none;
+}
+
+  * {
+  border-radius: 0px;
+}
 }
 
 /* ÄNDERUNG */
@@ -254,4 +284,8 @@ canvas {
     border-radius: 20px;
     padding: 20px;
   }
+
+  .btn-fullscreen {
+  display: none;
+}
 }

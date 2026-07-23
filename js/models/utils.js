@@ -28,3 +28,26 @@ function handleMuteClick() {
   document.getElementById("muteBtn").textContent = muted ? "Unmute" : "Mute";
 }
 
+function Fullscreen() {
+  let Fullscreen = document.getElementById('fullscreen');
+  enterFullscreen(Fullscreen);
+}
+
+function enterFullscreen(element) {
+  if(element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if(element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  } else if(element.msRequestFullscreen) {       // for IE11 (remove June 15, 2022)
+    element.msRequestFullscreen();
+  }
+}
+
+function exitFullscreen() { console.log('exit');
+  if(document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if(document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  }
+}
+

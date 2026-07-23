@@ -25,6 +25,8 @@ function startGame() {
   init();
 }
 
+
+
 function restartGame() {
   stopGame();
   intervalIDs = [];

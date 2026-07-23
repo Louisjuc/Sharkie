@@ -135,7 +135,7 @@ attack() {
 
   // prüft ob Cooldown (z.B. 500ms) noch aktiv ist
   isOnCooldown() {
-    let cooldown = 1000;
+    let cooldown = 500;
     return this.lastAttack && new Date().getTime() - this.lastAttack < cooldown;
   }
 
