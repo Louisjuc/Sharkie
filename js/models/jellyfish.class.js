@@ -3,10 +3,10 @@ class Jellyfish extends moveableObject {
   opacity = 1;
 
   offset = {
-    top: 15,
-    left: 15,
-    right: 15,
-    bottom: 15,
+    top: 25,
+    left: 20,
+    right: 20,
+    bottom: 25,
   };
   
   IMAGES_WALKING = [

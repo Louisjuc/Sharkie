@@ -113,10 +113,10 @@ class Character extends moveableObject {
   ];
 
   offset = {
-    top: 120,
-    left: 85,
-    right: 85,
-    bottom: 35,
+    top: 145,
+    left: 105,
+    right: 105,
+    bottom: 60,
   };
 
   world;

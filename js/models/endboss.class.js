@@ -13,10 +13,10 @@ class Endboss extends moveableObject {
   attackSound = new Audio("./audio/orca_attack.mp3");
 
   offset = {
-    top: 160,
-    left: 60,
-    right: 60,
-    bottom: 90,
+    top: 190,
+    left: 95,
+    right: 95,
+    bottom: 115,
   };
 
   IMAGES_WALKING = [

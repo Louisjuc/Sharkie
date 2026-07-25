@@ -3,10 +3,10 @@ class Fish extends moveableObject {
   opacity = 1;
 
   offset = {
-    top: 15,
-    left: 5,
-    right: 15,
-    bottom: 15,
+    top: 25,
+    left: 20,
+    right: 20,
+    bottom: 25,
   };
   IMAGES_WALKING = [
     "./img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png",
