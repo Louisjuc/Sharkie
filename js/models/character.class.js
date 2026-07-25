@@ -72,7 +72,7 @@ IMAGES_IDLE = [
   offset = {
     top: 180,
     left: 100,
-    right: 100, // <- verkleinert, damit Hitbox weiter nach rechts reicht
+    right: 100, 
     bottom: 70,
   };
 
@@ -93,7 +93,7 @@ IMAGES_IDLE = [
 animate() {
   setStoppableInterval(() => this.handleMovement(), 1000 / 60);
   setStoppableInterval(() => this.handleCharacterAnimation(), 50);
-  setStoppableInterval(() => this.handleIdleAnimation(), 150); // NEU
+  setStoppableInterval(() => this.handleIdleAnimation(), 150);
 }
 
 handleIdleAnimation() {
@@ -103,6 +103,7 @@ handleIdleAnimation() {
 }
 
   handleMovement() {
+    if (this.isDead()) return;
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.x += this.speed;
       this.otherDirection = false;
@@ -123,12 +124,21 @@ handleIdleAnimation() {
 
 handleCharacterAnimation() {
   if (this.isDead()) {
-    this.playAnimation(this.IMAGES_DEAD);
+    this.playDeadAnimation(); 
   } else if (this.isHurt()) {
     this.playAnimation(this.IMAGES_HURT);
   } else if (this.isMoving()) {
     this.playAnimation(this.IMAGES_WALKING);
   }
+}
+
+playDeadAnimation() {
+  if (this.currentImage < this.IMAGES_DEAD.length) {
+    let path = this.IMAGES_DEAD[this.currentImage];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+  }
+  this.y += 2;
 }
 
   isMoving() {
@@ -141,7 +151,7 @@ handleCharacterAnimation() {
   }
 
 attack() {
-    if (this.isAttacking || this.isOnCooldown()) return; // GEÄNDERT
+    if (this.isAttacking || this.isOnCooldown()) return;
     this.isAttacking = true;
     this.lastAttack = new Date().getTime();
     this.attackSound.currentTime = 0;

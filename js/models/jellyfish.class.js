@@ -53,7 +53,7 @@ class Jellyfish extends moveableObject {
     }, 100);
   }
 
-  // NEU: ausgelagert - auf/ab Bewegung
+// Moves the jellyfish up and down in a bobbing motion
   bobUpAndDown() {
     this.y += this.direction * 1.5;
     if (this.y > this.startY + 30 || this.y < this.startY - 30) {

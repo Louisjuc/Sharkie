@@ -16,7 +16,6 @@ function createBackgroundObjects() {
 }
 
 function createLevel1() {
-  // NEU – wieder ergänzt
   return new Level(
     [
       new Fish(),

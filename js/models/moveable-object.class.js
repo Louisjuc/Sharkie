@@ -4,15 +4,15 @@ class moveableObject extends drawableObject {
   energy = 80;
   lastHit = 0;
   opacity = 1;
-  hurtSound = new Audio("./audio/hurt.mp3"); // NEU
+  hurtSound = new Audio("./audio/hurt.mp3");
 
  constructor() {
     super();
-    registerSound(this.hurtSound); // ÄNDERUNG
+    registerSound(this.hurtSound); 
      this.hurtSound.volume = 0.3;
   }
 
-
+// Applies gravity to the object by updating its vertical position and speed at regular intervals
   applyGravity() {
     setStoppableInterval(() => {
       this.y -= this.speedY;
@@ -21,7 +21,7 @@ class moveableObject extends drawableObject {
   }
 
  
-
+// Checks if the object is colliding with another moveableObject based on their positions and offsets
   isColliding(mo) {
     return (
       this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
@@ -32,6 +32,7 @@ class moveableObject extends drawableObject {
  
   }
 
+  // hits the object, reducing its energy and playing the hurt sound if it is not dead
   hit() {
     this.energy -= 5;
     if (this.energy < 0) {
@@ -65,8 +66,6 @@ class moveableObject extends drawableObject {
     this.img = this.imageCache[path];
     this.currentImage++;
   }
-
-  // In moveableObject.class.js
 handleDead() {
     if (!this.deadAnimationPlayed) {
       this.playAnimation(this.IMAGES_DEAD);

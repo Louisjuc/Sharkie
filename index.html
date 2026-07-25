@@ -6,7 +6,7 @@
     <title>Sharkie</title>
     <link rel="stylesheet" href="./style.css" />
   </head>
-
+<body>
 <div class="rotate-hint">
    <p>Please rotate your device to landscape mode</p>
 </div>
@@ -21,8 +21,8 @@
 <button id="btnDown">&#8595;</button>
           </div>
           <button id="btnAtk">Attack</button>
-          
       </div>
+      
       <div id="startScreen" class="start-screen">
         <h1>Sharkie</h1>
         <div class="start-inner">
@@ -47,7 +47,7 @@
         <button onclick="restartGame()" class="btn">Play Again</button>
       </div>
       <div id="loseScreen" class="lose-screen" style="display: none">
-        <p>You lost!</p>
+        <p>Game Over!</p>
         <button onclick="restartGame()" class="btn">Try Again</button>
       </div>
       <canvas id="canvas" width="760" height="480"></canvas>

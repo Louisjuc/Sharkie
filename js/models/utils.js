@@ -13,13 +13,13 @@ function stopGame() {
   intervalIDs.forEach(clearInterval);
 }
 
-function registerSound(sound) { // ÄNDERUNG
+function registerSound(sound) {
   allSounds.push(sound);
 }
 
 function toggleMute() {
   isMuted = !isMuted;
-  allSounds.forEach(sound => (sound.muted = isMuted)); // ÄNDERUNG
+  allSounds.forEach(sound => (sound.muted = isMuted));
   return isMuted;
 }
 
@@ -38,7 +38,7 @@ function enterFullscreen(element) {
     element.requestFullscreen();
   } else if(element.webkitRequestFullscreen) {
     element.webkitRequestFullscreen();
-  } else if(element.msRequestFullscreen) {       // for IE11 (remove June 15, 2022)
+  } else if(element.msRequestFullscreen) {
     element.msRequestFullscreen();
   }
 }

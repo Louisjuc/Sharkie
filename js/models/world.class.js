@@ -31,26 +31,27 @@ class World {
   }
 
 checkWin() {
-  let winTriggered = false; // NEU
+  let winTriggered = false; 
 
   setStoppableInterval(() => {
-    if (this.endboss.isDead() && !winTriggered) { // GEÄNDERT
-      winTriggered = true; // NEU
-      setTimeout(() => { // NEU – wartet, bis Dead-Animation durchgelaufen ist
+    if (this.endboss.isDead() && !winTriggered) { 
+      winTriggered = true;
+      setTimeout(() => { 
         document.getElementById("winScreen").style.display = "flex";
         document.getElementById("coinCount").innerText = this.collectedCoins;
-      }, 5000); // – Zeit in ms anpassen, je nach Länge deiner Dead-Animation
+      }, 5000);
     }
   }, 500);
 }
 
 checkLose() {
-  setStoppableInterval(() => {
+  let interval = setStoppableInterval(() => {
     if (this.character.isDead()) {
       document.getElementById("loseScreen").style.display = "flex";
       if (!isMuted) handleMuteClick();
+      clearInterval(interval); 
     }
-  }, 1000);
+  }, 200);
 }
 
   checkPoisonCollisions() {
@@ -69,8 +70,8 @@ checkLose() {
 
 checkCollisions() {
     setStoppableInterval(() => {
-      this.checkEnemyCollisions(); // NEU
-      this.checkBossAttackCollision(); // NEU
+      this.checkEnemyCollisions(); 
+      this.checkBossAttackCollision();
     }, 200);
   }
 
@@ -79,7 +80,7 @@ checkCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (enemy.isDead()) return;
       if (this.character.isColliding(enemy)) {
-        this.applyDamage(); // NEU
+        this.applyDamage(); 
       }
     });
   }
@@ -91,7 +92,7 @@ checkCollisions() {
       this.endboss.isAttacking &&
       this.endboss.isBossAttackColliding(this.character)
     ) {
-      this.applyDamage(); // NEU
+      this.applyDamage(); 
     }
   }
 
@@ -103,7 +104,7 @@ checkCollisions() {
 
 checkCoinCollisions() {
   setStoppableInterval(() => {
-    for (let i = this.level.coins.length - 1; i >= 0; i--) { // GEÄNDERT
+    for (let i = this.level.coins.length - 1; i >= 0; i--) {
       let coin = this.level.coins[i];
       if (this.character.isColliding(coin)) {
         this.level.coins.splice(i, 1);
@@ -113,7 +114,7 @@ checkCoinCollisions() {
     }
   }, 200);
 }
-
+// checks if the character is attacking and if the attack collides with any enemies or the endboss
   checkAttackCollisions() {
     setStoppableInterval(() => {
       this.level.enemies.forEach((enemy) => {
@@ -131,7 +132,7 @@ checkCoinCollisions() {
       }
     }, 1000 / 60);
   }
-
+// Sets the world reference for the character and enemies
   setWorld() {
     this.character.world = this;
     this.endboss.world = this;
@@ -171,13 +172,13 @@ checkCoinCollisions() {
 
     mo.drawCTX(this.ctx);
     mo.drawFrame(this.ctx);
-    this.ctx.globalAlpha = 1; // NEU
+    this.ctx.globalAlpha = 1;
 
     if (mo.otherDirection) {
       this.flipImageBack(mo);
     }
   }
-
+ 
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.width, 0);
@@ -185,6 +186,7 @@ checkCoinCollisions() {
     mo.x = mo.x * -1;
   }
 
+  // Flip the image back to its original orientation
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();

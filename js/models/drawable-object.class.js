@@ -6,14 +6,13 @@ class drawableObject {
   y = 180;
   height = 200;
   width = 250;
-  
+
   offset = {
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
   };
-
 
   loadImage(path) {
     this.img = new Image();
@@ -28,28 +27,29 @@ class drawableObject {
     });
   }
 
-drawCTX(ctx) {
+  // Draws the object on the canvas context
+  drawCTX(ctx) {
     ctx.save();
     try {
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     } catch (e) {
-      console.warn('Error loading Image', e); // GEÄNDERT
-      console.log('Could not load Image', this.img?.src); // GEÄNDERT: this.img statt this.image
+      console.warn("Error loading Image", e);
+      console.log("Could not load Image", this.img?.src);
     }
     ctx.restore();
-}
+  }
 
   drawFrame(ctx) {
-//  if (
-//       this instanceof Character ||
- //      this instanceof Fish ||
- //      this instanceof Endboss
- //    ) {
- //      ctx.beginPath();
- //      ctx.lineWidth = "5";
-  //     ctx.strokeStyle = "blue";
-  //     ctx.rect(this.x, this.y, this.width, this.height);
-  //     ctx.stroke();
-  //   } 
+    //  if (
+    //       this instanceof Character ||
+    //      this instanceof Fish ||
+    //      this instanceof Endboss
+    //    ) {
+    //      ctx.beginPath();
+    //      ctx.lineWidth = "5";
+    //     ctx.strokeStyle = "blue";
+    //     ctx.rect(this.x, this.y, this.width, this.height);
+    //     ctx.stroke();
+    //   }
   }
 }

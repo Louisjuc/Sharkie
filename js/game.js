@@ -6,13 +6,16 @@ backgroundMusic.loop = true;
 backgroundMusic.volume = 0.5;
 
 let clickSound = new Audio("./audio/click.mp3");
-registerSound(backgroundMusic); // ÄNDERUNG
+registerSound(backgroundMusic);
 registerSound(clickSound); 
-document.addEventListener("click", () => { 
+
+document.addEventListener("click", (event) => {
+  if (!event.target.closest("button")) return; 
   clickSound.currentTime = 0;
   clickSound.play();
 });
 
+// initialize the game world and start the game loop
 function init() {
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
@@ -24,18 +27,16 @@ function startGame() {
   document.getElementById("startScreen").style.display = "none";
   init();
 }
-
-
-
+// restart the game by stopping the current game, resetting the level, and initializing a new game world
 function restartGame() {
   stopGame();
   intervalIDs = [];
-  level1 = createLevel1(); // NEU – unbedingt vor init() aufrufen
+  level1 = createLevel1();
   init();
   document.getElementById("winScreen").style.display = "none";
   document.getElementById("loseScreen").style.display = "none"; 
 }
-
+// checks the orientation of the device and pauses the game if it is in portrait mode
 function checkOrientation() {
   const isPortrait = window.innerHeight > window.innerWidth;
   gamePaused = isPortrait && window.innerWidth <= 760;

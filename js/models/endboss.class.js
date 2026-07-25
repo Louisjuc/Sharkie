@@ -4,7 +4,7 @@ class Endboss extends moveableObject {
   y = 0;
   speedY = 0;
   acceleration = 1;
-  energy = 100;
+  energy = 80;
   isAttacking = false;
   attackSound = new Audio("./audio/orca_attack.mp3");
 
@@ -105,7 +105,7 @@ class Endboss extends moveableObject {
 animate() {
     this.currentImage = 0;
     setStoppableInterval(() => {
-      this.handleBossState(); // NEU
+      this.handleBossState();
     }, 100);
   }
 
@@ -160,7 +160,6 @@ animate() {
     }, 100);
   }
 
-  // NEU – eigene Kollisionsprüfung mit Reichweite für den Boss-Angriff
   isBossAttackColliding(character) {
     let attackRange = 100;
 

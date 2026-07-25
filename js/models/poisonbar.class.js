@@ -9,8 +9,8 @@ class Poisonbar extends drawableObject {
     "./img/4. Marcadores/Purple/poison/0_.png",
   ];
 
-  collected = 0; // NEU – aktuell eingesammelte Münzen
-  total = 5; // NEU – Gesamtanzahl Münzen im Level
+  collected = 0;
+  total = 5; 
 
   constructor(total = 5) {
     super();
@@ -46,8 +46,8 @@ class Poisonbar extends drawableObject {
   }
 
 addPoison() {
-  this.collected++;                                    // NEU
-  let percentage = (this.collected / this.total) * 100; // NEU
-  this.setPercentage(Math.min(percentage, 100));         // NEU
+  this.collected++;                                    
+  let percentage = (this.collected / this.total) * 100;
+  this.setPercentage(Math.min(percentage, 100));         
 }
 }

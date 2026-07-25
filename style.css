@@ -9,8 +9,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center; /* NEU: vertikale Zentrierung */
-  min-height: 100dvh; /* ÄNDERUNG statt 100vh */
-  max-height: 100dvh; /* ÄNDERUNG */
   overflow: hidden; /* ÄNDERUNG */
 }
 
@@ -107,7 +105,7 @@ dialog {
 }
 .win-screen p,
 .lose-screen p {
-  font-size: 30px;
+  font-size: 60px;
   color: #fff;
 }
 
@@ -136,12 +134,12 @@ dialog {
   margin: 40px 0;
 }
 
-#muteBtn{
+#muteBtn {
   font-size: 18px;
-      position: absolute;
-    right: 20px;
-    top: 20px;
-    padding: 10px 8px 8px 8px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  padding: 10px 8px 8px 8px;
 }
 
 dialog .btn {
@@ -149,7 +147,8 @@ dialog .btn {
   margin: 15px auto;
 }
 
-.btn:hover, .btn-fullscreen:hover {
+.btn:hover,
+.btn-fullscreen:hover {
   background-color: #7fffe0;
   color: #531a82;
   cursor: pointer;
@@ -167,13 +166,16 @@ canvas {
   max-height: 100dvh;
 }
 
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 1194px) {
   canvas,
   .game-wrapper {
     height: 100dvh; /* ÄNDERUNG */
     max-width: 100vw; /* ÄNDERUNG */
   }
 
+  .btn-fullscreen {
+    display: none;
+  }
 
   .HUD {
     bottom: 20px;
@@ -192,8 +194,8 @@ canvas {
   }
 
   * {
-  border-radius: 0px;
-}
+    border-radius: 0px;
+  }
 
   .HUD button {
     border-radius: 10px;
@@ -201,7 +203,7 @@ canvas {
     color: #fff;
     border: none;
     padding: 10px;
-    touch-action: manipulation;
+    touch-action: none;
   }
 
   #btnAtk {
@@ -244,17 +246,13 @@ canvas {
     height: 100dvh;
   }
 
-    .game-wrapper {
-  border: none;
-}
-
-    .btn-fullscreen {
-  display: none;
-}
+  .game-wrapper {
+    border: none;
+  }
 
   * {
-  border-radius: 0px;
-}
+    border-radius: 0px;
+  }
 }
 
 /* ÄNDERUNG */
@@ -262,7 +260,7 @@ canvas {
   display: none;
 }
 
-@media only screen and (max-width: 760px) and (orientation: portrait) {
+@media only screen and (max-width: 1024px) and (orientation: portrait) {
   .game-wrapper,
   .HUD,
   .start-screen,
@@ -286,6 +284,6 @@ canvas {
   }
 
   .btn-fullscreen {
-  display: none;
-}
+    display: none;
+  }
 }

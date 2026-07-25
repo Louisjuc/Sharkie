@@ -40,7 +40,7 @@ class Fish extends moveableObject {
       this.handleDead();
       return;
     }
-    this.playAnimation(this.IMAGES_WALKING); // ANPASSEN: exakter Array-Name
+    this.playAnimation(this.IMAGES_WALKING);
 }
 
  animate() {
