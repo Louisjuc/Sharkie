@@ -96,10 +96,13 @@ class Character extends moveableObject {
     "./img/1.Sharkie/2.Long_IDLE/I11.png",
     "./img/1.Sharkie/2.Long_IDLE/I12.png",
     "./img/1.Sharkie/2.Long_IDLE/I13.png",
-    "./img/1.Sharkie/2.Long_IDLE/I14.png"
+    "./img/1.Sharkie/2.Long_IDLE/I14.png",
   ];
 
   IMAGES_BUBBLE = ["./img/1.Sharkie/4.Attack/Bubble trap/Bubble.png"];
+  IMAGES_BUBBLE_POISONED = [
+    "./img/1.Sharkie/4.Attack/Bubble trap/Poisoned Bubble (for whale).png",
+  ];
 
   // frames to show on the character while shooting (do NOT use for the projectile)
   IMAGES_BUBBLE_PROJECTILE = [
@@ -113,10 +116,10 @@ class Character extends moveableObject {
   ];
 
   offset = {
-    top: 145,
-    left: 105,
-    right: 105,
-    bottom: 60,
+    top: 160,
+    left: 50,
+    right: 50,
+    bottom: 70,
   };
 
   world;
@@ -133,6 +136,7 @@ class Character extends moveableObject {
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_SLEEP);
     this.loadImages(this.IMAGES_BUBBLE);
+    this.loadImages(this.IMAGES_BUBBLE_POISONED);
     this.loadImages(this.IMAGES_BUBBLE_PROJECTILE);
     this.attackSound.volume = 0.3;
     this.animate();
@@ -144,46 +148,70 @@ class Character extends moveableObject {
    * @returns {void}
    */
   animate() {
-    setStoppableInterval(() => this.handleMovement(), 1000 / 60);
+    setStoppableInterval(() => this.handleMovement(), 1000 / 40);
     setStoppableInterval(() => this.handleCharacterAnimation(), 50);
     setStoppableInterval(() => this.handleIdleAnimation(), 200);
   }
 
   /**
-   * Play a character-local sequence smoothly using requestAnimationFrame.
-   * This updates `this.img` from the given `images` array and applies a small vertical bob.
-   * @param {string[]} images
-   * @param {number} frameDuration - ms per frame
-   * @param {number} bobAmplitude - pixels for vertical bob
-   * @param {number} bobHz - bob frequency in Hz
-   */
-  startBubbleCharacterAnimation(images, frameDuration = 200, bobAmplitude = 8, bobHz = 2) {
-    if (this.isBubbleAttacking) return;
-    this.isBubbleAttacking = true;
-    this._bubbleCharBaseY = this.y;
-    const start = performance.now();
-    const totalFrames = images.length;
-
-    const step = (ts) => {
-      const elapsed = ts - start;
-      const frameIndex = Math.min(Math.floor(elapsed / frameDuration), totalFrames - 1);
-      const path = images[frameIndex];
-      if (this.imageCache[path]) this.img = this.imageCache[path];
-
-      // bobbing motion
-      const bob = Math.sin((elapsed / 1000) * (2 * Math.PI * bobHz)) * bobAmplitude;
-      this.y = this._bubbleCharBaseY + bob;
-
-      if (frameIndex >= totalFrames - 1) {
-        // end animation
-        this.stopBubbleCharacterAnimation();
-        return;
-      }
-      this._bubbleCharRafId = requestAnimationFrame(step);
-    };
-
+ * Play a character-local sequence smoothly using requestAnimationFrame.
+ * @param {string[]} images
+ * @param {number} frameDuration - ms per frame
+ * @param {number} bobAmplitude - pixels for vertical bob
+ * @param {number} bobHz - bob frequency in Hz
+ * @returns {void}
+ */
+startBubbleCharacterAnimation(images, frameDuration = 200, bobAmplitude = 8, bobHz = 2) {
+  if (this.isBubbleAttacking) return;
+  this.isBubbleAttacking = true;
+  this._bubbleCharBaseY = this.y;
+  let start = performance.now();
+  let totalFrames = images.length;
+  let step = (ts) => {
+    let elapsed = ts - start;
+    let frameIndex = this.getBubbleFrameIndex(elapsed, frameDuration, totalFrames);
+    this.applyBubbleFrame(images[frameIndex]); 
+    this.applyBubbleBob(elapsed, bobHz, bobAmplitude); 
+    if (frameIndex >= totalFrames - 1) {
+      this.stopBubbleCharacterAnimation();
+      return;
+    }
     this._bubbleCharRafId = requestAnimationFrame(step);
-  }
+  };
+  this._bubbleCharRafId = requestAnimationFrame(step);
+}
+
+/**
+ * Calculates the current frame index based on elapsed time.
+ * @param {number} elapsed
+ * @param {number} frameDuration
+ * @param {number} totalFrames
+ * @returns {number}
+ */
+getBubbleFrameIndex(elapsed, frameDuration, totalFrames) { 
+  return Math.min(Math.floor(elapsed / frameDuration), totalFrames - 1);
+}
+
+/**
+ * Sets the character image for the given frame path.
+ * @param {string} path
+ * @returns {void}
+ */
+applyBubbleFrame(path) {
+  if (this.imageCache[path]) this.img = this.imageCache[path];
+}
+
+/**
+ * Applies the vertical bobbing motion for the current frame.
+ * @param {number} elapsed
+ * @param {number} bobHz
+ * @param {number} bobAmplitude
+ * @returns {void}
+ */
+applyBubbleBob(elapsed, bobHz, bobAmplitude) {
+  const bob = Math.sin((elapsed / 1000) * (2 * Math.PI * bobHz)) * bobAmplitude;
+  this.y = this._bubbleCharBaseY + bob;
+}
 
   stopBubbleCharacterAnimation() {
     if (this._bubbleCharRafId) {
@@ -202,7 +230,7 @@ class Character extends moveableObject {
    * @returns {void}
    */
   handleIdleAnimation() {
-    if (this.isDead() || this.isHurt()) return;
+    if (this.isDead() || this.isHurt() || this.isAttacking) return;
     // don't run idle animations while bubble-character animation is active
     if (this.isBubbleAttacking) return;
 
@@ -307,6 +335,8 @@ class Character extends moveableObject {
   attack() {
     if (this.isAttacking || this.isOnCooldown()) return;
     this.isAttacking = true;
+    this.idleStartTime = 0;
+    this.isSleeping = false;
     this.lastAttack = new Date().getTime();
     this.attackSound.currentTime = 0;
     this.attackSound.play();
@@ -325,38 +355,66 @@ class Character extends moveableObject {
    * Create and fire a bubble projectile if bubble-attack is not on cooldown.
    * @returns {void}
    */
-  shootBubble() {
-    if (this.isBubbleOnCooldown()) return;
-    if (this.isBubbleAttacking || this.bubbleSpawnScheduled) return;
+/**
+ * Fires a bubble projectile if not on cooldown, plays character animation.
+ * @returns {void}
+ */
+shootBubble() {
+  if (this.isBubbleOnCooldown()) return;
+  if (this.isBubbleAttacking || this.bubbleSpawnScheduled) return;
+  this.idleStartTime = 0;
+  this.isSleeping = false;
+  this.lastBubbleAttack = new Date().getTime();
+  this.bubbleSpawnScheduled = true;
+  this.playBubbleCharacterAnimation(); // NEU
+  this.spawnBubbleProjectile(); // NEU
+}
 
-    this.lastBubbleAttack = new Date().getTime();
-    this.bubbleSpawnScheduled = true;
-    // play the bubble projectile frames on the character (projectile unchanged)
-    if (!this.isBubbleAttacking) {
-      // play frames similar to the normal melee attack (faster, frame-driven)
-      this.isBubbleAttacking = true;
-      this.currentImage = 0;
-      let interval = setStoppableInterval(() => {
-        if (this.currentImage >= this.IMAGES_BUBBLE_PROJECTILE.length) {
-          clearInterval(interval);
-          this.isBubbleAttacking = false;
-          this.bubbleSpawnScheduled = false;
-          return;
-        }
-        this.playAnimation(this.IMAGES_BUBBLE_PROJECTILE);
-      }, 40);
+/**
+ * Plays the bubble-shooting frames on the character.
+ * @returns {void}
+ */
+playBubbleCharacterAnimation() { // NEU
+  this.isBubbleAttacking = true;
+  this.currentImage = 0;
+  let interval = setStoppableInterval(() => {
+    if (this.currentImage >= this.IMAGES_BUBBLE_PROJECTILE.length) {
+      clearInterval(interval);
+      this.isBubbleAttacking = false;
+      this.bubbleSpawnScheduled = false;
+      return;
     }
-    const bubbleStartX = this.otherDirection
-      ? this.x + this.offset.left + 10
-      : this.x + this.width - this.offset.right - 20;
-    const bubbleStartY = this.y + this.height / 2 + 25;
-    // spawn projectile shortly after the character animation starts
-    setTimeout(() => {
-      const bubble = new Bubble(this.IMAGES_BUBBLE, this.otherDirection ? -1 : 1, bubbleStartX, bubbleStartY);
-      this.world.bubbles.push(bubble);
-      if (!this.isBubbleAttacking) this.bubbleSpawnScheduled = false;
-    }, 300);
-  }
+    this.playAnimation(this.IMAGES_BUBBLE_PROJECTILE);
+  }, 40);
+}
+
+/**
+ * Calculates spawn data and creates the bubble projectile after a short delay.
+ * @returns {void}
+ */
+spawnBubbleProjectile() {
+  let startX = this.getBubbleStartX();
+  let startY = this.y + this.height / 2 + 25;
+  let poisoned = this.world?.poisonbar?.isFull?.() ?? false;
+  let images = poisoned ? this.IMAGES_BUBBLE_POISONED : this.IMAGES_BUBBLE;
+  let damage = poisoned ? 15 : 5;
+
+  setTimeout(() => {
+    let bubble = new Bubble(images, this.otherDirection ? -1 : 1, startX, startY, damage);
+    this.world.bubbles.push(bubble);
+    if (!this.isBubbleAttacking) this.bubbleSpawnScheduled = false;
+  }, 300);
+}
+
+/**
+ * Returns the horizontal spawn point for the bubble based on facing direction.
+ * @returns {number}
+ */
+getBubbleStartX() {
+  return this.otherDirection
+    ? this.x + this.offset.left + 10
+    : this.x + this.width - this.offset.right - 20;
+}
 
   // prüft ob Cooldown (z.B. 500ms) noch aktiv ist
   /**

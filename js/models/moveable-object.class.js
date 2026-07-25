@@ -48,8 +48,8 @@ class moveableObject extends drawableObject {
    * Reduces the object's energy, updates the last hit timestamp, and plays the hurt sound.
    * @returns {void}
    */
-  hit() {
-    this.energy -= 5;
+  hit(damage = 5) {
+    this.energy -= damage;
     if (this.energy < 0) {
       this.energy = 0;
     } else {

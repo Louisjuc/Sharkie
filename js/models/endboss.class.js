@@ -10,6 +10,9 @@ class Endboss extends moveableObject {
   acceleration = 1;
   energy = 80;
   isAttacking = false;
+  speed = 10;
+  statusbar = new EndbossStatusbar();
+  bossVisible = false;
   attackSound = new Audio("./audio/orca_attack.mp3");
 
   offset = {
@@ -72,6 +75,24 @@ class Endboss extends moveableObject {
     "./img/2.Enemy/3 Final Enemy/Attack/6.png",
   ];
 
+/**
+ * Overrides hit to also update the boss health bar.
+ * @param {number} [damage=5]
+ * @returns {void}
+ */
+hit(damage) { // NEU
+  super.hit(damage);
+  this.updateStatusbar();
+}
+
+/**
+ * Updates the boss health bar based on current energy.
+ * @returns {void}
+ */
+updateStatusbar() {
+  this.statusbar.setPercentage((this.energy / 80) * 100);
+}
+
   /**
    * Create an Endboss and preload images/sounds.
    */
@@ -88,10 +109,6 @@ class Endboss extends moveableObject {
     registerSound(this.attackSound);
   }
 
-  /**
-   * Polls until the character approaches the boss, then runs `introduce()`.
-   * @returns {void}
-   */
   checkProximity() {
     let interval = setStoppableInterval(() => {
       if (this.world && this.world.character.x > this.x - 900) {
@@ -101,15 +118,12 @@ class Endboss extends moveableObject {
     }, 200);
   }
 
-  /**
-   * Plays the introduce/walking animation once then enters the main loop.
-   * @returns {void}
-   */
   introduce() {
     this.currentImage = 0;
     let interval = setStoppableInterval(() => {
       if (this.currentImage >= this.IMAGES_WALKING.length) {
         clearInterval(interval);
+        this.bossVisible = true;
         this.animate();
         return;
       }
@@ -117,17 +131,12 @@ class Endboss extends moveableObject {
     }, 100);
   }
 
-  /**
-   * Start the boss animation/behavior loop.
-   * @returns {void}
-   */
   animate() {
     this.currentImage = 0;
     setStoppableInterval(() => {
       this.handleBossState();
     }, 100);
   }
-
 
   /**
    * Selects the appropriate action based on boss state (dead/hurt/attacking/idle).
@@ -138,14 +147,25 @@ class Endboss extends moveableObject {
       this.handleDead(1, 0, 0.05);
       return;
     }
+    this.moveToCharacter(); // NEU: Boss folgt dem Character
     this.playCurrentAction();
   }
 
-  
   /**
-   * Plays the animation corresponding to the current action.
+   * Bewegt den Boss langsam zum Character und dreht die Blickrichtung. // NEU
    * @returns {void}
    */
+  moveToCharacter() { 
+    if (!this.world || this.isAttacking || this.isHurt() || this.isDead()) return;
+    let charX = this.world.character.x;
+    let distance = Math.abs(this.x - charX);
+    this.otherDirection = charX > this.x;
+
+    if (distance > 400) {
+      this.x += this.otherDirection ? this.speed : -this.speed;
+    }
+  }
+
   playCurrentAction() {
     if (this.isAttacking) {
       this.playAnimation(this.IMAGES_ATTACK);
@@ -156,10 +176,6 @@ class Endboss extends moveableObject {
     }
   }
 
-  /**
-   * Periodically checks distance to character and triggers `attack()` when close.
-   * @returns {void}
-   */
   checkAttack() {
     setStoppableInterval(() => {
       if (!this.world) return;
@@ -175,10 +191,6 @@ class Endboss extends moveableObject {
     }, 3000);
   }
 
-  /**
-   * Execute attack animation and move boss forward slightly during attack.
-   * @returns {void}
-   */
   attack() {
     this.isAttacking = true;
     this.currentImage = 0;
@@ -191,27 +203,21 @@ class Endboss extends moveableObject {
       }
       this.playAnimation(this.IMAGES_ATTACK);
       this.x -= 60 + Math.random() * 0.25;
-
     }, 100);
   }
 
-  /**
-   * Checks whether the boss attack area overlaps with the character.
-   * @param {DrawableObject} character - The character to test collision against.
-   * @returns {boolean} True if colliding with attack area.
-   */
-  isBossAttackColliding(character) {
-    let attackRange = 100;
+isBossAttackColliding(character) {
+  let attackRange = 100;
 
-    return (
-      this.x + this.offset.left - attackRange <
-        character.x + character.width - character.offset.right &&
-      this.x + this.width - this.offset.right + attackRange >
-        character.x + character.offset.left &&
-      this.y + this.height - this.offset.bottom >
-        character.y + character.offset.top &&
-      this.y + this.offset.top <
-        character.y + character.height - character.offset.bottom
-    );
-  }
+  return (
+    this.x + this.offset.left - attackRange < 
+      character.x + character.width - character.offset.right &&
+    this.x + this.width - this.offset.right + attackRange >
+      character.x + character.offset.left &&
+    this.y + this.height - this.offset.bottom >
+      character.y + character.offset.top &&
+    this.y + this.offset.top < 
+      character.y + character.height - character.offset.bottom
+  );
+}
 }

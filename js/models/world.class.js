@@ -1,11 +1,7 @@
-/**
- * The main game world. Holds references to the character, level, camera and manages
- * periodic collision checks and rendering.
- */
 class World {
   character = new Character();
   level = level1;
- keyboard = new Keyboard();
+  keyboard = new Keyboard();
 
   canvas;
   ctx;
@@ -18,7 +14,6 @@ class World {
   poisonbar = new Poisonbar();
   endboss = this.level.enemies.find((e) => e instanceof Endboss);
   collectedCoins = 0;
-  
 
   /**
    * Creates a new game world, initializes the canvas context, and starts all game checks and the render loop.
@@ -45,9 +40,9 @@ class World {
     this.checkLose();
   }
 
-/**
- * Displays the win screen after the end boss is defeated.
- */
+  /**
+   * Displays the win screen after the end boss is defeated.
+   */
   /**
    * Show the win screen when endboss dies (with a small delay).
    * @returns {void}
@@ -66,9 +61,9 @@ class World {
     }, 500);
   }
 
-/**
- * Shows the lose screen when the character dies and mutes audio if needed.
- */
+  /**
+   * Shows the lose screen when the character dies and mutes audio if needed.
+   */
   /**
    * Show the lose screen when the character dies.
    * @returns {void}
@@ -83,9 +78,9 @@ class World {
     }, 200);
   }
 
-/**
- * Checks for collisions between the character and poison items and applies damage/updates bars.
- */
+  /**
+   * Checks for collisions between the character and poison items and applies damage/updates bars.
+   */
   /**
    * Periodically checks for collisions with poison items and applies damage.
    * @returns {void}
@@ -96,17 +91,15 @@ class World {
         let poison = this.level.poison[i];
         if (this.character.isColliding(poison)) {
           this.level.poison.splice(i, 1);
-          this.character.hit();
-          this.statusbar.setPercentage(this.character.energy);
           this.poisonbar.addPoison();
         }
       }
     }, 200);
   }
 
-/**
- * Runs periodic collision checks for enemies and boss attacks.
- */
+  /**
+   * Runs periodic collision checks for enemies and boss attacks.
+   */
   /**
    * Run periodic collision checks for enemies and boss attacks.
    * @returns {void}
@@ -119,43 +112,82 @@ class World {
   }
 
   /**
-   * Moves active bubble projectiles and applies damage when they hit enemies or the boss.
-   */
-  /**
    * Moves bubbles and checks collisions with enemies and the endboss.
    * @returns {void}
    */
   checkBubbleCollisions() {
     setStoppableInterval(() => {
-      const maxBubbleX = this.level.level_end_x + 100;
-
+      let maxBubbleX = this.level.level_end_x + 100;
       for (let i = this.bubbles.length - 1; i >= 0; i--) {
-        const bubble = this.bubbles[i];
-        bubble.move();
-
-        if (bubble.x < -100 || bubble.x > maxBubbleX) {
-          this.bubbles.splice(i, 1);
-          continue;
-        }
-
-        for (let j = this.level.enemies.length - 1; j >= 0; j--) {
-          const enemy = this.level.enemies[j];
-          if (enemy.isDead()) continue;
-          if (bubble.isColliding(enemy)) {
-            enemy.hit();
-            this.bubbles.splice(i, 1);
-            break;
-          }
-        }
-
-        if (this.bubbles[i] && this.endboss && !this.endboss.isDead() && bubble.isColliding(this.endboss)) {
-          this.endboss.hit();
-          this.bubbles.splice(i, 1);
-        }
+        this.updateBubble(i, maxBubbleX);
       }
     }, 1000 / 60);
   }
 
+  /**
+   * Moves a single bubble and checks its bounds/collisions.
+   * @param {number} i - Index of the bubble in this.bubbles.
+   * @param {number} maxBubbleX
+   * @returns {void}
+   */
+  updateBubble(i, maxBubbleX) {
+    let bubble = this.bubbles[i];
+    bubble.move();
+    if (this.isBubbleOutOfBounds(bubble, maxBubbleX)) {
+      this.bubbles.splice(i, 1);
+      return;
+    }
+    this.checkBubbleEnemyHit(i, bubble);
+    this.checkBubbleBossHit(i, bubble);
+  }
+
+  /**
+   * Returns true if the bubble left the playable area.
+   * @param {Bubble} bubble
+   * @param {number} maxBubbleX
+   * @returns {boolean}
+   */
+  isBubbleOutOfBounds(bubble, maxBubbleX) {
+    // NEU
+    return bubble.x < -100 || bubble.x > maxBubbleX;
+  }
+
+  /**
+   * Checks if a bubble hits any enemy and applies damage.
+   * @param {number} i - Index of the bubble in this.bubbles.
+   * @param {Bubble} bubble
+   * @returns {void}
+   */
+  checkBubbleEnemyHit(i, bubble) {
+    for (let j = this.level.enemies.length - 1; j >= 0; j--) {
+      let enemy = this.level.enemies[j];
+      if (enemy.isDead()) continue;
+      if (bubble.isColliding(enemy)) {
+        enemy.hit(bubble.damage);
+        this.bubbles.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  /**
+   * Checks if a bubble hits the endboss and applies damage.
+   * @param {number} i - Index of the bubble in this.bubbles.
+   * @param {Bubble} bubble
+   * @returns {void}
+   */
+  checkBubbleBossHit(i, bubble) {
+    // NEU
+    if (
+      this.bubbles[i] &&
+      this.endboss &&
+      !this.endboss.isDead() &&
+      bubble.isColliding(this.endboss)
+    ) {
+      this.endboss.hit(bubble.damage);
+      this.bubbles.splice(i, 1);
+    }
+  }
   /**
    * Checks collisions between the character and non-boss enemies.
    */
@@ -201,9 +233,9 @@ class World {
     this.statusbar.setPercentage(this.character.energy);
   }
 
-/**
- * Checks for collisions with collectible coins and increments the score.
- */
+  /**
+   * Checks for collisions with collectible coins and increments the score.
+   */
   /**
    * Check collisions with collectible coins and increment score.
    * @returns {void}
@@ -221,9 +253,9 @@ class World {
     }, 200);
   }
 
-/**
- * Checks whether the character's attack collides with enemies or the boss.
- */
+  /**
+   * Checks whether the character's attack collides with enemies or the boss.
+   */
   /**
    * Checks whether character attacks hit enemies or the boss.
    * @returns {void}
@@ -231,7 +263,10 @@ class World {
   checkAttackCollisions() {
     setStoppableInterval(() => {
       this.level.enemies.forEach((enemy) => {
-        if (!this.character.isAttacking || !this.character.isAttackColliding(enemy)) {
+        if (
+          !this.character.isAttacking ||
+          !this.character.isAttackColliding(enemy)
+        ) {
           return;
         }
         if (enemy.isDead()) return;
@@ -240,15 +275,19 @@ class World {
         }
       });
 
-      if (this.character.isAttacking && this.character.isAttackColliding(this.endboss) && !this.endboss.isHurt()) {
+      if (
+        this.character.isAttacking &&
+        this.character.isAttackColliding(this.endboss) &&
+        !this.endboss.isHurt()
+      ) {
         this.endboss.hit();
       }
     }, 1000 / 60);
   }
 
-/**
- * Assigns the current world instance to the character, boss, and enemies.
- */
+  /**
+   * Assigns the current world instance to the character, boss, and enemies.
+   */
   /**
    * Assigns the current world instance to the character, boss, and enemies.
    * @returns {void}
@@ -276,12 +315,13 @@ class World {
     this.addToMap(this.character);
     this.addObjecttoMap(this.bubbles);
     this.addObjecttoMap(this.level.enemies);
-     this.addObjecttoMap(this.level.coins);
-     this.addObjecttoMap(this.level.poison);
+    this.addObjecttoMap(this.level.coins);
+    this.addObjecttoMap(this.level.poison);
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusbar);
     this.addToMap(this.coinbar);
     this.addToMap(this.poisonbar);
+    if (this.endboss.bossVisible) this.addToMap(this.endboss.statusbar);
     self = this;
     requestAnimationFrame(() => self.draw());
   }
@@ -315,7 +355,7 @@ class World {
       this.flipImageBack(mo);
     }
   }
- 
+
   /**
    * Flips the current drawing context horizontally for mirrored rendering.
    *

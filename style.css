@@ -7,8 +7,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* NEU: vertikale Zentrierung */
-  overflow: hidden; /* ÄNDERUNG */
+  justify-content: center;
+  overflow: hidden;
 }
 
 .rotate-hint {
@@ -38,16 +38,15 @@ h1 {
 
 @font-face {
   font-family: "LuckiestGuy";
-  src: url("img/5.Font/Luckiest_Guy/LuckiestGuy-Regular.ttf") format("truetype"); /* NEU */
+  src: url("img/5.Font/Luckiest_Guy/LuckiestGuy-Regular.ttf") format("truetype");
   font-display: swap;
 }
 
-/* NEU */
 .game-wrapper {
   position: relative;
-  display: flex; /* ÄNDERUNG */
-  align-items: center; /* ÄNDERUNG */
-  justify-content: center; /* ÄNDERUNG */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
 }
 
@@ -60,7 +59,6 @@ h1 {
   width: 100%;
   height: 100%;
   display: flex;
-  /* gap: 60px; */
   flex-direction: column;
   align-items: center;
   background-image: url("img/3. Background/Mesa de trabajo 1.png");
@@ -78,6 +76,12 @@ dialog {
   border: 10px solid #fff;
   border-radius: 20px;
   padding: 20px;
+}
+
+dialog p {
+  font-size: 26px;
+  padding-bottom: 10px;
+  text-align: center;
 }
 
 .controls-dialog {
@@ -152,7 +156,6 @@ dialog {
   color: #fff;
 }
 
-/* coin count below buttons: center horizontally and add spacing */
 .win-screen p.coin-center {
   display: block;
   margin: 20px auto 0;
@@ -213,17 +216,17 @@ canvas {
   aspect-ratio: 760 / 480;
   width: 100%;
   height: auto;
-  max-width: 100vw; /* ÄNDERUNG */
+  max-width: 100vw;
   max-height: 100dvh;
   border-radius: 0;
   border: none;
 }
 
-@media only screen and (max-width: 1194px) {
+@media only screen and (max-width: 1194px), (pointer: coarse) {
   canvas,
   .game-wrapper {
-    height: 100dvh; /* ÄNDERUNG */
-    max-width: 100vw; /* ÄNDERUNG */
+    height: 100dvh;
+    max-width: 100vw;
   }
 
   .btn-fullscreen {
@@ -231,6 +234,7 @@ canvas {
   }
 
   .HUD {
+    touch-action: none;
     bottom: 28px;
     display: flex;
     padding-left: calc(12px + env(safe-area-inset-left));
@@ -276,27 +280,28 @@ canvas {
   }
 
   .d-pad {
+    touch-action: none;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* geändert */
-    grid-template-rows: repeat(3, 1fr); /* NEU */
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
   }
 
   #btnUp {
     grid-column: 2;
     grid-row: 1;
-  } /* NEU */
+  }
   #btnLeft {
     grid-column: 1;
     grid-row: 2;
-  } /* NEU */
+  }
   #btnRight {
     grid-column: 3;
     grid-row: 2;
-  } /* NEU */
+  }
   #btnDown {
     grid-column: 2;
     grid-row: 3;
-  } /* NEU */
+  }
 
   body {
     display: inherit;
@@ -320,7 +325,6 @@ canvas {
   }
 }
 
-/* ÄNDERUNG */
 .rotate-hint {
   display: none;
 }

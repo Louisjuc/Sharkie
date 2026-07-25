@@ -34,9 +34,13 @@ function init() {
  * Hides the start and win screens and begins the game.
  */
 function startGame() {
+  stopGame();
+  intervalIDs = [];
+  level1 = createLevel1();
+  init();
   document.getElementById("winScreen").style.display = "none";
   document.getElementById("startScreen").style.display = "none";
-  init();
+  document.getElementById("loseScreen").style.display = "none";
 }
 
 /**

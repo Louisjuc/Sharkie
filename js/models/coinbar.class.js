@@ -21,9 +21,9 @@ class Coinbar extends drawableObject {
   constructor(total = 5) {
     super();
     this.loadImages(this.IMAGES_COIN);
-      this.x = 20;
+    this.x = 20;
     this.y = 40;
-    this.width = 180;
+    this.width = 200;
     this.height = 55;
     this.total = total;
     this.setPercentage(0);
@@ -45,6 +45,7 @@ class Coinbar extends drawableObject {
    * Increases the collected coin count and updates the bar display.
    */
   addCoin() {
+    if (this.collected >= this.total) return;
     this.collected++;
     this.setPercentage((this.collected / this.total) * 100);
     this.coinSound.currentTime = 0;

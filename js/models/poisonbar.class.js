@@ -17,8 +17,8 @@ class Poisonbar extends drawableObject {
     this.loadImages(this.IMAGES_POISON);
     this.x = 20;
     this.y = 85;
-    this.width = 180;
-    this.height = 55;
+    this.width = 200;
+    this.height = 60;
     this.total = total;
     this.setPercentage(0);
   }
@@ -46,8 +46,12 @@ class Poisonbar extends drawableObject {
   }
 
 addPoison() {
-  this.collected++;                                    
-  let percentage = (this.collected / this.total) * 100;
-  this.setPercentage(Math.min(percentage, 100));         
-}
+    this.collected = Math.min(this.collected + 1, this.total);
+    let percentage = (this.collected / this.total) * 100;
+    this.setPercentage(Math.min(percentage, 100));
+  }
+
+  isFull() {
+    return this.collected >= this.total;
+  }
 }
