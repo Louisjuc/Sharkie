@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Sharkie</title>
     <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" href="./img/1.Sharkie/1.IDLE/1.png" type="image/png" />
   </head>
 <body>
 <div class="rotate-hint">
@@ -14,13 +15,16 @@
     <div class="game-wrapper" id="fullscreen">
 <button id="muteBtn" class="btn" onclick="handleMuteClick()">Mute</button>
             <div class="HUD">
-        <div class="d-pad">
+          <div class="d-pad">
         <button id="btnLeft">&#8592;</button>  
 <button id="btnRight">&#8594;</button> 
 <button id="btnUp">&#8593;</button>    
 <button id="btnDown">&#8595;</button>
           </div>
-          <button id="btnAtk">Attack</button>
+          <div class="action-buttons">
+            <button id="btnAtk">Attack</button>
+            <button id="btnBubble">Bubble</button>
+          </div>
       </div>
       
       <div id="startScreen" class="start-screen">
@@ -28,10 +32,23 @@
         <div class="start-inner">
         <button onclick="startGame()" class="btn">Start Game</button>
         <button class="btn" commandFor="example-dialog" command="show-modal" type="button" id="open-dialog">Controls</button>
-          <dialog id="example-dialog">
-        <img src="./img/6.Botones/Instructions 2.png" alt="Control Instructions" class="instructions-img">
-        <button commandfor="example-dialog" command="close" type="button" class="btn">Close Controls</button>
-    </dialog>
+          <dialog id="example-dialog" class="controls-dialog">
+            <div class="controls-content">
+              <div class="controls-row">
+                <img src="./img/6.Botones/Key/Arrow keys.png" alt="Arrow keys" class="key-icon">
+                <span>Move</span>
+              </div>
+              <div class="controls-row">
+                <img src="./img/6.Botones/Key/Space Bar key.png" alt="Space key" class="key-icon">
+                <span>Attack</span>
+              </div>
+              <div class="controls-row">
+                <img src="./img/6.Botones/Key/D key.png" alt="D key" class="key-icon key-icon-d">
+                <span>Bubble Attack</span>
+              </div>
+            </div>
+            <button commandfor="example-dialog" command="close" type="button" class="btn">Close Controls</button>
+          </dialog>
 
        <button class="btn" commandFor="imprint-dialog" command="show-modal" type="button" id="open-dialog">Imprint</button>
           <dialog id="imprint-dialog">
@@ -43,12 +60,18 @@
 </div>
       </div>
       <div id="winScreen" class="win-screen" style="display: none">
-        <p>Coins eingesammelt: <span id="coinCount">0</span></p>
-        <button onclick="restartGame()" class="btn">Play Again</button>
+        <div class="btn-group">
+          <button onclick="restartGame()" class="btn">Play Again</button>
+          <button onclick="goHome()" class="btn">Back to Menu</button>
+        </div>
+        <p class="coin-center">Coins eingesammelt: <span id="coinCount">0</span></p>
       </div>
       <div id="loseScreen" class="lose-screen" style="display: none">
         <p>Game Over!</p>
-        <button onclick="restartGame()" class="btn">Try Again</button>
+        <div class="btn-group">
+          <button onclick="restartGame()" class="btn">Try Again</button>
+          <button onclick="goHome()" class="btn">Back to Menu</button>
+        </div>
       </div>
       <canvas id="canvas" width="760" height="480"></canvas>
     </div>
@@ -56,6 +79,7 @@
     <script src="./js/models/drawable-object.class.js"></script>
     <script src="./js/models/moveable-object.class.js"></script>
     <script src="./js/models/coin.class.js"></script>
+    <script src="./js/models/bubble.class.js"></script>
     <script src="./js/models/character.class.js"></script>
     <script src="./js/models/fish.class.js"></script>
      <script src="./js/models/jellyfish.class.js"></script>

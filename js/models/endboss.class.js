@@ -1,3 +1,7 @@
+/**
+ * Endboss (final enemy) behaviour and animations.
+ * Extends `moveableObject` and manages idle/introduce/attack states.
+ */
 class Endboss extends moveableObject {
   height = 350;
   width = 350;
@@ -68,6 +72,9 @@ class Endboss extends moveableObject {
     "./img/2.Enemy/3 Final Enemy/Attack/6.png",
   ];
 
+  /**
+   * Create an Endboss and preload images/sounds.
+   */
   constructor() {
     super().loadImage(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
@@ -81,6 +88,10 @@ class Endboss extends moveableObject {
     registerSound(this.attackSound);
   }
 
+  /**
+   * Polls until the character approaches the boss, then runs `introduce()`.
+   * @returns {void}
+   */
   checkProximity() {
     let interval = setStoppableInterval(() => {
       if (this.world && this.world.character.x > this.x - 900) {
@@ -90,6 +101,10 @@ class Endboss extends moveableObject {
     }, 200);
   }
 
+  /**
+   * Plays the introduce/walking animation once then enters the main loop.
+   * @returns {void}
+   */
   introduce() {
     this.currentImage = 0;
     let interval = setStoppableInterval(() => {
@@ -102,7 +117,11 @@ class Endboss extends moveableObject {
     }, 100);
   }
 
-animate() {
+  /**
+   * Start the boss animation/behavior loop.
+   * @returns {void}
+   */
+  animate() {
     this.currentImage = 0;
     setStoppableInterval(() => {
       this.handleBossState();
@@ -110,15 +129,23 @@ animate() {
   }
 
 
+  /**
+   * Selects the appropriate action based on boss state (dead/hurt/attacking/idle).
+   * @returns {void}
+   */
   handleBossState() {
     if (this.isDead()) {
-      this.handleDead(1, 0, 0.05); 
+      this.handleDead(1, 0, 0.05);
       return;
     }
     this.playCurrentAction();
   }
 
   
+  /**
+   * Plays the animation corresponding to the current action.
+   * @returns {void}
+   */
   playCurrentAction() {
     if (this.isAttacking) {
       this.playAnimation(this.IMAGES_ATTACK);
@@ -129,9 +156,13 @@ animate() {
     }
   }
 
+  /**
+   * Periodically checks distance to character and triggers `attack()` when close.
+   * @returns {void}
+   */
   checkAttack() {
     setStoppableInterval(() => {
-      if (!this.world) return; 
+      if (!this.world) return;
 
       let distance = Math.abs(this.x - this.world.character.x);
       let notBusy = !this.isAttacking && !this.isHurt() && !this.isDead();
@@ -144,6 +175,10 @@ animate() {
     }, 3000);
   }
 
+  /**
+   * Execute attack animation and move boss forward slightly during attack.
+   * @returns {void}
+   */
   attack() {
     this.isAttacking = true;
     this.currentImage = 0;
@@ -156,10 +191,15 @@ animate() {
       }
       this.playAnimation(this.IMAGES_ATTACK);
       this.x -= 60 + Math.random() * 0.25;
-    
+
     }, 100);
   }
 
+  /**
+   * Checks whether the boss attack area overlaps with the character.
+   * @param {DrawableObject} character - The character to test collision against.
+   * @returns {boolean} True if colliding with attack area.
+   */
   isBossAttackColliding(character) {
     let attackRange = 100;
 

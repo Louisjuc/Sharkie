@@ -6,28 +6,42 @@ backgroundMusic.loop = true;
 backgroundMusic.volume = 0.5;
 
 let clickSound = new Audio("./audio/click.mp3");
+clickSound.muted = false;
 registerSound(backgroundMusic);
-registerSound(clickSound); 
 
+/**
+ * Plays the click sound when a button is activated.
+ *
+ * @param {MouseEvent} event - The click event emitted by the browser.
+ */
 document.addEventListener("click", (event) => {
-  if (!event.target.closest("button")) return; 
+  if (!event.target.closest("button")) return;
+  clickSound.muted = false;
   clickSound.currentTime = 0;
-  clickSound.play();
+  clickSound.play().catch(() => {});
 });
 
-// initialize the game world and start the game loop
+/**
+ * Initializes the game world and starts the background music.
+ */
 function init() {
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
   backgroundMusic.play();
 }
 
+/**
+ * Hides the start and win screens and begins the game.
+ */
 function startGame() {
   document.getElementById("winScreen").style.display = "none";
   document.getElementById("startScreen").style.display = "none";
   init();
 }
-// restart the game by stopping the current game, resetting the level, and initializing a new game world
+
+/**
+ * Restarts the game by stopping the current loop, resetting the level, and initializing a new world.
+ */
 function restartGame() {
   stopGame();
   intervalIDs = [];
@@ -36,7 +50,21 @@ function restartGame() {
   document.getElementById("winScreen").style.display = "none";
   document.getElementById("loseScreen").style.display = "none"; 
 }
-// checks the orientation of the device and pauses the game if it is in portrait mode
+
+/**
+ * Stops the current game and returns to the start menu.
+ */
+function goHome() {
+  stopGame();
+  intervalIDs = [];
+  document.getElementById("loseScreen").style.display = "none";
+  document.getElementById("winScreen").style.display = "none";
+  document.getElementById("startScreen").style.display = "flex";
+}
+
+/**
+ * Checks whether the device is in portrait mode and pauses the game in narrow layouts.
+ */
 function checkOrientation() {
   const isPortrait = window.innerHeight > window.innerWidth;
   gamePaused = isPortrait && window.innerWidth <= 760;
@@ -44,6 +72,11 @@ function checkOrientation() {
 window.addEventListener("resize", checkOrientation);
 checkOrientation();
 
+/**
+ * Updates the keyboard state for pressed movement keys.
+ *
+ * @param {KeyboardEvent} event - The keydown event.
+ */
 window.addEventListener("keydown", (event) => {
   if (event.keyCode == 39) {
     keyboard.RIGHT = true;
@@ -60,10 +93,18 @@ window.addEventListener("keydown", (event) => {
   if (event.keyCode == 32) {
     event.preventDefault();
     keyboard.SPACE = true;
-    
+  }
+  if (event.keyCode == 68 || event.key.toLowerCase() === "d") {
+    event.preventDefault();
+    keyboard.D = true;
   }
 });
 
+/**
+ * Resets the keyboard state when movement keys are released.
+ *
+ * @param {KeyboardEvent} event - The keyup event.
+ */
 window.addEventListener("keyup", (event) => {
   if (event.keyCode == 39) {
     keyboard.RIGHT = false;
@@ -79,6 +120,9 @@ window.addEventListener("keyup", (event) => {
   }
   if (event.keyCode == 32) {
     keyboard.SPACE = false;
+  }
+  if (event.keyCode == 68 || event.key.toLowerCase() === "d") {
+    keyboard.D = false;
   }
 });
 
