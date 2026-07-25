@@ -347,9 +347,9 @@ class Character extends moveableObject {
       }, 40);
     }
     const bubbleStartX = this.otherDirection
-      ? this.x + this.offset.left + 25
-      : this.x + this.width - this.offset.right - 55;
-    const bubbleStartY = this.y + this.height / 2 + 10;
+      ? this.x + this.offset.left + 10
+      : this.x + this.width - this.offset.right - 20;
+    const bubbleStartY = this.y + this.height / 2 + 25;
     // spawn projectile shortly after the character animation starts
     setTimeout(() => {
       const bubble = new Bubble(this.IMAGES_BUBBLE, this.otherDirection ? -1 : 1, bubbleStartX, bubbleStartY);
