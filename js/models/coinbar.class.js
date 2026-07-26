@@ -1,4 +1,9 @@
 class Coinbar extends drawableObject {
+  coinSound = new Audio("./audio/coin.mp3");
+
+  collected = 0;
+  total = 5;
+
   IMAGES_COIN = [
     "./img/4. Marcadores/Purple/coin/100__1.png",
     "./img/4. Marcadores/Purple/coin/80_ _1.png",
@@ -7,11 +12,6 @@ class Coinbar extends drawableObject {
     "./img/4. Marcadores/Purple/coin/20_ .png",
     "./img/4. Marcadores/Purple/coin/0_ _1.png",
   ];
-
-  coinSound = new Audio("./audio/coin.mp3");
-
-  collected = 0; 
-  total = 5; 
 
   /**
    * Initializes the coin bar, loads its images, and registers its sound.
@@ -44,13 +44,13 @@ class Coinbar extends drawableObject {
   /**
    * Increases the collected coin count and updates the bar display.
    */
-  addCoin() {
-    if (this.collected >= this.total) return;
-    this.collected++;
-    this.setPercentage((this.collected / this.total) * 100);
-    this.coinSound.currentTime = 0;
-    this.coinSound.play();
-  }
+addCoin() {
+  this.coinSound.currentTime = 0; 
+  this.coinSound.play(); 
+  if (this.collected >= this.total) return; 
+  this.collected++;
+  this.setPercentage((this.collected / this.total) * 100);
+}
 
   /**
    * Resolves the image index that matches the current percentage value.

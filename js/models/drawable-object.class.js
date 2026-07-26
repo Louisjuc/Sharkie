@@ -59,7 +59,7 @@ drawCTX(ctx) {
  * @param {CanvasRenderingContext2D} ctx
  * @returns {void}
  */
-drawSprite(ctx) { // NEU
+drawSprite(ctx) {
   try {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   } catch (e) {
@@ -73,7 +73,7 @@ drawSprite(ctx) { // NEU
  * @param {CanvasRenderingContext2D} ctx
  * @returns {void}
  */
-drawHurtFlash(ctx) { // NEU
+drawHurtFlash(ctx) { 
   try {
     if (!(typeof this.isHurt === 'function' && this.isHurt())) return;
     if (this instanceof Endboss || this instanceof Character) return;
@@ -88,14 +88,14 @@ drawHurtFlash(ctx) { // NEU
  * @param {CanvasRenderingContext2D} ctx
  * @returns {void}
  */
-drawTintedSprite(ctx) { // NEU
+drawTintedSprite(ctx) { 
   try {
     const w = Math.max(1, Math.round(this.width));
     const h = Math.max(1, Math.round(this.height));
-    const oc = this.createTintCanvas(w, h); // NEU
+    const oc = this.createTintCanvas(w, h); 
     ctx.drawImage(oc, this.x, this.y, w, h);
   } catch (inner) {
-    this.drawFallbackFlash(ctx); // NEU
+    this.drawFallbackFlash(ctx);
   }
 }
 
@@ -105,7 +105,7 @@ drawTintedSprite(ctx) { // NEU
  * @param {number} h
  * @returns {HTMLCanvasElement}
  */
-createTintCanvas(w, h) { // NEU
+createTintCanvas(w, h) { 
   const off = document.createElement('canvas');
   off.width = w;
   off.height = h;
@@ -122,7 +122,7 @@ createTintCanvas(w, h) { // NEU
  * @param {CanvasRenderingContext2D} ctx
  * @returns {void}
  */
-drawFallbackFlash(ctx) { // NEU
+drawFallbackFlash(ctx) {
   ctx.save();
   ctx.globalCompositeOperation = 'source-atop';
   ctx.fillStyle = 'rgba(255,0,0,0.35)';

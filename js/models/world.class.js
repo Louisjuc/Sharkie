@@ -68,15 +68,14 @@ class World {
    * Show the lose screen when the character dies.
    * @returns {void}
    */
-  checkLose() {
-    let interval = setStoppableInterval(() => {
-      if (this.character.isDead()) {
-        document.getElementById("loseScreen").style.display = "flex";
-        if (!isMuted) handleMuteClick();
-        clearInterval(interval);
-      }
-    }, 200);
-  }
+checkLose() {
+  let interval = setStoppableInterval(() => {
+    if (this.character.isDead()) {
+      showLoseScreen(); 
+      clearInterval(interval);
+    }
+  }, 200);
+}
 
   /**
    * Checks for collisions between the character and poison items and applies damage/updates bars.
@@ -148,7 +147,6 @@ class World {
    * @returns {boolean}
    */
   isBubbleOutOfBounds(bubble, maxBubbleX) {
-    // NEU
     return bubble.x < -100 || bubble.x > maxBubbleX;
   }
 
@@ -177,7 +175,6 @@ class World {
    * @returns {void}
    */
   checkBubbleBossHit(i, bubble) {
-    // NEU
     if (
       this.bubbles[i] &&
       this.endboss &&

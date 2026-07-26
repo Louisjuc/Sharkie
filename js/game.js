@@ -67,6 +67,14 @@ function goHome() {
 }
 
 /**
+ * Displays the lose screen overlay.
+ * @returns {void}
+ */
+function showLoseScreen() { // NEU
+  document.getElementById("loseScreen").style.display = "flex";
+}
+
+/**
  * Checks whether the device is in portrait mode and pauses the game in narrow layouts.
  */
 function checkOrientation() {

@@ -80,7 +80,7 @@ class Endboss extends moveableObject {
  * @param {number} [damage=5]
  * @returns {void}
  */
-hit(damage) { // NEU
+hit(damage) { 
   super.hit(damage);
   this.updateStatusbar();
 }
@@ -111,7 +111,7 @@ updateStatusbar() {
 
   checkProximity() {
     let interval = setStoppableInterval(() => {
-      if (this.world && this.world.character.x > this.x - 900) {
+      if (this.world && this.world.character.x > this.x - 300) {
         clearInterval(interval);
         this.introduce();
       }
@@ -147,22 +147,25 @@ updateStatusbar() {
       this.handleDead(1, 0, 0.05);
       return;
     }
-    this.moveToCharacter(); // NEU: Boss folgt dem Character
+    this.moveToCharacter();
     this.playCurrentAction();
   }
 
   /**
-   * Bewegt den Boss langsam zum Character und dreht die Blickrichtung. // NEU
+   * Bewegt den Boss langsam zum Character und dreht die Blickrichtung. 
    * @returns {void}
    */
   moveToCharacter() { 
     if (!this.world || this.isAttacking || this.isHurt() || this.isDead()) return;
     let charX = this.world.character.x;
+    let charY = this.world.character.y;
     let distance = Math.abs(this.x - charX);
     this.otherDirection = charX > this.x;
+    let movesDown = charY > this.y;
 
-    if (distance > 400) {
+    if (distance > 200) {
       this.x += this.otherDirection ? this.speed : -this.speed;
+      this.y += movesDown ? this.speed : -this.speed;
     }
   }
 
