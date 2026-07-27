@@ -75,23 +75,23 @@ class Endboss extends moveableObject {
     "./img/2.Enemy/3 Final Enemy/Attack/6.png",
   ];
 
-/**
- * Overrides hit to also update the boss health bar.
- * @param {number} [damage=5]
- * @returns {void}
- */
-hit(damage) { 
-  super.hit(damage);
-  this.updateStatusbar();
-}
+  /**
+   * Overrides hit to also update the boss health bar.
+   * @param {number} [damage=5]
+   * @returns {void}
+   */
+  hit(damage) {
+    super.hit(damage);
+    this.updateStatusbar();
+  }
 
-/**
- * Updates the boss health bar based on current energy.
- * @returns {void}
- */
-updateStatusbar() {
-  this.statusbar.setPercentage((this.energy / 80) * 100);
-}
+  /**
+   * Updates the boss health bar based on current energy.
+   * @returns {void}
+   */
+  updateStatusbar() {
+    this.statusbar.setPercentage((this.energy / 80) * 100);
+  }
 
   /**
    * Create an Endboss and preload images/sounds.
@@ -152,11 +152,12 @@ updateStatusbar() {
   }
 
   /**
-   * Bewegt den Boss langsam zum Character und dreht die Blickrichtung. 
+   * Bewegt den Boss langsam zum Character und dreht die Blickrichtung.
    * @returns {void}
    */
-  moveToCharacter() { 
-    if (!this.world || this.isAttacking || this.isHurt() || this.isDead()) return;
+  moveToCharacter() {
+    if (!this.world || this.isAttacking || this.isHurt() || this.isDead())
+      return;
     let charX = this.world.character.x;
     let charY = this.world.character.y;
     let distance = Math.abs(this.x - charX);
@@ -182,6 +183,8 @@ updateStatusbar() {
   checkAttack() {
     setStoppableInterval(() => {
       if (!this.world) return;
+      if (this.isDead()) return;
+      if (this.world.character?.isDead()) return; 
 
       let distance = Math.abs(this.x - this.world.character.x);
       let notBusy = !this.isAttacking && !this.isHurt() && !this.isDead();
@@ -209,18 +212,18 @@ updateStatusbar() {
     }, 100);
   }
 
-isBossAttackColliding(character) {
-  let attackRange = 100;
+  isBossAttackColliding(character) {
+    let attackRange = 100;
 
-  return (
-    this.x + this.offset.left - attackRange < 
-      character.x + character.width - character.offset.right &&
-    this.x + this.width - this.offset.right + attackRange >
-      character.x + character.offset.left &&
-    this.y + this.height - this.offset.bottom >
-      character.y + character.offset.top &&
-    this.y + this.offset.top < 
-      character.y + character.height - character.offset.bottom
-  );
-}
+    return (
+      this.x + this.offset.left - attackRange <
+        character.x + character.width - character.offset.right &&
+      this.x + this.width - this.offset.right + attackRange >
+        character.x + character.offset.left &&
+      this.y + this.height - this.offset.bottom >
+        character.y + character.offset.top &&
+      this.y + this.offset.top <
+        character.y + character.height - character.offset.bottom
+    );
+  }
 }

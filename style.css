@@ -80,7 +80,7 @@ dialog {
 
 dialog p {
   font-size: 26px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
   text-align: center;
 }
 
@@ -91,28 +91,35 @@ dialog p {
 .controls-content {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 32px;
   margin-bottom: 30px;
 }
 
 .controls-row {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   gap: 16px;
   font-size: 24px;
+  align-items: center;
 }
 
 .key-icon {
-  width: 90px;
-  height: 90px;
+  width: clamp(80px, 12vw, 140px);
+  height: clamp(80px, 12vw, 140px);
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.space-icon {
+  width: 150px;
+  height: auto;
   object-fit: contain;
   flex-shrink: 0;
 }
 
 .key-icon-d {
-  width: 40px;
-  height: 40px;
+  width: clamp(24px, 4vw, 45px);
+  height: clamp(24px, 4vw, 45px);
 }
 
 .instructions-img {

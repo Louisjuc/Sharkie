@@ -1,5 +1,4 @@
 class Poisonbar extends drawableObject {
-
   IMAGES_POISON = [
     "./img/4. Marcadores/Purple/poison/100_.png",
     "./img/4. Marcadores/Purple/poison/80_.png",
@@ -10,22 +9,32 @@ class Poisonbar extends drawableObject {
   ];
 
   collected = 0;
-  total = 5; 
+  total = 5;
 
   constructor(total = 5) {
     super();
     this.loadImages(this.IMAGES_POISON);
     this.x = 20;
     this.y = 85;
-    this.width = 200;
+    this.width = 220;
     this.height = 60;
     this.total = total;
     this.setPercentage(0);
   }
 
+  hasPoison() {
+    return this.collected > 0;
+  }
+
+  usePoison() {
+    if (this.collected <= 0) return;
+    this.collected--;
+    this.setPercentage((this.collected / this.total) * 100);
+  }
+
   setPercentage(percentage) {
     this.percentage = percentage;
-    let path = this.IMAGES_POISON [this.resolveImageIndex()];
+    let path = this.IMAGES_POISON[this.resolveImageIndex()];
     this.img = this.imageCache[path];
   }
 
@@ -38,14 +47,14 @@ class Poisonbar extends drawableObject {
       return 2;
     } else if (this.percentage > 40) {
       return 3;
-    } else if (this.percentage > 20) {
+    } else if (this.percentage > 5) {
       return 4;
     } else {
       return 5;
     }
   }
 
-addPoison() {
+  addPoison() {
     this.collected = Math.min(this.collected + 1, this.total);
     let percentage = (this.collected / this.total) * 100;
     this.setPercentage(Math.min(percentage, 100));

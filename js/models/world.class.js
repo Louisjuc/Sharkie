@@ -239,6 +239,7 @@ checkLose() {
    */
   checkCoinCollisions() {
     setStoppableInterval(() => {
+      if (this.coinbar.isFull()) return; 
       for (let i = this.level.coins.length - 1; i >= 0; i--) {
         let coin = this.level.coins[i];
         if (this.character.isColliding(coin)) {

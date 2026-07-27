@@ -141,15 +141,15 @@ class Character extends moveableObject {
   spawnBubbleProjectile() {
     let startX = this.getBubbleStartX();
     let startY = this.y + this.height / 2 + 25;
-    let poisoned = this.world?.poisonbar?.isFull?.() ?? false;
-
+    let poisoned = this.world?.poisonbar?.hasPoison?.() ?? false;
+    if (poisoned) this.world.poisonbar.usePoison();
     setTimeout(() => {
       let bubble = new Bubble(
         this.otherDirection ? -1 : 1,
         startX,
         startY,
         poisoned,
-      ); // GEÄNDERT
+      );
       this.world.bubbles.push(bubble);
       if (!this.isBubbleAttacking) this.bubbleSpawnScheduled = false;
     }, 300);
@@ -201,65 +201,69 @@ class Character extends moveableObject {
    * Update character position based on input and apply camera follow.
    * @returns {void}
    */
-/**
- * Update character position based on input and apply camera follow.
- * @returns {void}
- */
-handleMovement() {
-  if (this.isDead()) return;
-  this.handleDirectionalMovement();
-  this.handleActionInput();
-  this.world.camera_x = -this.x + 20;
-}
+  /**
+   * Update character position based on input and apply camera follow.
+   * @returns {void}
+   */
+  handleMovement() {
+    if (this.isDead()) return;
+    this.handleDirectionalMovement();
+    this.handleActionInput();
+    this.world.camera_x = -this.x + 20;
+  }
 
-/**
- * Moves the character on the axes based on pressed keys.
- * @returns {void}
- */
-handleDirectionalMovement() {
-  if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-    this.x += this.speed;
-    this.otherDirection = false;
+  /**
+   * Moves the character on the axes based on pressed keys.
+   * @returns {void}
+   */
+  handleDirectionalMovement() {
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+      this.x += this.speed;
+      this.otherDirection = false;
+    }
+    if (this.world.keyboard.LEFT && this.x > 0) {
+      this.x -= this.speed;
+      this.otherDirection = true;
+    }
+    if (this.world.keyboard.UP && this.y > -150) {
+      this.y -= this.speed;
+    }
+    if (this.world.keyboard.DOWN && this.y < 550 - this.height) {
+      this.y += this.speed;
+    }
   }
-  if (this.world.keyboard.LEFT && this.x > 0) {
-    this.x -= this.speed;
-    this.otherDirection = true;
-  }
-  if (this.world.keyboard.UP && this.y > -150) {
-    this.y -= this.speed;
-  }
-  if (this.world.keyboard.DOWN && this.y < 550 - this.height) {
-    this.y += this.speed;
-  }
-}
 
-/**
- * Handles attack and bubble-shoot key input.
- * @returns {void}
- */
-handleActionInput() {
-  if (this.world.keyboard.SPACE) this.attack();
-  if (this.world.keyboard.D && !this.bubbleWasPressed) {
-    this.shootBubble();
+  /**
+   * Handles attack and bubble-shoot key input.
+   * @returns {void}
+   */
+  handleActionInput() {
+    if (this.world.keyboard.SPACE) this.attack();
+    if (this.world.keyboard.D && !this.bubbleWasPressed) {
+      this.shootBubble();
+    }
+    this.bubbleWasPressed = this.world.keyboard.D;
   }
-  this.bubbleWasPressed = this.world.keyboard.D;
-}
 
   /**
    * Choose which character animation to play based on state.
    * @returns {void}
    */
   handleCharacterAnimation() {
-    // if we're playing the bubble-character animation, skip other animations
     if (this.isBubbleAttacking) return;
-
     if (this.isDead()) {
       this.playDeadAnimation();
     } else if (this.isHurt()) {
       this.playAnimation(this.IMAGES_HURT);
     } else if (this.isMoving()) {
-      this.playAnimation(this.IMAGES_WALKING);
+      this.playSwimAnimation();
     }
+  }
+
+  playSwimAnimation() {
+    if (Date.now() - (this.lastSwimFrame || 0) < 100) return;
+    this.lastSwimFrame = Date.now();
+    this.playAnimation(this.IMAGES_WALKING);
   }
 
   /**
@@ -326,8 +330,8 @@ handleActionInput() {
     this.isSleeping = false;
     this.lastBubbleAttack = new Date().getTime();
     this.bubbleSpawnScheduled = true;
-    this.playBubbleCharacterAnimation(); 
-    this.spawnBubbleProjectile(); 
+    this.playBubbleCharacterAnimation();
+    this.spawnBubbleProjectile();
   }
 
   /**

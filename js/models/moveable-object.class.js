@@ -49,6 +49,7 @@ class moveableObject extends drawableObject {
    * @returns {void}
    */
   hit(damage = 5) {
+    if (this.isDead()) return; 
     this.energy -= damage;
     if (this.energy < 0) {
       this.energy = 0;

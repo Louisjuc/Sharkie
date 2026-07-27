@@ -70,7 +70,8 @@ function goHome() {
  * Displays the lose screen overlay.
  * @returns {void}
  */
-function showLoseScreen() { // NEU
+function showLoseScreen() {
+   stopAllSounds();
   document.getElementById("loseScreen").style.display = "flex";
 }
 

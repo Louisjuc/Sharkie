@@ -7,6 +7,7 @@ class Bubble extends moveableObject {
 
   static IMAGES_NORMAL = ["./img/1.Sharkie/4.Attack/Bubble trap/Bubble.png"];
   static IMAGES_POISONED = ["./img/1.Sharkie/4.Attack/Bubble trap/Poisoned Bubble (for whale).png"];
+  
   constructor(direction, startX, startY, poisoned = false) {
     super();
     this.direction = direction;

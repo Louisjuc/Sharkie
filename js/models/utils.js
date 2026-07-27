@@ -1,4 +1,4 @@
-let intervalIDs = []; 
+let intervalIDs = [];
 
 /**
  * Starts an interval and stores its ID so it can be stopped later.
@@ -7,7 +7,7 @@ let intervalIDs = [];
  * @param {number} time - The interval delay in milliseconds.
  * @returns {number} The ID of the created interval.
  */
-function setStoppableInterval(fn, time) { 
+function setStoppableInterval(fn, time) {
   let id = setInterval(fn, time);
   intervalIDs.push(id);
   return id;
@@ -31,10 +31,17 @@ function applyMuteState() {
     if (sound) sound.muted = isMuted;
   });
 
-  const muteButton = document.getElementById("muteBtn");
+  let muteButton = document.getElementById("muteBtn");
   if (muteButton) {
     muteButton.textContent = isMuted ? "Unmute" : "Mute";
   }
+}
+
+function stopAllSounds() {
+  allSounds.forEach((sound) => {
+    sound.pause();
+    sound.currentTime = 0;
+  });
 }
 
 /**
@@ -87,7 +94,7 @@ applyMuteState();
  * Requests fullscreen mode for the configured fullscreen element.
  */
 function Fullscreen() {
-  let Fullscreen = document.getElementById('fullscreen');
+  let Fullscreen = document.getElementById("fullscreen");
   enterFullscreen(Fullscreen);
 }
 
@@ -97,11 +104,11 @@ function Fullscreen() {
  * @param {HTMLElement} element - The element to display in fullscreen.
  */
 function enterFullscreen(element) {
-  if(element.requestFullscreen) {
+  if (element.requestFullscreen) {
     element.requestFullscreen();
-  } else if(element.webkitRequestFullscreen) {
+  } else if (element.webkitRequestFullscreen) {
     element.webkitRequestFullscreen();
-  } else if(element.msRequestFullscreen) {
+  } else if (element.msRequestFullscreen) {
     element.msRequestFullscreen();
   }
 }
@@ -110,11 +117,10 @@ function enterFullscreen(element) {
  * Exits fullscreen mode using the browser-specific exit API.
  */
 function exitFullscreen() {
-  console.log('exit');
+  console.log("exit");
   if (document.exitFullscreen) {
     document.exitFullscreen();
   } else if (document.webkitExitFullscreen) {
     document.webkitExitFullscreen();
   }
 }
-
