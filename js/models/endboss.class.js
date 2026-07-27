@@ -1,7 +1,3 @@
-/**
- * Endboss (final enemy) behaviour and animations.
- * Extends `moveableObject` and manages idle/introduce/attack states.
- */
 class Endboss extends moveableObject {
   height = 350;
   width = 350;
@@ -170,6 +166,10 @@ class Endboss extends moveableObject {
     }
   }
 
+  /**
+   * Plays the animation matching the boss's current action (attack/hurt/floating).
+   * @returns {void}
+   */
   playCurrentAction() {
     if (this.isAttacking) {
       this.playAnimation(this.IMAGES_ATTACK);
@@ -180,15 +180,17 @@ class Endboss extends moveableObject {
     }
   }
 
+  /**
+   * Periodically checks distance to the character and triggers an attack when in range.
+   * @returns {void}
+   */
   checkAttack() {
     setStoppableInterval(() => {
       if (!this.world) return;
       if (this.isDead()) return;
-      if (this.world.character?.isDead()) return; 
-
+      if (this.world.character?.isDead()) return;
       let distance = Math.abs(this.x - this.world.character.x);
       let notBusy = !this.isAttacking && !this.isHurt() && !this.isDead();
-
       if (distance < 400 && notBusy) {
         this.attack();
         this.attackSound.currentTime = 0;
@@ -197,10 +199,13 @@ class Endboss extends moveableObject {
     }, 3000);
   }
 
+  /**
+   * Plays the attack animation and pushes the boss forward while attacking.
+   * @returns {void}
+   */
   attack() {
     this.isAttacking = true;
     this.currentImage = 0;
-
     let interval = setStoppableInterval(() => {
       if (this.currentImage >= this.IMAGES_ATTACK.length) {
         clearInterval(interval);
@@ -211,10 +216,13 @@ class Endboss extends moveableObject {
       this.x -= 60 + Math.random() * 0.25;
     }, 100);
   }
-
+  /**
+   * Checks whether the boss's attack hitbox collides with the character.
+   * @param {Character} character
+   * @returns {boolean}
+   */
   isBossAttackColliding(character) {
     let attackRange = 100;
-
     return (
       this.x + this.offset.left - attackRange <
         character.x + character.width - character.offset.right &&

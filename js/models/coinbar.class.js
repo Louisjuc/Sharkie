@@ -23,7 +23,7 @@ class Coinbar extends drawableObject {
     this.loadImages(this.IMAGES_COIN);
     this.x = 20;
     this.y = 40;
-    this.width = 220;
+    this.width = 240;
     this.height = 55;
     this.total = total;
     this.setPercentage(0);
@@ -44,18 +44,18 @@ class Coinbar extends drawableObject {
   /**
    * Increases the collected coin count and updates the bar display.
    */
-addCoin() {
-  if (this.collected >= this.total) return;
-  this.coinSound.currentTime = 0; 
-  this.coinSound.play(); 
-  if (this.collected >= this.total) return; 
-  this.collected++;
-  this.setPercentage((this.collected / this.total) * 100);
-}
+  addCoin() {
+    if (this.collected >= this.total) return;
+    this.coinSound.currentTime = 0;
+    this.coinSound.play();
+    if (this.collected >= this.total) return;
+    this.collected++;
+    this.setPercentage((this.collected / this.total) * 100);
+  }
 
-isFull() {
-  return this.collected >= this.total;
-}
+  isFull() {
+    return this.collected >= this.total;
+  }
 
   /**
    * Resolves the image index that matches the current percentage value.

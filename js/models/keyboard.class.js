@@ -1,6 +1,3 @@
-/**
- * Simple keyboard/touch input wrapper used by the World and Character.
- */
 class Keyboard {
   LEFT = false;
   RIGHT = false;
@@ -23,32 +20,49 @@ class Keyboard {
   }
 
   /**
-   * Binds touch events to a button and updates the corresponding key state.
-   * @param {string} btnId - The DOM id of the button element.
-   * @param {string} key - The key name to set (e.g. 'LEFT').
+   * Binds touchstart and touchend listeners for a single touch button.
+   * @param {string} btnId
+   * @param {string} key
    * @returns {void}
    */
   bindTouchBtn(btnId, key) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
+    this.bindTouchStart(btn, key);
+    this.bindTouchEnd(btn, key);
+  }
 
+  /**
+   * Binds a touchstart listener that sets the given key to true.
+   * @param {HTMLElement} btn
+   * @param {string} key
+   * @returns {void}
+   */
+  bindTouchStart(btn, key) {
     btn.addEventListener(
       "touchstart",
       (e) => {
         e.preventDefault();
         this[key] = true;
       },
-      { passive: false }
+      { passive: false },
     );
+  }
 
+  /**
+   * Binds a touchend listener that sets the given key to false.
+   * @param {HTMLElement} btn
+   * @param {string} key
+   * @returns {void}
+   */
+  bindTouchEnd(btn, key) {
     btn.addEventListener(
       "touchend",
       (e) => {
         e.preventDefault();
         this[key] = false;
       },
-      { passive: false }
+      { passive: false },
     );
   }
-
 }

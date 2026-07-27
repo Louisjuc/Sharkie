@@ -8,7 +8,11 @@ class Jellyfish extends moveableObject {
     right: 20,
     bottom: 25,
   };
-  
+
+  /**
+   * Swimming animation frames.
+   * @type {string[]}
+   */
   IMAGES_WALKING = [
     "./img/2.Enemy/2 Jelly fish/Regular damage/Yellow 1.png",
     "./img/2.Enemy/2 Jelly fish/Regular damage/Yellow 2.png",
@@ -16,6 +20,10 @@ class Jellyfish extends moveableObject {
     "./img/2.Enemy/2 Jelly fish/Regular damage/Yellow 4.png",
   ];
 
+  /**
+   * Death animation frames.
+   * @type {string[]}
+   */
   IMAGES_DEAD = [
     "./img/2.Enemy/2 Jelly fish/Dead/Yellow/y1.png",
     "./img/2.Enemy/2 Jelly fish/Dead/Yellow/y2.png",
@@ -23,6 +31,9 @@ class Jellyfish extends moveableObject {
     "./img/2.Enemy/2 Jelly fish/Dead/Yellow/y4.png",
   ];
 
+  /**
+   * Places the jellyfish at a random position with a randomized speed.
+   */
   constructor() {
     super().loadImage("./img/2.Enemy/2 Jelly fish/Regular damage/Yellow 1.png");
     this.x = 700 + Math.random() * 2300;
@@ -35,6 +46,10 @@ class Jellyfish extends moveableObject {
     this.animate();
   }
 
+  /**
+   * Plays the dead animation or the bobbing swim animation depending on state.
+   * @returns {void}
+   */
   handleAnimationState() {
     if (this.isDead()) {
       this.handleDead();
@@ -44,6 +59,10 @@ class Jellyfish extends moveableObject {
     this.playAnimation(this.IMAGES_WALKING);
   }
 
+  /**
+   * Starts leftward movement and the recurring animation interval.
+   * @returns {void}
+   */
   animate() {
     this.moveLeft();
     this.startY = this.y;
@@ -53,7 +72,10 @@ class Jellyfish extends moveableObject {
     }, 100);
   }
 
-// Moves the jellyfish up and down in a bobbing motion
+  /**
+   * Moves the jellyfish up and down in a bobbing motion.
+   * @returns {void}
+   */
   bobUpAndDown() {
     this.y += this.direction * 1.5;
     if (this.y > this.startY + 30 || this.y < this.startY - 30) {

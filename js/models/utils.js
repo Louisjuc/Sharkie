@@ -1,5 +1,14 @@
 let intervalIDs = [];
 
+let MUTE_STORAGE_KEY = "sharkie.isMuted";
+let allSounds = [];
+let isMuted = false;
+try {
+  isMuted = localStorage.getItem(MUTE_STORAGE_KEY) === "true";
+} catch (error) {
+  console.warn("Could not read mute state from localStorage", error);
+}
+
 /**
  * Starts an interval and stores its ID so it can be stopped later.
  *
@@ -13,16 +22,6 @@ function setStoppableInterval(fn, time) {
   return id;
 }
 
-let MUTE_STORAGE_KEY = "sharkie.isMuted";
-let allSounds = [];
-let isMuted = false;
-
-try {
-  isMuted = localStorage.getItem(MUTE_STORAGE_KEY) === "true";
-} catch (error) {
-  console.warn("Could not read mute state from localStorage", error);
-}
-
 /**
  * Applies the current mute state to all registered sounds and updates the button label.
  */
@@ -30,13 +29,16 @@ function applyMuteState() {
   allSounds.forEach((sound) => {
     if (sound) sound.muted = isMuted;
   });
-
   let muteButton = document.getElementById("muteBtn");
   if (muteButton) {
     muteButton.textContent = isMuted ? "Unmute" : "Mute";
   }
 }
 
+/**
+ * Stops all registered sounds and resets their playback position.
+ * @returns {void}
+ */
 function stopAllSounds() {
   allSounds.forEach((sound) => {
     sound.pause();

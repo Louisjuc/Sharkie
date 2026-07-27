@@ -97,7 +97,10 @@ class Character extends moveableObject {
     "./img/1.Sharkie/2.Long_IDLE/I14.png",
   ];
 
-  // frames to show on the character while shooting (do NOT use for the projectile)
+  /**
+   * Frames shown on the character while shooting a bubble (not the projectile itself).
+   * @type {string[]}
+   */
   IMAGES_BUBBLE_PROJECTILE = [
     "./img/1.Sharkie/4.Attack/Bubble trap/Op2 (Without Bubbles)/1.png",
     "./img/1.Sharkie/4.Attack/Bubble trap/Op2 (Without Bubbles)/2.png",
@@ -135,24 +138,26 @@ class Character extends moveableObject {
   }
 
   /**
-   * Calculates spawn data and creates the bubble projectile after a short delay.
+   * Calculates spawn position, consumes poison, and schedules the bubble spawn.
    * @returns {void}
    */
   spawnBubbleProjectile() {
     let startX = this.getBubbleStartX();
     let startY = this.y + this.height / 2 + 25;
-    let poisoned = this.world?.poisonbar?.hasPoison?.() ?? false;
-    if (poisoned) this.world.poisonbar.usePoison();
-    setTimeout(() => {
-      let bubble = new Bubble(
-        this.otherDirection ? -1 : 1,
-        startX,
-        startY,
-        poisoned,
-      );
-      this.world.bubbles.push(bubble);
-      if (!this.isBubbleAttacking) this.bubbleSpawnScheduled = false;
-    }, 300);
+    this.world.poisonbar.usePoison();
+    setTimeout(() => this.createBubble(startX, startY), 300);
+  }
+
+  /**
+   * Creates a poisoned bubble at the given position and adds it to the world.
+   * @param {number} startX
+   * @param {number} startY
+   * @returns {void}
+   */
+  createBubble(startX, startY) {
+    let bubble = new Bubble(this.otherDirection ? -1 : 1, startX, startY, true);
+    this.world.bubbles.push(bubble);
+    if (!this.isBubbleAttacking) this.bubbleSpawnScheduled = false;
   }
 
   /**
@@ -171,36 +176,55 @@ class Character extends moveableObject {
    */
   handleIdleAnimation() {
     if (this.isDead() || this.isHurt() || this.isAttacking) return;
-    // don't run idle animations while bubble-character animation is active
     if (this.isBubbleAttacking) return;
 
     if (!this.isMoving()) {
-      if (this.idleStartTime === 0) {
-        this.idleStartTime = Date.now();
-      }
-
-      const idleDuration = (Date.now() - this.idleStartTime) / 1000;
-
-      if (idleDuration >= 15) {
-        if (!this.isSleeping) {
-          this.isSleeping = true;
-          this.currentImage = 0;
-        }
-        this.playAnimation(this.IMAGES_SLEEP);
-      } else {
-        this.isSleeping = false;
-        this.playAnimation(this.IMAGES_IDLE);
-      }
+      this.updateIdleState();
     } else {
-      this.idleStartTime = 0;
-      this.isSleeping = false;
+      this.resetIdleState();
     }
   }
 
   /**
-   * Update character position based on input and apply camera follow.
+   * Handles idle timer and decides between idle and sleep animation.
    * @returns {void}
    */
+  updateIdleState() {
+    if (this.idleStartTime === 0) {
+      this.idleStartTime = Date.now();
+    }
+
+    let idleDuration = (Date.now() - this.idleStartTime) / 1000;
+
+    if (idleDuration >= 15) {
+      this.enterSleepState();
+    } else {
+      this.isSleeping = false;
+      this.playAnimation(this.IMAGES_IDLE);
+    }
+  }
+
+  /**
+   * Switches character into sleep state and plays sleep animation.
+   * @returns {void}
+   */
+  enterSleepState() {
+    if (!this.isSleeping) {
+      this.isSleeping = true;
+      this.currentImage = 0;
+    }
+    this.playAnimation(this.IMAGES_SLEEP);
+  }
+
+  /**
+   * Resets idle timer and sleep state, e.g. when character starts moving.
+   * @returns {void}
+   */
+  resetIdleState() {
+    this.idleStartTime = 0;
+    this.isSleeping = false;
+  }
+
   /**
    * Update character position based on input and apply camera follow.
    * @returns {void}
@@ -260,6 +284,10 @@ class Character extends moveableObject {
     }
   }
 
+  /**
+   * Play swimming animation frame-by-frame, throttled to avoid too fast updates.
+   * @returns
+   */
   playSwimAnimation() {
     if (Date.now() - (this.lastSwimFrame || 0) < 100) return;
     this.lastSwimFrame = Date.now();
@@ -303,22 +331,27 @@ class Character extends moveableObject {
     this.isSleeping = false;
     this.lastAttack = new Date().getTime();
     this.attackSound.currentTime = 0;
-    this.attackSound.play();
+    this.attackSound.play().catch(() => {});
     this.currentImage = 0;
-    let interval = setStoppableInterval(() => {
-      if (this.currentImage >= this.IMAGES_ATTACK.length) {
-        clearInterval(interval);
-        this.isAttacking = false;
-        return;
-      }
-      this.playAnimation(this.IMAGES_ATTACK);
-    }, 40);
+    this.attackInterval = setStoppableInterval(
+      () => this.playAttackFrame(),
+      40,
+    );
   }
 
   /**
-   * Create and fire a bubble projectile if bubble-attack is not on cooldown.
+   * Plays the next attack animation frame, stops the interval when the animation ends.
    * @returns {void}
    */
+  playAttackFrame() {
+    if (this.currentImage >= this.IMAGES_ATTACK.length) {
+      clearInterval(this.attackInterval);
+      this.isAttacking = false;
+      return;
+    }
+    this.playAnimation(this.IMAGES_ATTACK);
+  }
+
   /**
    * Fires a bubble projectile if not on cooldown, plays character animation.
    * @returns {void}
@@ -326,6 +359,7 @@ class Character extends moveableObject {
   shootBubble() {
     if (this.isBubbleOnCooldown()) return;
     if (this.isBubbleAttacking || this.bubbleSpawnScheduled) return;
+    if (!this.world?.poisonbar?.hasPoison?.()) return; // NEU: nur mit Gift möglich
     this.idleStartTime = 0;
     this.isSleeping = false;
     this.lastBubbleAttack = new Date().getTime();

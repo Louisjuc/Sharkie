@@ -30,7 +30,7 @@ function createLevel1() {
 
       new Endboss(),
     ],
-    Array.from({ length: 15 }, () => new Coin()),
+    Array.from({ length: 5 }, () => new Coin()),
     createBackgroundObjects(),
     Array.from({ length: 10 }, () => new Poison()),
   );

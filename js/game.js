@@ -6,7 +6,7 @@ backgroundMusic.loop = true;
 backgroundMusic.volume = 0.5;
 
 let clickSound = new Audio("./audio/click.mp3");
-clickSound.muted = false;
+registerSound(clickSound);
 registerSound(backgroundMusic);
 
 /**
@@ -16,7 +16,6 @@ registerSound(backgroundMusic);
  */
 document.addEventListener("click", (event) => {
   if (!event.target.closest("button")) return;
-  clickSound.muted = false;
   clickSound.currentTime = 0;
   clickSound.play().catch(() => {});
 });
@@ -27,7 +26,7 @@ document.addEventListener("click", (event) => {
 function init() {
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
-  backgroundMusic.play();
+  backgroundMusic.play().catch(() => {});
 }
 
 /**

@@ -17,12 +17,7 @@ class World {
 
   /**
    * Creates a new game world, initializes the canvas context, and starts all game checks and the render loop.
-   *
    * @param {HTMLCanvasElement} canvas - The canvas element used for rendering the game.
-   */
-  /**
-   * Initialize the World with a canvas and start timers/render loop.
-   * @param {HTMLCanvasElement} canvas
    */
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
@@ -40,9 +35,6 @@ class World {
     this.checkLose();
   }
 
-  /**
-   * Displays the win screen after the end boss is defeated.
-   */
   /**
    * Show the win screen when endboss dies (with a small delay).
    * @returns {void}
@@ -62,24 +54,18 @@ class World {
   }
 
   /**
-   * Shows the lose screen when the character dies and mutes audio if needed.
-   */
-  /**
    * Show the lose screen when the character dies.
    * @returns {void}
    */
-checkLose() {
-  let interval = setStoppableInterval(() => {
-    if (this.character.isDead()) {
-      showLoseScreen(); 
-      clearInterval(interval);
-    }
-  }, 200);
-}
+  checkLose() {
+    let interval = setStoppableInterval(() => {
+      if (this.character.isDead()) {
+        showLoseScreen();
+        clearInterval(interval);
+      }
+    }, 200);
+  }
 
-  /**
-   * Checks for collisions between the character and poison items and applies damage/updates bars.
-   */
   /**
    * Periodically checks for collisions with poison items and applies damage.
    * @returns {void}
@@ -96,9 +82,6 @@ checkLose() {
     }, 200);
   }
 
-  /**
-   * Runs periodic collision checks for enemies and boss attacks.
-   */
   /**
    * Run periodic collision checks for enemies and boss attacks.
    * @returns {void}
@@ -185,9 +168,7 @@ checkLose() {
       this.bubbles.splice(i, 1);
     }
   }
-  /**
-   * Checks collisions between the character and non-boss enemies.
-   */
+
   /**
    * Check collisions between the character and non-boss enemies.
    * @returns {void}
@@ -201,9 +182,6 @@ checkLose() {
     });
   }
 
-  /**
-   * Checks whether the end boss attack collides with the character.
-   */
   /**
    * Check if the endboss attack hits the character.
    * @returns {void}
@@ -219,9 +197,6 @@ checkLose() {
   }
 
   /**
-   * Applies a hit to the character and updates the health bar.
-   */
-  /**
    * Apply damage to the character and update status bar.
    * @returns {void}
    */
@@ -231,15 +206,12 @@ checkLose() {
   }
 
   /**
-   * Checks for collisions with collectible coins and increments the score.
-   */
-  /**
    * Check collisions with collectible coins and increment score.
    * @returns {void}
    */
   checkCoinCollisions() {
     setStoppableInterval(() => {
-      if (this.coinbar.isFull()) return; 
+      if (this.coinbar.isFull()) return;
       for (let i = this.level.coins.length - 1; i >= 0; i--) {
         let coin = this.level.coins[i];
         if (this.character.isColliding(coin)) {
@@ -252,40 +224,42 @@ checkLose() {
   }
 
   /**
-   * Checks whether the character's attack collides with enemies or the boss.
-   */
-  /**
    * Checks whether character attacks hit enemies or the boss.
    * @returns {void}
    */
   checkAttackCollisions() {
     setStoppableInterval(() => {
-      this.level.enemies.forEach((enemy) => {
-        if (
-          !this.character.isAttacking ||
-          !this.character.isAttackColliding(enemy)
-        ) {
-          return;
-        }
-        if (enemy.isDead()) return;
-        if (!enemy.isHurt()) {
-          enemy.hit();
-        }
-      });
-
-      if (
-        this.character.isAttacking &&
-        this.character.isAttackColliding(this.endboss) &&
-        !this.endboss.isHurt()
-      ) {
-        this.endboss.hit();
-      }
+      this.level.enemies.forEach((enemy) => this.checkAttackOnEnemy(enemy));
+      this.checkAttackOnBoss();
     }, 1000 / 60);
   }
 
   /**
-   * Assigns the current world instance to the character, boss, and enemies.
+   * Checks whether a character attack hits a single enemy and applies a hit.
+   * @param {DrawableObject} enemy
+   * @returns {void}
    */
+  checkAttackOnEnemy(enemy) {
+    if (!this.character.isAttacking || !this.character.isAttackColliding(enemy))
+      return;
+    if (enemy.isDead()) return;
+    if (!enemy.isHurt()) enemy.hit();
+  }
+
+  /**
+   * Checks whether a character attack hits the endboss and applies a hit.
+   * @returns {void}
+   */
+  checkAttackOnBoss() {
+    if (
+      this.character.isAttacking &&
+      this.character.isAttackColliding(this.endboss) &&
+      !this.endboss.isHurt()
+    ) {
+      this.endboss.hit();
+    }
+  }
+
   /**
    * Assigns the current world instance to the character, boss, and enemies.
    * @returns {void}
@@ -298,9 +272,6 @@ checkLose() {
     });
   }
 
-  /**
-   * Renders the current frame of the game world and schedules the next frame.
-   */
   /**
    * Render loop: draws background objects, character, enemies and HUD elements.
    * @returns {void}
@@ -344,7 +315,6 @@ checkLose() {
     if (mo.otherDirection) {
       this.flipImage(mo);
     }
-
     mo.drawCTX(this.ctx);
     mo.drawFrame(this.ctx);
     this.ctx.globalAlpha = 1;

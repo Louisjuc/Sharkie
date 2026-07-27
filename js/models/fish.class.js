@@ -8,6 +8,11 @@ class Fish extends moveableObject {
     right: 20,
     bottom: 25,
   };
+
+  /**
+   * Swimming animation frames.
+   * @type {string[]}
+   */
   IMAGES_WALKING = [
     "./img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png",
     "./img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim2.png",
@@ -16,12 +21,19 @@ class Fish extends moveableObject {
     "./img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim5.png",
   ];
 
+  /**
+   * Death animation frames.
+   * @type {string[]}
+   */
   IMAGES_DEAD = [
     "./img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 1 (can animate by going up).png",
     "./img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 2 (can animate by going down to the floor after the Fin Slap attack).png",
     "./img/2.Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 3 (can animate by going down to the floor after the Fin Slap attack).png",
   ];
 
+  /**
+   * Places the fish at a random position with a randomized speed.
+   */
   constructor() {
     super().loadImage(
       "./img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png",
@@ -35,15 +47,23 @@ class Fish extends moveableObject {
     this.animate();
   }
 
+  /**
+   * Plays the dead animation or the swim animation depending on state.
+   * @returns {void}
+   */
   handleAnimationState() {
     if (this.isDead()) {
       this.handleDead();
       return;
     }
     this.playAnimation(this.IMAGES_WALKING);
-}
+  }
 
- animate() {
+  /**
+   * Starts leftward movement and the recurring animation interval.
+   * @returns {void}
+   */
+  animate() {
     this.moveLeft();
     this.startY = this.y;
     this.direction = 1;

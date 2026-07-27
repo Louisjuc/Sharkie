@@ -57,7 +57,7 @@ class moveableObject extends drawableObject {
       this.lastHit = new Date().getTime();
     }
     this.hurtSound.currentTime = 0;
-    this.hurtSound.play();
+    this.hurtSound.play().catch(() => {});
   }
 
   /**
@@ -110,7 +110,6 @@ class moveableObject extends drawableObject {
         this.deadAnimationPlayed = true;
       }
     }
-
     if (this.deadAnimationPlayed) {
       this.opacity -= 0.05;
       this.y += 20;
@@ -120,5 +119,4 @@ class moveableObject extends drawableObject {
       }
     }
   }
-
 }

@@ -1,4 +1,8 @@
 class Coin extends moveableObject {
+  /**
+   * Coin animation frames.
+   * @type {string[]}
+   */
   IMAGES_COIN = [
     "./img/4. Marcadores/1. Coins/1.png",
     "./img/4. Marcadores/1. Coins/2.png",
@@ -6,20 +10,27 @@ class Coin extends moveableObject {
     "./img/4. Marcadores/1. Coins/4.png",
   ];
 
-  offset = { top: 10, left: 10, right: 10, bottom: 10 }; 
+  offset = { top: 10, left: 10, right: 10, bottom: 10 };
 
+  /**
+   * Places the coin at a random position and starts its animation.
+   */
   constructor() {
     super().loadImage(this.IMAGES_COIN[0]);
     this.x = 400 + Math.random() * 2700;
-    this.y = 0 + Math.random() * 400; 
+    this.y = 0 + Math.random() * 400;
     this.height = 40;
     this.width = 40;
     this.loadImages(this.IMAGES_COIN);
     this.animate();
   }
 
+  /**
+   * Starts the recurring coin animation.
+   * @returns {void}
+   */
   animate() {
-    setStoppableInterval(() => { 
+    setStoppableInterval(() => {
       this.playAnimation(this.IMAGES_COIN);
     }, 200);
   }
