@@ -38,114 +38,90 @@ class drawableObject {
   }
 
   /**
-   * Draws the object on the canvas context.
-   *
-   * @param {CanvasRenderingContext2D} ctx - The drawing context of the canvas.
+   * Draws the sprite and a red hurt-flash overlay if applicable.
+   * @param {CanvasRenderingContext2D} ctx
+   * @returns {void}
    */
-  /**
- * Draws the sprite and a red hurt-flash overlay if applicable.
- * @param {CanvasRenderingContext2D} ctx
- * @returns {void}
- */
-drawCTX(ctx) {
-  ctx.save();
-  this.drawSprite(ctx);
-  this.drawHurtFlash(ctx);
-  ctx.restore();
-}
-
-/**
- * Draws the current sprite image.
- * @param {CanvasRenderingContext2D} ctx
- * @returns {void}
- */
-drawSprite(ctx) {
-  try {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  } catch (e) {
-    console.warn("Error loading Image", e);
-    console.log("Could not load Image", this.img?.src);
+  drawCTX(ctx) {
+    ctx.save();
+    this.drawSprite(ctx);
+    this.drawHurtFlash(ctx);
+    ctx.restore();
   }
-}
-
-/**
- * Draws a red flash overlay on hurt sprites, except Endboss and Character.
- * @param {CanvasRenderingContext2D} ctx
- * @returns {void}
- */
-drawHurtFlash(ctx) { 
-  try {
-    if (!(typeof this.isHurt === 'function' && this.isHurt())) return;
-    if (this instanceof Endboss || this instanceof Character) return;
-    this.drawTintedSprite(ctx);
-  } catch (e) {
-    // ignore errors
-  }
-}
-
-/**
- * Tints the sprite red using an offscreen canvas, matching its alpha shape.
- * @param {CanvasRenderingContext2D} ctx
- * @returns {void}
- */
-drawTintedSprite(ctx) { 
-  try {
-    const w = Math.max(1, Math.round(this.width));
-    const h = Math.max(1, Math.round(this.height));
-    const oc = this.createTintCanvas(w, h); 
-    ctx.drawImage(oc, this.x, this.y, w, h);
-  } catch (inner) {
-    this.drawFallbackFlash(ctx);
-  }
-}
-
-/**
- * Creates an offscreen canvas with the sprite tinted red (alpha preserved).
- * @param {number} w
- * @param {number} h
- * @returns {HTMLCanvasElement}
- */
-createTintCanvas(w, h) { 
-  const off = document.createElement('canvas');
-  off.width = w;
-  off.height = h;
-  const oc = off.getContext('2d');
-  oc.drawImage(this.img, 0, 0, w, h);
-  oc.globalCompositeOperation = 'source-in';
-  oc.fillStyle = 'rgba(255,0,0,0.45)';
-  oc.fillRect(0, 0, w, h);
-  return off;
-}
-
-/**
- * Draws a simple red rectangle overlay as fallback if tinting fails.
- * @param {CanvasRenderingContext2D} ctx
- * @returns {void}
- */
-drawFallbackFlash(ctx) {
-  ctx.save();
-  ctx.globalCompositeOperation = 'source-atop';
-  ctx.fillStyle = 'rgba(255,0,0,0.35)';
-  ctx.fillRect(this.x, this.y, this.width, this.height);
-  ctx.restore();
-}
 
   /**
-   * Draws a debug frame around the object if needed.
-   *
-   * @param {CanvasRenderingContext2D} ctx - The drawing context of the canvas.
+   * Draws the current sprite image.
+   * @param {CanvasRenderingContext2D} ctx
+   * @returns {void}
    */
-  drawFrame(ctx) {
-    //  if (
-    //       this instanceof Character ||
-    //      this instanceof Fish ||
-    //      this instanceof Endboss
-    //    ) {
-    //      ctx.beginPath();
-    //      ctx.lineWidth = "5";
-    //     ctx.strokeStyle = "blue";
-    //     ctx.rect(this.x, this.y, this.width, this.height);
-    //     ctx.stroke();
-    //   }
+  drawSprite(ctx) {
+    try {
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    } catch (e) {
+      console.warn("Error loading Image", e);
+      console.log("Could not load Image", this.img?.src);
+    }
+  }
+
+  /**
+   * Draws a red flash overlay on hurt sprites, except Endboss and Character.
+   * @param {CanvasRenderingContext2D} ctx
+   * @returns {void}
+   */
+  drawHurtFlash(ctx) {
+    try {
+      if (!(typeof this.isHurt === "function" && this.isHurt())) return;
+      if (this instanceof Endboss || this instanceof Character) return;
+      this.drawTintedSprite(ctx);
+    } catch (e) {
+      // ignore errors
+    }
+  }
+
+  /**
+   * Tints the sprite red using an offscreen canvas, matching its alpha shape.
+   * @param {CanvasRenderingContext2D} ctx
+   * @returns {void}
+   */
+  drawTintedSprite(ctx) {
+    try {
+      const w = Math.max(1, Math.round(this.width));
+      const h = Math.max(1, Math.round(this.height));
+      const oc = this.createTintCanvas(w, h);
+      ctx.drawImage(oc, this.x, this.y, w, h);
+    } catch (inner) {
+      this.drawFallbackFlash(ctx);
+    }
+  }
+
+  /**
+   * Creates an offscreen canvas with the sprite tinted red (alpha preserved).
+   * @param {number} w
+   * @param {number} h
+   * @returns {HTMLCanvasElement}
+   */
+  createTintCanvas(w, h) {
+    const off = document.createElement("canvas");
+    off.width = w;
+    off.height = h;
+    const oc = off.getContext("2d");
+    oc.drawImage(this.img, 0, 0, w, h);
+    oc.globalCompositeOperation = "source-in";
+    oc.fillStyle = "rgba(255,0,0,0.45)";
+    oc.fillRect(0, 0, w, h);
+    return off;
+  }
+
+  /**
+   * Draws a simple red rectangle overlay as fallback if tinting fails.
+   * @param {CanvasRenderingContext2D} ctx
+   * @returns {void}
+   */
+  drawFallbackFlash(ctx) {
+    ctx.save();
+    ctx.globalCompositeOperation = "source-atop";
+    ctx.fillStyle = "rgba(255,0,0,0.35)";
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.restore();
   }
 }

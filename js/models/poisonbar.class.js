@@ -1,6 +1,3 @@
-/**
- * Poison status bar showing how much poison has been collected.
- */
 class Poisonbar extends drawableObject {
   /**
    * Poison bar images from full to empty.

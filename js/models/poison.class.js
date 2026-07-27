@@ -1,5 +1,4 @@
 class Poison extends moveableObject {
-
   /**
    * Animation frames for the poison object.
    * @type {string[]}

@@ -1,7 +1,3 @@
-/**
- * A moveable object with physics and common behaviours for game entities.
- * Extends `drawableObject` and adds movement, collision and damage logic.
- */
 class moveableObject extends drawableObject {
   speed = 0.15;
   otherDirection = false;

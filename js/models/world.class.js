@@ -316,9 +316,7 @@ class World {
       this.flipImage(mo);
     }
     mo.drawCTX(this.ctx);
-    mo.drawFrame(this.ctx);
     this.ctx.globalAlpha = 1;
-
     if (mo.otherDirection) {
       this.flipImageBack(mo);
     }
