@@ -48,7 +48,6 @@ class Character extends moveableObject {
     this.animate();
     registerSound(this.attackSound);
   }
-
   /**
    * Calculates spawn position, consumes poison, and schedules the bubble spawn.
    * @returns {void}
@@ -59,7 +58,6 @@ class Character extends moveableObject {
     this.world.poisonbar.usePoison();
     setTimeout(() => this.createBubble(startX, startY), 300);
   }
-
   /**
    * Creates a poisoned bubble at the given position and adds it to the world.
    * @param {number} startX
@@ -71,7 +69,6 @@ class Character extends moveableObject {
     this.world.bubbles.push(bubble);
     if (!this.isBubbleAttacking) this.bubbleSpawnScheduled = false;
   }
-
   /**
    * Start recurring timers for movement, animation and idle checks.
    * @returns {void}
@@ -81,7 +78,6 @@ class Character extends moveableObject {
     setStoppableInterval(() => this.handleCharacterAnimation(), 50);
     setStoppableInterval(() => this.handleIdleAnimation(), 200);
   }
-
   /**
    * Manage idle behaviour: switch to sleep animation after a long idle.
    * @returns {void}
@@ -96,7 +92,6 @@ class Character extends moveableObject {
       this.resetIdleState();
     }
   }
-
   /**
    * Handles idle timer and decides between idle and sleep animation.
    * @returns {void}
@@ -105,9 +100,7 @@ class Character extends moveableObject {
     if (this.idleStartTime === 0) {
       this.idleStartTime = Date.now();
     }
-
     let idleDuration = (Date.now() - this.idleStartTime) / 1000;
-
     if (idleDuration >= 15) {
       this.enterSleepState();
     } else {
@@ -115,7 +108,6 @@ class Character extends moveableObject {
       this.playAnimation(this.IMAGES_IDLE);
     }
   }
-
   /**
    * Switches character into sleep state and plays sleep animation.
    * @returns {void}
@@ -127,7 +119,6 @@ class Character extends moveableObject {
     }
     this.playAnimation(this.IMAGES_SLEEP);
   }
-
   /**
    * Resets idle timer and sleep state, e.g. when character starts moving.
    * @returns {void}
@@ -136,7 +127,6 @@ class Character extends moveableObject {
     this.idleStartTime = 0;
     this.isSleeping = false;
   }
-
   /**
    * Update character position based on input and apply camera follow.
    * @returns {void}
@@ -147,7 +137,6 @@ class Character extends moveableObject {
     this.handleActionInput();
     this.world.camera_x = -this.x + 20;
   }
-
   /**
    * Moves the character on the axes based on pressed keys.
    * @returns {void}
@@ -168,7 +157,6 @@ class Character extends moveableObject {
       this.y += this.speed;
     }
   }
-
   /**
    * Handles attack and bubble-shoot key input.
    * @returns {void}
@@ -180,7 +168,6 @@ class Character extends moveableObject {
     }
     this.bubbleWasPressed = this.world.keyboard.D;
   }
-
   /**
    * Choose which character animation to play based on state.
    * @returns {void}
@@ -195,7 +182,6 @@ class Character extends moveableObject {
       this.playSwimAnimation();
     }
   }
-
   /**
    * Play swimming animation frame-by-frame, throttled to avoid too fast updates.
    * @returns
@@ -205,7 +191,6 @@ class Character extends moveableObject {
     this.lastSwimFrame = Date.now();
     this.playAnimation(this.IMAGES_WALKING);
   }
-
   /**
    * Show death animation frame-by-frame and sink the character.
    * @returns {void}
@@ -218,7 +203,6 @@ class Character extends moveableObject {
     }
     this.y += 2;
   }
-
   /**
    * Returns true if any movement key is currently pressed.
    * @returns {boolean}
@@ -231,7 +215,6 @@ class Character extends moveableObject {
       this.world.keyboard.DOWN
     );
   }
-
   /**
    * Perform melee attack animation if not on cooldown.
    * @returns {void}
@@ -250,7 +233,6 @@ class Character extends moveableObject {
       40,
     );
   }
-
   /**
    * Plays the next attack animation frame, stops the interval when the animation ends.
    * @returns {void}
@@ -263,7 +245,6 @@ class Character extends moveableObject {
     }
     this.playAnimation(this.IMAGES_ATTACK);
   }
-
   /**
    * Fires a bubble projectile if not on cooldown, plays character animation.
    * @returns {void}
@@ -279,7 +260,6 @@ class Character extends moveableObject {
     this.playBubbleCharacterAnimation();
     this.spawnBubbleProjectile();
   }
-
   /**
    * Plays the bubble-shooting frames on the character.
    * @returns {void}
@@ -297,7 +277,6 @@ class Character extends moveableObject {
       this.playAnimation(this.IMAGES_BUBBLE_PROJECTILE);
     }, 40);
   }
-
   /**
    * Returns the horizontal spawn point for the bubble based on facing direction.
    * @returns {number}
@@ -307,8 +286,6 @@ class Character extends moveableObject {
       ? this.x + this.offset.left + 10
       : this.x + this.width - this.offset.right - 20;
   }
-
-  // prüft ob Cooldown (z.B. 500ms) noch aktiv ist
   /**
    * Returns true if attack cooldown is still active.
    * @returns {boolean}
@@ -317,7 +294,6 @@ class Character extends moveableObject {
     let cooldown = 500;
     return this.lastAttack && new Date().getTime() - this.lastAttack < cooldown;
   }
-
   /**
    * Returns true if bubble-attack cooldown is active.
    * @returns {boolean}
@@ -329,7 +305,6 @@ class Character extends moveableObject {
       new Date().getTime() - this.lastBubbleAttack < cooldown
     );
   }
-
   /**
    * Check whether this character's attack hit the given enemy.
    * @param {DrawableObject} enemy
@@ -337,7 +312,6 @@ class Character extends moveableObject {
    */
   isAttackColliding(enemy) {
     let attackRange = 60;
-
     return (
       this.x + this.width - this.offset.right + attackRange >
         enemy.x + enemy.offset.left &&

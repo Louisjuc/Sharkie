@@ -21,6 +21,7 @@ Ein 2D-Jump-and-Run/Action-Spiel, in dem du als Hai Sharkie durch die Tiefsee sc
 |-------------|--------------|
 | ← → ↑ ↓     | Bewegung     |
 | Leertaste   | Angriff      |
+| D           | Bubble Angriff      |
 
 ## Installation / Starten
 

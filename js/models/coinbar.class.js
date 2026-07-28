@@ -52,29 +52,11 @@ class Coinbar extends drawableObject {
     this.collected++;
     this.setPercentage((this.collected / this.total) * 100);
   }
-
+  /**
+   * returns true if the coin bar is full (i.e., all coins have been collected).
+   * @returns
+   */
   isFull() {
     return this.collected >= this.total;
-  }
-
-  /**
-   * Resolves the image index that matches the current percentage value.
-   *
-   * @returns {number} The index of the appropriate coin bar image.
-   */
-  resolveImageIndex() {
-    if (this.percentage == 100) {
-      return 0;
-    } else if (this.percentage > 80) {
-      return 1;
-    } else if (this.percentage > 60) {
-      return 2;
-    } else if (this.percentage > 40) {
-      return 3;
-    } else if (this.percentage > 5) {
-      return 4;
-    } else {
-      return 5;
-    }
   }
 }

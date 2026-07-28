@@ -4,7 +4,6 @@ let keyboard = new Keyboard();
 let backgroundMusic = new Audio("./audio/maintheme.mp3"); 
 backgroundMusic.loop = true; 
 backgroundMusic.volume = 0.5;
-
 let clickSound = new Audio("./audio/click.mp3");
 registerSound(clickSound);
 registerSound(backgroundMusic);
@@ -19,7 +18,6 @@ document.addEventListener("click", (event) => {
   clickSound.currentTime = 0;
   clickSound.play().catch(() => {});
 });
-
 /**
  * Initializes the game world and starts the background music.
  */
@@ -28,7 +26,6 @@ function init() {
   world = new World(canvas, keyboard);
   backgroundMusic.play().catch(() => {});
 }
-
 /**
  * Hides the start and win screens and begins the game.
  */
@@ -41,7 +38,6 @@ function startGame() {
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("loseScreen").style.display = "none";
 }
-
 /**
  * Restarts the game by stopping the current loop, resetting the level, and initializing a new world.
  */
@@ -53,7 +49,6 @@ function restartGame() {
   document.getElementById("winScreen").style.display = "none";
   document.getElementById("loseScreen").style.display = "none"; 
 }
-
 /**
  * Stops the current game and returns to the start menu.
  */
@@ -64,7 +59,6 @@ function goHome() {
   document.getElementById("winScreen").style.display = "none";
   document.getElementById("startScreen").style.display = "flex";
 }
-
 /**
  * Displays the lose screen overlay.
  * @returns {void}
@@ -73,7 +67,6 @@ function showLoseScreen() {
    stopAllSounds();
   document.getElementById("loseScreen").style.display = "flex";
 }
-
 /**
  * Checks whether the device is in portrait mode and pauses the game in narrow layouts.
  */
@@ -83,7 +76,6 @@ function checkOrientation() {
 }
 window.addEventListener("resize", checkOrientation);
 checkOrientation();
-
 /**
  * Updates the keyboard state for pressed movement keys.
  *
@@ -111,7 +103,6 @@ window.addEventListener("keydown", (event) => {
     keyboard.D = true;
   }
 });
-
 /**
  * Resets the keyboard state when movement keys are released.
  *

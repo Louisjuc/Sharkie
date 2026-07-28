@@ -9,9 +9,7 @@ class Coin extends moveableObject {
     "./img/4. Marcadores/1. Coins/3.png",
     "./img/4. Marcadores/1. Coins/4.png",
   ];
-
   offset = { top: 10, left: 10, right: 10, bottom: 10 };
-
   /**
    * Places the coin at a random position and starts its animation.
    */
@@ -24,7 +22,6 @@ class Coin extends moveableObject {
     this.loadImages(this.IMAGES_COIN);
     this.animate();
   }
-
   /**
    * Starts the recurring coin animation.
    * @returns {void}

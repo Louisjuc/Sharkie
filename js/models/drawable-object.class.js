@@ -13,7 +13,6 @@ class drawableObject {
     right: 0,
     bottom: 0,
   };
-
   /**
    * Loads a single image and assigns it to the object's current image reference.
    *
@@ -23,7 +22,6 @@ class drawableObject {
     this.img = new Image();
     this.img.src = path;
   }
-
   /**
    * Loads multiple images and stores them in the image cache.
    *
@@ -36,7 +34,6 @@ class drawableObject {
       this.imageCache[path] = img;
     });
   }
-
   /**
    * Draws the sprite and a red hurt-flash overlay if applicable.
    * @param {CanvasRenderingContext2D} ctx
@@ -48,7 +45,6 @@ class drawableObject {
     this.drawHurtFlash(ctx);
     ctx.restore();
   }
-
   /**
    * Draws the current sprite image.
    * @param {CanvasRenderingContext2D} ctx
@@ -62,7 +58,6 @@ class drawableObject {
       console.log("Could not load Image", this.img?.src);
     }
   }
-
   /**
    * Draws a red flash overlay on hurt sprites, except Endboss and Character.
    * @param {CanvasRenderingContext2D} ctx
@@ -77,7 +72,6 @@ class drawableObject {
       // ignore errors
     }
   }
-
   /**
    * Tints the sprite red using an offscreen canvas, matching its alpha shape.
    * @param {CanvasRenderingContext2D} ctx
@@ -93,7 +87,6 @@ class drawableObject {
       this.drawFallbackFlash(ctx);
     }
   }
-
   /**
    * Creates an offscreen canvas with the sprite tinted red (alpha preserved).
    * @param {number} w
@@ -111,7 +104,6 @@ class drawableObject {
     oc.fillRect(0, 0, w, h);
     return off;
   }
-
   /**
    * Draws a simple red rectangle overlay as fallback if tinting fails.
    * @param {CanvasRenderingContext2D} ctx
@@ -123,5 +115,17 @@ class drawableObject {
     ctx.fillStyle = "rgba(255,0,0,0.35)";
     ctx.fillRect(this.x, this.y, this.width, this.height);
     ctx.restore();
+  }
+  /**
+   * Determines the image index matching the current health percentage.
+   * @returns {number}
+   */
+  resolveImageIndex() {
+    if (this.percentage >= 100) return 0;
+    else if (this.percentage > 80) return 1;
+    else if (this.percentage > 60) return 2;
+    else if (this.percentage > 40) return 3;
+    else if (this.percentage > 0) return 4;
+    else if (this.percentage <= 0) return 5;
   }
 }

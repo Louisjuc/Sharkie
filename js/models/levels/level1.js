@@ -1,5 +1,10 @@
+/** @type {Level} The main game level instance. */
 let level1 = createLevel1();
 
+/**
+ * Creates tiled background layers (water, backdrops, floor) spanning the level width.
+ * @returns {BackgroundObject[]}
+ */
 function createBackgroundObjects() {
   let objects = [];
   for (let i = -3; i < 10; i++) {
@@ -15,6 +20,10 @@ function createBackgroundObjects() {
   return objects;
 }
 
+/**
+ * Builds the first level with enemies, collectibles and background layers.
+ * @returns {Level}
+ */
 function createLevel1() {
   return new Level(
     [

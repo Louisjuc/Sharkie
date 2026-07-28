@@ -5,7 +5,6 @@ class Keyboard {
   DOWN = false;
   SPACE = false;
   D = false;
-
   /**
    * Bind on-screen touch buttons to the keyboard state.
    * @returns {void}
@@ -18,7 +17,6 @@ class Keyboard {
     this.bindTouchBtn("btnAtk", "SPACE");
     this.bindTouchBtn("btnBubble", "D");
   }
-
   /**
    * Binds touchstart and touchend listeners for a single touch button.
    * @param {string} btnId
@@ -31,7 +29,6 @@ class Keyboard {
     this.bindTouchStart(btn, key);
     this.bindTouchEnd(btn, key);
   }
-
   /**
    * Binds a touchstart listener that sets the given key to true.
    * @param {HTMLElement} btn
@@ -48,7 +45,6 @@ class Keyboard {
       { passive: false },
     );
   }
-
   /**
    * Binds a touchend listener that sets the given key to false.
    * @param {HTMLElement} btn

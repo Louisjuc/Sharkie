@@ -79,8 +79,8 @@ dialog {
 }
 
 dialog p {
-  font-size: 26px;
-  padding-bottom: 0px;
+  font-size: clamp(14px, 2vw, 20px);
+  padding-bottom: clamp(6px, 1vw, 10px);
   text-align: center;
 }
 
@@ -97,10 +97,14 @@ dialog p {
 
 .controls-row {
   display: flex;
-  justify-content: space-around;
   gap: 16px;
   font-size: 24px;
   align-items: center;
+  justify-content: center;
+}
+
+.controls-row p{
+    padding-bottom: 0;
 }
 
 .key-icon {
@@ -176,7 +180,7 @@ dialog p {
 
 .btn {
   padding: clamp(10px, 2vw, 20px) clamp(10px, 2vw, 20px) clamp(6px, 1vw, 10px)
-    clamp(10px, 2vw, 20px);
+    clamp(10px, 2vw, 20px) !important;
   background-color: #531a82;
   color: #fff;
   border: 4px solid #fff;

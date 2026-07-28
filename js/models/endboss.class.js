@@ -10,14 +10,12 @@ class Endboss extends moveableObject {
   statusbar = new EndbossStatusbar();
   bossVisible = false;
   attackSound = new Audio("./audio/orca_attack.mp3");
-
   offset = {
     top: 190,
     left: 95,
     right: 95,
     bottom: 115,
   };
-
   IMAGES_WALKING = ENDBOSS_IMAGES.walking;
   IMAGES_FLOATING = ENDBOSS_IMAGES.floating;
   IMAGES_HURT = ENDBOSS_IMAGES.hurt;
@@ -33,7 +31,6 @@ class Endboss extends moveableObject {
     super.hit(damage);
     this.updateStatusbar();
   }
-
   /**
    * Updates the boss health bar based on current energy.
    * @returns {void}
@@ -41,7 +38,6 @@ class Endboss extends moveableObject {
   updateStatusbar() {
     this.statusbar.setPercentage((this.energy / 80) * 100);
   }
-
   /**
    * Create an Endboss and preload images/sounds.
    */
@@ -57,7 +53,6 @@ class Endboss extends moveableObject {
     this.checkAttack();
     registerSound(this.attackSound);
   }
-
   /**
    * Periodically checks whether the character is close enough to trigger the boss introduction.
    * @returns {void}
@@ -70,7 +65,6 @@ class Endboss extends moveableObject {
       }
     }, 200);
   }
-
   /**
    * Plays the one-time introduction animation, then marks the boss visible and starts the main loop.
    * @returns {void}
@@ -87,7 +81,6 @@ class Endboss extends moveableObject {
       this.playAnimation(this.IMAGES_WALKING);
     }, 100);
   }
-
   /**
    * Starts the recurring interval driving the boss's main behaviour loop.
    * @returns {void}
@@ -98,7 +91,6 @@ class Endboss extends moveableObject {
       this.handleBossState();
     }, 100);
   }
-
   /**
    * Selects the appropriate action based on boss state (dead/hurt/attacking/idle).
    * @returns {void}
@@ -111,9 +103,8 @@ class Endboss extends moveableObject {
     this.moveToCharacter();
     this.playCurrentAction();
   }
-
   /**
-   * Bewegt den Boss langsam zum Character und dreht die Blickrichtung.
+   * Moves the boss towards the character if not attacking or hurt, with a minimum distance threshold.
    * @returns {void}
    */
   moveToCharacter() {
@@ -130,7 +121,6 @@ class Endboss extends moveableObject {
       this.y += movesDown ? this.speed : -this.speed;
     }
   }
-
   /**
    * Plays the animation matching the boss's current action (attack/hurt/floating).
    * @returns {void}
@@ -144,7 +134,6 @@ class Endboss extends moveableObject {
       this.playAnimation(this.IMAGES_FLOATING);
     }
   }
-
   /**
    * Periodically checks distance to the character and triggers an attack when in range.
    * @returns {void}
@@ -163,7 +152,6 @@ class Endboss extends moveableObject {
       }
     }, 3000);
   }
-
   /**
    * Plays the attack animation and pushes the boss forward while attacking.
    * @returns {void}
