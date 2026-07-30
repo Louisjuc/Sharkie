@@ -3,11 +3,7 @@ let intervalIDs = [];
 let MUTE_STORAGE_KEY = "sharkie.isMuted";
 let allSounds = [];
 let isMuted = false;
-try {
-  isMuted = localStorage.getItem(MUTE_STORAGE_KEY) === "true";
-} catch (error) {
-  console.warn("Could not read mute state from localStorage", error);
-}
+
 /**
  * Starts an interval and stores its ID so it can be stopped later.
  *
@@ -20,6 +16,7 @@ function setStoppableInterval(fn, time) {
   intervalIDs.push(id);
   return id;
 }
+
 /**
  * Applies the current mute state to all registered sounds and updates the button label.
  */
@@ -32,22 +29,79 @@ function applyMuteState() {
     muteButton.textContent = isMuted ? "Unmute" : "Mute";
   }
 }
+
+/**
+ * Queues an action on a sound so that play() and pause() never overlap.
+ * Every call chains onto the previous one, which is what actually prevents
+ * the AbortError instead of merely swallowing it.
+ *
+ * @param {HTMLAudioElement} sound - The audio element to operate on.
+ * @param {Function} action - The playback action to run once the element is idle.
+ * @returns {Promise<void>} Resolves when the queued action has settled.
+ */
+function queueSoundAction(sound, action) {
+  if (!sound) return Promise.resolve();
+  sound._playPromise = Promise.resolve(sound._playPromise)
+    .catch(() => {})
+    .then(action)
+    .catch((error) => {
+      if (error.name !== "AbortError") console.error(error);
+    });
+  return sound._playPromise;
+}
+
+/**
+ * Restarts a sound from the beginning without racing a pending play() promise.
+ *
+ * @param {HTMLAudioElement} sound - The audio element to play.
+ * @returns {Promise<void>} Resolves once playback has started.
+ */
+function playSound(sound) {
+  return queueSoundAction(sound, () => {
+    sound.pause();
+    sound.currentTime = 0;
+    return sound.play();
+  });
+}
+
+/**
+ * Stops a single sound and resets its playback position.
+ *
+ * @param {HTMLAudioElement} sound - The audio element to stop.
+ * @returns {Promise<void>} Resolves once the sound has been stopped.
+ */
+function stopSound(sound) {
+  return queueSoundAction(sound, () => {
+    sound.pause();
+    sound.currentTime = 0;
+  });
+}
+
 /**
  * Stops all registered sounds and resets their playback position.
  * @returns {void}
  */
 function stopAllSounds() {
-  allSounds.forEach((sound) => {
-    sound.pause();
-    sound.currentTime = 0;
-  });
+  allSounds.forEach((sound) => stopSound(sound));
 }
+
+/**
+ * Plays the click sound on button clicks.
+ *
+ * @param {MouseEvent} event - The click event emitted by the browser.
+ */
+document.addEventListener("click", (event) => {
+  if (!event.target.closest("button")) return;
+  playSound(clickSound);
+});
+
 /**
  * Clears all tracked game intervals.
  */
 function stopGame() {
   intervalIDs.forEach(clearInterval);
 }
+
 /**
  * Registers a sound object so it can be toggled with the global mute state.
  *
@@ -59,6 +113,7 @@ function registerSound(sound) {
   }
   sound.muted = isMuted;
 }
+
 /**
  * Toggles the global mute state and applies it to all registered sounds.
  *
@@ -74,13 +129,16 @@ function toggleMute() {
   applyMuteState();
   return isMuted;
 }
+
 /**
  * Handles the mute button click by toggling the audio state and updating the button label.
  */
 function handleMuteClick() {
   toggleMute();
 }
+
 applyMuteState();
+
 /**
  * Requests fullscreen mode for the configured fullscreen element.
  */
@@ -88,6 +146,7 @@ function Fullscreen() {
   let Fullscreen = document.getElementById("fullscreen");
   enterFullscreen(Fullscreen);
 }
+
 /**
  * Requests fullscreen mode for the given element using the available browser APIs.
  *
@@ -102,6 +161,7 @@ function enterFullscreen(element) {
     element.msRequestFullscreen();
   }
 }
+
 /**
  * Exits fullscreen mode using the browser-specific exit API.
  */

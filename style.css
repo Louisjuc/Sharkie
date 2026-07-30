@@ -63,8 +63,10 @@ h1 {
   align-items: center;
   background-image: url("img/3. Background/Mesa de trabajo 1.png");
   background-position: center center;
+  background-repeat: no-repeat;
   color: white;
   justify-content: space-around;
+      
 }
 
 dialog {
@@ -149,12 +151,13 @@ dialog p {
 }
 
 .win-screen {
-  background-image: url("img/6.Botones/Try again/Mesa de trabajo 1.png");
-  background-size: contain;
-  background-position: top -150px center;
-  background-color: #fcee21;
+  background-image: none;
+  background-size: 300px;
+  background-position: top 60px center;
+  background-repeat: no-repeat;
+  background-color: darkgoldenrod;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 .start-screen,
 .win-screen,
@@ -167,7 +170,7 @@ dialog p {
   color: #fff;
 }
 
-.win-screen p.coin-center {
+.win-screen p {
   display: block;
   margin: 20px auto 0;
   text-align: center;
@@ -179,14 +182,17 @@ dialog p {
 }
 
 .btn {
-  padding: clamp(10px, 2vw, 20px) clamp(10px, 2vw, 20px) clamp(6px, 1vw, 10px)
-    clamp(10px, 2vw, 20px) !important;
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+  padding: 15px 30px;
   background-color: #531a82;
   color: #fff;
   border: 4px solid #fff;
   border-radius: 20px;
   font-size: 30px;
   margin: clamp(6px, 1.5vw, 10px) 0;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .btn-fullscreen {

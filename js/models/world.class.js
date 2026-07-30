@@ -13,6 +13,7 @@ class World {
   poisonbar = new Poisonbar();
   endboss = this.level.enemies.find((e) => e instanceof Endboss);
   collectedCoins = 0;
+  
   /**
    * Creates a new game world, initializes the canvas context, and starts all game checks and the render loop.
    * @param {HTMLCanvasElement} canvas - The canvas element used for rendering the game.
@@ -32,13 +33,13 @@ class World {
     this.checkBubbleCollisions();
     this.checkLose();
   }
+  
   /**
    * Show the win screen when endboss dies (with a small delay).
    * @returns {void}
    */
   checkWin() {
     let winTriggered = false;
-
     setStoppableInterval(() => {
       if (this.endboss.isDead() && !winTriggered) {
         winTriggered = true;
@@ -49,6 +50,7 @@ class World {
       }
     }, 500);
   }
+  
   /**
    * Show the lose screen when the character dies.
    * @returns {void}
@@ -56,11 +58,13 @@ class World {
   checkLose() {
     let interval = setStoppableInterval(() => {
       if (this.character.isDead()) {
+         stopAllSounds();
         showLoseScreen();
         clearInterval(interval);
       }
     }, 200);
   }
+  
   /**
    * Periodically checks for collisions with poison items and applies damage.
    * @returns {void}
@@ -76,6 +80,7 @@ class World {
       }
     }, 200);
   }
+  
   /**
    * Run periodic collision checks for enemies and boss attacks.
    * @returns {void}
@@ -86,6 +91,7 @@ class World {
       this.checkBossAttackCollision();
     }, 200);
   }
+  
   /**
    * Moves bubbles and checks collisions with enemies and the endboss.
    * @returns {void}
@@ -98,6 +104,7 @@ class World {
       }
     }, 1000 / 60);
   }
+  
   /**
    * Moves a single bubble and checks its bounds/collisions.
    * @param {number} i - Index of the bubble in this.bubbles.
@@ -114,6 +121,7 @@ class World {
     this.checkBubbleEnemyHit(i, bubble);
     this.checkBubbleBossHit(i, bubble);
   }
+  
   /**
    * Returns true if the bubble left the playable area.
    * @param {Bubble} bubble
@@ -123,6 +131,7 @@ class World {
   isBubbleOutOfBounds(bubble, maxBubbleX) {
     return bubble.x < -100 || bubble.x > maxBubbleX;
   }
+  
   /**
    * Checks if a bubble hits any enemy and applies damage.
    * @param {number} i - Index of the bubble in this.bubbles.
@@ -140,6 +149,7 @@ class World {
       }
     }
   }
+  
   /**
    * Checks if a bubble hits the endboss and applies damage.
    * @param {number} i - Index of the bubble in this.bubbles.
@@ -157,6 +167,7 @@ class World {
       this.bubbles.splice(i, 1);
     }
   }
+  
   /**
    * Check collisions between the character and non-boss enemies.
    * @returns {void}
@@ -169,6 +180,7 @@ class World {
       }
     });
   }
+  
   /**
    * Check if the endboss attack hits the character.
    * @returns {void}
@@ -182,6 +194,7 @@ class World {
       this.applyDamage();
     }
   }
+  
   /**
    * Apply damage to the character and update status bar.
    * @returns {void}
@@ -190,6 +203,7 @@ class World {
     this.character.hit();
     this.statusbar.setPercentage(this.character.energy);
   }
+  
   /**
    * Check collisions with collectible coins and increment score.
    * @returns {void}
@@ -207,6 +221,7 @@ class World {
       }
     }, 200);
   }
+  
   /**
    * Checks whether character attacks hit enemies or the boss.
    * @returns {void}
@@ -217,6 +232,7 @@ class World {
       this.checkAttackOnBoss();
     }, 1000 / 60);
   }
+  
   /**
    * Checks whether a character attack hits a single enemy and applies a hit.
    * @param {DrawableObject} enemy
@@ -228,6 +244,7 @@ class World {
     if (enemy.isDead()) return;
     if (!enemy.isHurt()) enemy.hit();
   }
+  
   /**
    * Checks whether a character attack hits the endboss and applies a hit.
    * @returns {void}
@@ -241,6 +258,7 @@ class World {
       this.endboss.hit();
     }
   }
+  
   /**
    * Assigns the current world instance to the character, boss, and enemies.
    * @returns {void}
@@ -252,6 +270,7 @@ class World {
       enemy.world = this;
     });
   }
+  
   /**
    * Render loop: draws background objects, character, enemies and HUD elements.
    * @returns {void}
@@ -274,6 +293,7 @@ class World {
     self = this;
     requestAnimationFrame(() => self.draw());
   }
+  
   /**
    * Adds each object in a collection to the map.
    *
@@ -284,6 +304,7 @@ class World {
       this.addToMap(o);
     });
   }
+  
   /**
    * Draws a movable object to the canvas, flipping it horizontally if it faces the other direction.
    *
@@ -300,6 +321,7 @@ class World {
       this.flipImageBack(mo);
     }
   }
+  
   /**
    * Flips the current drawing context horizontally for mirrored rendering.
    *
@@ -311,6 +333,7 @@ class World {
     this.ctx.scale(-1, 1);
     mo.x = mo.x * -1;
   }
+  
   /**
    * Restores the canvas context after a mirrored render pass.
    *

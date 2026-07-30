@@ -3,6 +3,7 @@ class Level {
   coins;
   poison;
   level_end_x = 3000;
+  
   /**
    * Creates a level with the given entities and background objects.
    * @param {Array} enemies

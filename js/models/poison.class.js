@@ -13,11 +13,13 @@ class Poison extends moveableObject {
     "./img/4. Marcadores/Posion/Animada/7.png",
     "./img/4. Marcadores/Posion/Animada/8.png",
   ];
+  
   /**
    * Collision offset (none for poison).
    * @type {{top: number, left: number, right: number, bottom: number}}
    */
   offset = { top: 0, left: 0, right: 0, bottom: 0 };
+  
   /**
    * Places poison at a random position and starts its animation.
    */
@@ -30,6 +32,7 @@ class Poison extends moveableObject {
     this.loadImages(this.IMAGES_POISON);
     this.animate();
   }
+  
   /**
    * Starts recurring animation and downward drift movement.
    * @returns {void}

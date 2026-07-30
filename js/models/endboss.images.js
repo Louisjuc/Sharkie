@@ -3,6 +3,7 @@
  * @type {Object.<string, string[]>}
  */
 let ENDBOSS_IMAGES = {
+  
   /** @type {string[]} Introduce/walking-in animation frames. */
   walking: [
     "./img/2.Enemy/3 Final Enemy/1.Introduce/1.png",
@@ -16,6 +17,7 @@ let ENDBOSS_IMAGES = {
     "./img/2.Enemy/3 Final Enemy/1.Introduce/9.png",
     "./img/2.Enemy/3 Final Enemy/1.Introduce/10.png",
   ],
+  
   /** @type {string[]} Idle floating animation frames. */
   floating: [
     "./img/2.Enemy/3 Final Enemy/2.floating/1.png",
@@ -32,6 +34,7 @@ let ENDBOSS_IMAGES = {
     "./img/2.Enemy/3 Final Enemy/2.floating/12.png",
     "./img/2.Enemy/3 Final Enemy/2.floating/13.png",
   ],
+  
   /** @type {string[]} Hurt reaction animation frames. */
   hurt: [
     "./img/2.Enemy/3 Final Enemy/Hurt/1.png",
@@ -39,6 +42,7 @@ let ENDBOSS_IMAGES = {
     "./img/2.Enemy/3 Final Enemy/Hurt/3.png",
     "./img/2.Enemy/3 Final Enemy/Hurt/4.png",
   ],
+  
   /** @type {string[]} Death animation frames. */
   dead: [
     "./img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 6.png",
@@ -47,6 +51,7 @@ let ENDBOSS_IMAGES = {
     "./img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 9.png",
     "./img/2.Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png",
   ],
+  
   /** @type {string[]} Attack animation frames. */
   attack: [
     "./img/2.Enemy/3 Final Enemy/Attack/1.png",

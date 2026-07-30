@@ -13,6 +13,7 @@ class Poisonbar extends drawableObject {
   ];
   collected = 0;
   total = 5;
+  
   /**
    * Initializes the poison bar with no poison collected.
    * @param {number} [total=5] - Maximum amount of poison that can be collected.
@@ -27,6 +28,7 @@ class Poisonbar extends drawableObject {
     this.total = total;
     this.setPercentage(0);
   }
+  
   /**
    * Returns true if at least one poison unit is currently collected.
    * @returns {boolean}
@@ -34,6 +36,7 @@ class Poisonbar extends drawableObject {
   hasPoison() {
     return this.collected > 0;
   }
+  
   /**
    * Consumes one unit of poison and updates the displayed percentage.
    * @returns {void}
@@ -43,6 +46,7 @@ class Poisonbar extends drawableObject {
     this.collected--;
     this.setPercentage((this.collected / this.total) * 100);
   }
+  
   /**
    * Sets the poison percentage and updates the displayed image.
    * @param {number} percentage
@@ -53,6 +57,7 @@ class Poisonbar extends drawableObject {
     let path = this.IMAGES_POISON[this.resolveImageIndex()];
     this.img = this.imageCache[path];
   }
+  
   /**
    * Adds one unit of poison, capped at the maximum total.
    * @returns {void}
@@ -62,6 +67,7 @@ class Poisonbar extends drawableObject {
     let percentage = (this.collected / this.total) * 100;
     this.setPercentage(Math.min(percentage, 100));
   }
+ 
   /**
    * Returns true if the maximum amount of poison has been collected.
    * @returns {boolean}

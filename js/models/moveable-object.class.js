@@ -5,6 +5,16 @@ class moveableObject extends drawableObject {
   lastHit = 0;
   opacity = 1;
   hurtSound = new Audio("./audio/hurt.mp3");
+
+  energy = 20;
+  opacity = 1;
+  offset = {
+    top: 25,
+    left: 20,
+    right: 20,
+    bottom: 25,
+  };
+
   /**
    * Initializes the movable object and registers its hurt sound.
    */
@@ -13,6 +23,7 @@ class moveableObject extends drawableObject {
     registerSound(this.hurtSound);
     this.hurtSound.volume = 0.3;
   }
+
   /**
    * Applies gravity by updating the vertical position and speed over time.
    * @returns {void}
@@ -23,6 +34,7 @@ class moveableObject extends drawableObject {
       this.speedY -= this.acceleration;
     }, 1000 / 25);
   }
+
   /**
    * Checks whether this object collides with another movable object using their bounding boxes and offsets.
    * @param {moveableObject} mo - The other object to test collision against.
@@ -36,21 +48,22 @@ class moveableObject extends drawableObject {
       this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
     );
   }
+
   /**
    * Reduces the object's energy, updates the last hit timestamp, and plays the hurt sound.
    * @returns {void}
    */
   hit(damage = 5) {
-    if (this.isDead()) return; 
+    if (this.isDead()) return;
     this.energy -= damage;
     if (this.energy < 0) {
       this.energy = 0;
     } else {
       this.lastHit = new Date().getTime();
     }
-    this.hurtSound.currentTime = 0;
-    this.hurtSound.play().catch(() => {});
+    playSound(this.hurtSound);
   }
+
   /**
    * Checks whether the object is currently in the hurt state.
    * @returns {boolean} True if the hurt period has not expired yet.
@@ -60,6 +73,7 @@ class moveableObject extends drawableObject {
     timesspan = timesspan / 1000;
     return timesspan < 0.3;
   }
+
   /**
    * Checks whether the object has no remaining energy.
    * @returns {boolean} True if the object is dead.
@@ -67,6 +81,7 @@ class moveableObject extends drawableObject {
   isDead() {
     return this.energy <= 0;
   }
+
   /**
    * Moves the object to the left at a regular interval.
    * @returns {void}
@@ -76,6 +91,7 @@ class moveableObject extends drawableObject {
       this.x -= this.speed;
     }, 1000 / 60);
   }
+
   /**
    * Advances the animation to the next frame using the provided image list.
    * @param {string[]} images - The list of image paths to cycle through.
@@ -86,6 +102,7 @@ class moveableObject extends drawableObject {
     this.img = this.imageCache[path];
     this.currentImage++;
   }
+
   /**
    * Handles the death animation by updating image frames and fading the object out.
    * @returns {void}

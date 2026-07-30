@@ -12,6 +12,7 @@ class Statusbar extends drawableObject {
     "./img/4. Marcadores/Purple/life/0_ .png",
   ];
   percentage = 100;
+
   /**
    * Initializes the status bar with full health.
    */
@@ -24,6 +25,7 @@ class Statusbar extends drawableObject {
     this.height = 55;
     this.setPercentage(100);
   }
+
   /**
    * Sets the health percentage and updates the displayed image.
    * @param {number} percentage
