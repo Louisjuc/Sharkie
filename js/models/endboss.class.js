@@ -2,8 +2,6 @@ class Endboss extends moveableObject {
   height = 350;
   width = 350;
   y = 0;
-  speedY = 0;
-  acceleration = 1;
   energy = 120;
   isAttacking = false;
   speed = 10;

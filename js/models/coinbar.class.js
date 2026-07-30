@@ -50,7 +50,6 @@ class Coinbar extends drawableObject {
   addCoin() {
     if (this.collected >= this.total) return;
     playSound(this.coinSound);
-    if (this.collected >= this.total) return;
     this.collected++;
     this.setPercentage((this.collected / this.total) * 100);
   }

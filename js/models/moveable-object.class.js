@@ -25,17 +25,6 @@ class moveableObject extends drawableObject {
   }
 
   /**
-   * Applies gravity by updating the vertical position and speed over time.
-   * @returns {void}
-   */
-  applyGravity() {
-    setStoppableInterval(() => {
-      this.y -= this.speedY;
-      this.speedY -= this.acceleration;
-    }, 1000 / 25);
-  }
-
-  /**
    * Checks whether this object collides with another movable object using their bounding boxes and offsets.
    * @param {moveableObject} mo - The other object to test collision against.
    * @returns {boolean} True if the objects overlap, otherwise false.

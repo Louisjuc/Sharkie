@@ -1,7 +1,5 @@
 let canvas;
 let world;
-let gameOver = false;
-let gamePaused = false;
 let keyboard = new Keyboard();
 let backgroundMusic = new Audio("./audio/maintheme.mp3"); 
 backgroundMusic.loop = true; 
@@ -23,7 +21,6 @@ function init() {
  * Hides the start and win screens and begins the game.
  */
 function startGame() {
-  gameOver = false;
   stopGame();
   intervalIDs = [];
   level1 = createLevel1();
@@ -37,7 +34,6 @@ function startGame() {
  * Restarts the game by stopping the current loop, resetting the level, and initializing a new world.
  */
 function restartGame() {
-  gameOver = false;
   stopGame();
   intervalIDs = [];
   level1 = createLevel1();
@@ -62,21 +58,10 @@ function goHome() {
  * @returns {void}
  */
 function showLoseScreen() {
-  gameOver = true;
-  stopGame(); 
+  stopGame();
   stopAllSounds();
   document.getElementById("loseScreen").style.display = "flex";
 }
-
-/**
- * Checks whether the device is in portrait mode and pauses the game in narrow layouts.
- */
-function checkOrientation() {
-  let isPortrait = window.innerHeight > window.innerWidth;
-  gamePaused = isPortrait && window.innerWidth <= 760;
-}
-window.addEventListener("resize", checkOrientation);
-checkOrientation();
 
 /**
  * Maps physical keys to keyboard state properties.

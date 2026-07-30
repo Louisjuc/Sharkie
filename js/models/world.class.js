@@ -44,7 +44,6 @@ class World {
       if (this.endboss.isDead() && !winTriggered) {
         winTriggered = true;
         setTimeout(() => {
-          gameOver = true;
           stopGame();
           stopAllSounds();
           document.getElementById("winScreen").style.display = "flex";

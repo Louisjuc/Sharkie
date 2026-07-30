@@ -1,6 +1,5 @@
 let intervalIDs = [];
 
-let MUTE_STORAGE_KEY = "sharkie.isMuted";
 let allSounds = [];
 let isMuted = false;
 
@@ -42,10 +41,9 @@ function applyMuteState() {
 function queueSoundAction(sound, action) {
   if (!sound) return Promise.resolve();
   sound._playPromise = Promise.resolve(sound._playPromise)
-    .catch(() => {})
     .then(action)
     .catch((error) => {
-      if (error.name !== "AbortError") console.error(error);
+      if (error?.name !== "AbortError") console.error(error);
     });
   return sound._playPromise;
 }
@@ -121,11 +119,6 @@ function registerSound(sound) {
  */
 function toggleMute() {
   isMuted = !isMuted;
-  try {
-    localStorage.setItem(MUTE_STORAGE_KEY, String(isMuted));
-  } catch (error) {
-    console.warn("Could not save mute state to localStorage", error);
-  }
   applyMuteState();
   return isMuted;
 }
