@@ -2,6 +2,7 @@ let intervalIDs = [];
 
 let allSounds = [];
 let isMuted = false;
+let pendingAutoplaySounds = new Set();
 
 /**
  * Starts an interval and stores its ID so it can be stopped later.
@@ -30,21 +31,80 @@ function applyMuteState() {
 }
 
 /**
+ * Starts every sound the browser previously refused to autoplay. Runs on the
+ * first user interaction, which is the moment playback becomes allowed.
+ * @returns {void}
+ */
+function retryPendingAutoplaySounds() {
+  let pending = [...pendingAutoplaySounds];
+  pendingAutoplaySounds.clear();
+  pending.forEach((sound) => playSound(sound));
+}
+
+/**
+ * Recovers a sound that was blocked by the autoplay policy by replaying it on
+ * the next user interaction. Only looping sounds qualify: replaying a one-shot
+ * effect seconds after the event it belonged to would be worse than silence.
+ *
+ * @param {HTMLAudioElement} sound - The sound the browser refused to play.
+ * @returns {void}
+ */
+function recoverFromBlockedAutoplay(sound) {
+  if (!sound.loop) return;
+  pendingAutoplaySounds.add(sound);
+  document.addEventListener("pointerdown", retryPendingAutoplaySounds, {
+    once: true,
+  });
+  document.addEventListener("keydown", retryPendingAutoplaySounds, {
+    once: true,
+  });
+}
+
+/**
+ * Reports a playback failure and recovers where a recovery exists. An
+ * AbortError is expected whenever a running sound is restarted and is ignored.
+ * Blocked autoplay is retried on the next interaction. A file that cannot be
+ * decoded is unrecoverable, so the sound is disabled instead of retried.
+ *
+ * @param {HTMLAudioElement} sound - The audio element that failed to play.
+ * @param {Error} error - The reason the playback action rejected.
+ * @returns {void}
+ */
+function handleSoundError(sound, error) {
+  if (error?.name === "AbortError") return;
+  if (error?.name === "NotAllowedError") {
+    console.warn("Autoplay blocked, retrying after user interaction");
+    console.warn("Could not play sound", sound.src);
+    recoverFromBlockedAutoplay(sound);
+    return;
+  }
+  sound._playbackDisabled = true;
+  console.error("Error playing sound", error);
+  console.error("Could not play sound, disabling it", sound.src);
+}
+
+/**
  * Queues an action on a sound so that play() and pause() never overlap.
  * Every call chains onto the previous one, which is what actually prevents
  * the AbortError instead of merely swallowing it.
+ *
+ * Sounds whose file turned out to be unplayable are skipped entirely.
  *
  * @param {HTMLAudioElement} sound - The audio element to operate on.
  * @param {Function} action - The playback action to run once the element is idle.
  * @returns {Promise<void>} Resolves when the queued action has settled.
  */
 function queueSoundAction(sound, action) {
-  if (!sound) return Promise.resolve();
-  sound._playPromise = Promise.resolve(sound._playPromise)
-    .then(action)
-    .catch((error) => {
-      if (error?.name !== "AbortError") console.error(error);
-    });
+  if (!sound || sound._playbackDisabled) return Promise.resolve();
+  let previous = sound._playPromise;
+  sound._playPromise = (async () => {
+    try {
+      await previous;
+      await action();
+    } catch (error) {
+      handleSoundError(sound, error);
+    }
+  })();
   return sound._playPromise;
 }
 

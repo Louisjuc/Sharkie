@@ -44,9 +44,8 @@ class moveableObject extends drawableObject {
     this.energy -= damage;
     if (this.energy < 0) {
       this.energy = 0;
-    } else {
-      this.lastHit = new Date().getTime();
     }
+    this.lastHit = new Date().getTime();
     playSound(this.hurtSound);
   }
 
@@ -68,6 +67,16 @@ class moveableObject extends drawableObject {
     let timesspan = new Date().getTime() - this.lastHit;
     timesspan = timesspan / 1000;
     return timesspan < 0.3;
+  }
+
+  /**
+   * True once the death animation may take over. A lethal hit still plays its
+   * hurt reaction first, so even a one-shot kill stays visible as a hit.
+   *
+   * @returns {boolean} True if the object is dead and no longer hurt.
+   */
+  isReadyToDie() {
+    return this.isDead() && !this.isHurt();
   }
 
   /**

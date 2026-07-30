@@ -68,11 +68,12 @@ class World {
   }
   
   /**
-   * Periodically checks for collisions with poison items and applies damage.
+   * Check collisions with collectible poison items and fill the poison bar.
    * @returns {void}
    */
   checkPoisonCollisions() {
     setStoppableInterval(() => {
+      if (this.poisonbar.isFull()) return;
       for (let i = this.level.poison.length - 1; i >= 0; i--) {
         let poison = this.level.poison[i];
         if (this.character.isColliding(poison)) {

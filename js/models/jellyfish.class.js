@@ -39,14 +39,15 @@ class Jellyfish extends moveableObject {
   
   /**
    * Plays the dead animation or the bobbing swim animation depending on state.
+   * A lethal hit holds the swim frames for the short hurt flash before dying.
    * @returns {void}
    */
   handleAnimationState() {
-    if (this.isDead()) {
+    if (this.isReadyToDie()) {
       this.handleDead();
       return;
     }
-    this.bobUpAndDown();
+    if (!this.isDead()) this.bobUpAndDown();
     this.playAnimation(this.IMAGES_WALKING);
   }
   

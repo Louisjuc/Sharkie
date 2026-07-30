@@ -1,6 +1,8 @@
 * {
   font-family: "LuckiestGuy", sans-serif;
   margin: 0;
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
 }
 
 body {
@@ -66,7 +68,6 @@ h1 {
   background-repeat: no-repeat;
   color: white;
   justify-content: space-around;
-      
 }
 
 dialog {
@@ -105,8 +106,8 @@ dialog p {
   justify-content: center;
 }
 
-.controls-row p{
-    padding-bottom: 0;
+.controls-row p {
+  padding-bottom: 0;
 }
 
 .key-icon {
@@ -151,11 +152,12 @@ dialog p {
 }
 
 .win-screen {
-  background-image: url('img/6.Botones/Tittles/You win/win-screen-bg.png');
+  background-image: url("img/6.Botones/Tittles/You win/win-screen-bg.png");
   background-size: cover;
   background-position: top center;
   background-color: gold;
   display: flex;
+  gap: 40px;
   justify-content: center;
 }
 .start-screen,
@@ -169,7 +171,7 @@ dialog p {
   color: #fff;
 }
 
-.win-screen .btn{
+.win-screen .btn {
   margin: 40px 20px;
 }
 
@@ -185,8 +187,6 @@ dialog p {
 }
 
 .btn {
-  text-box-trim: trim-both;
-  text-box-edge: cap alphabetic;
   padding: 15px 30px;
   background-color: #531a82;
   color: #fff;
@@ -199,7 +199,7 @@ dialog p {
 }
 
 .btn-fullscreen {
-  padding: 18px 30px 12px 30px;
+  padding: 10px;
   background-color: #531a82;
   color: #fff;
   border: 4px solid #fff;
@@ -211,12 +211,11 @@ dialog p {
 #imprint-dialog {
   text-align: center;
 }
-#imprint-dialog h3{
+#imprint-dialog h3 {
   color: #7fffe0;
   font-size: clamp(18px, 2vw, 24px);
   margin: 20px 0 10px 0;
 }
-
 
 #muteBtn {
   font-size: 18px;
@@ -296,7 +295,7 @@ canvas {
   }
 
   #btnAtk {
-    padding-top: 15px;
+    padding: 15px;
   }
 
   .action-buttons {
@@ -306,7 +305,7 @@ canvas {
   }
 
   #btnBubble {
-    padding-top: 15px;
+    padding: 15px;
   }
 
   .d-pad {

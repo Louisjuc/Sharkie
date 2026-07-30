@@ -1,4 +1,6 @@
 class Poisonbar extends drawableObject {
+  poisonSound = new Audio("./audio/item_collect.mp3");
+
   /**
    * Poison bar images from full to empty.
    * @type {string[]}
@@ -15,7 +17,7 @@ class Poisonbar extends drawableObject {
   total = 5;
   
   /**
-   * Initializes the poison bar with no poison collected.
+   * Initializes the poison bar with no poison collected and registers its sound.
    * @param {number} [total=5] - Maximum amount of poison that can be collected.
    */
   constructor(total = 5) {
@@ -27,6 +29,7 @@ class Poisonbar extends drawableObject {
     this.height = 60;
     this.total = total;
     this.setPercentage(0);
+    registerSound(this.poisonSound);
   }
   
   /**
@@ -59,13 +62,14 @@ class Poisonbar extends drawableObject {
   }
   
   /**
-   * Adds one unit of poison, capped at the maximum total.
+   * Adds one unit of poison unless the bar is already full.
    * @returns {void}
    */
   addPoison() {
-    this.collected = Math.min(this.collected + 1, this.total);
-    let percentage = (this.collected / this.total) * 100;
-    this.setPercentage(Math.min(percentage, 100));
+    if (this.isFull()) return;
+    playSound(this.poisonSound);
+    this.collected++;
+    this.setPercentage((this.collected / this.total) * 100);
   }
  
   /**

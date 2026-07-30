@@ -39,10 +39,11 @@ class Fish extends moveableObject {
 
   /**
    * Plays the dead animation or the swim animation depending on state.
+   * A lethal hit keeps swimming for the short hurt flash before dying.
    * @returns {void}
    */
   handleAnimationState() {
-    if (this.isDead()) {
+    if (this.isReadyToDie()) {
       this.handleDead();
       return;
     }
