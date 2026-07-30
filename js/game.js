@@ -1,5 +1,7 @@
 let canvas;
 let world;
+let gameOver = false;
+let gamePaused = false;
 let keyboard = new Keyboard();
 let backgroundMusic = new Audio("./audio/maintheme.mp3"); 
 backgroundMusic.loop = true; 

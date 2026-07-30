@@ -44,6 +44,9 @@ class World {
       if (this.endboss.isDead() && !winTriggered) {
         winTriggered = true;
         setTimeout(() => {
+          gameOver = true;
+          stopGame();
+          stopAllSounds();
           document.getElementById("winScreen").style.display = "flex";
           document.getElementById("coinCount").innerText = this.collectedCoins;
         }, 5000);
@@ -290,8 +293,7 @@ class World {
     this.addToMap(this.coinbar);
     this.addToMap(this.poisonbar);
     if (this.endboss.bossVisible) this.addToMap(this.endboss.statusbar);
-    self = this;
-    requestAnimationFrame(() => self.draw());
+    requestAnimationFrame(() => this.draw());
   }
   
   /**

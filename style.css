@@ -155,7 +155,7 @@ dialog p {
   background-size: 300px;
   background-position: top 60px center;
   background-repeat: no-repeat;
-  background-color: darkgoldenrod;
+  background-color: rgba(184, 134, 11, 0.8);
   display: flex;
   justify-content: center;
 }
@@ -168,6 +168,10 @@ dialog p {
 .lose-screen p {
   font-size: 60px;
   color: #fff;
+}
+
+.win-screen .btn{
+  margin: 40px 20px;
 }
 
 .win-screen p {
