@@ -122,15 +122,19 @@ class drawableObject {
   }
 
   /**
-   * Determines the image index matching the current health percentage.
+   * Determines the image index matching the current percentage. The thresholds
+   * are inclusive so that exact steps such as 20, 40, 60 and 80 percent each
+   * select their own image. Any remaining amount keeps the lowest filled image
+   * so a bar only looks empty once it really reached zero.
+   *
    * @returns {number}
    */
   resolveImageIndex() {
     if (this.percentage >= 100) return 0;
-    else if (this.percentage > 80) return 1;
-    else if (this.percentage > 60) return 2;
-    else if (this.percentage > 40) return 3;
+    else if (this.percentage >= 80) return 1;
+    else if (this.percentage >= 60) return 2;
+    else if (this.percentage >= 40) return 3;
     else if (this.percentage > 0) return 4;
-    else if (this.percentage <= 0) return 5;
+    else return 5;
   }
 }

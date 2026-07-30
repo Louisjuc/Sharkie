@@ -4,6 +4,8 @@ class moveableObject extends drawableObject {
   energy = 20;
   lastHit = 0;
   opacity = 1;
+  deathStarted = false;
+  deadAnimationPlayed = false;
   hurtSound = new Audio("./audio/hurt.mp3");
   offset = {
     top: 25,
@@ -109,10 +111,14 @@ class moveableObject extends drawableObject {
   }
 
   /**
-   * Handles the death animation by updating image frames and fading the object out.
+   * Handles the death animation by updating image frames and fading the object
+   * out. The frame counter is reset on the first call because it is shared with
+   * the movement animation, which would otherwise end the death frames at once.
+   *
    * @returns {void}
    */
   handleDead() {
+    this.startDeathAnimation();
     if (!this.deadAnimationPlayed) {
       this.playAnimation(this.IMAGES_DEAD);
       if (this.currentImage >= this.IMAGES_DEAD.length) {
@@ -126,6 +132,19 @@ class moveableObject extends drawableObject {
       if (this.opacity < 0) {
         this.opacity = 0;
       }
+    }
+  }
+
+  /**
+   * Resets the shared frame counter once, so the death animation starts at its
+   * first frame instead of continuing where the movement animation left off.
+   *
+   * @returns {void}
+   */
+  startDeathAnimation() {
+    if (!this.deathStarted) {
+      this.deathStarted = true;
+      this.currentImage = 0;
     }
   }
 }

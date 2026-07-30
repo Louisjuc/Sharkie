@@ -20,7 +20,7 @@ class Bubble extends moveableObject {
   constructor(direction, startX, startY, poisoned = false) {
     super();
     this.direction = direction;
-    this.damage = poisoned ? 40 : 20;
+    this.damage = poisoned ? 30 : 20;
     this.IMAGES_BUBBLE = poisoned ? Bubble.IMAGES_POISONED : Bubble.IMAGES_NORMAL;
     this.loadImages(this.IMAGES_BUBBLE);
     this.x = startX;

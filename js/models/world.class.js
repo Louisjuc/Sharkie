@@ -48,22 +48,21 @@ class World {
           stopAllSounds();
           document.getElementById("winScreen").style.display = "flex";
           document.getElementById("coinCount").innerText = this.collectedCoins;
-        }, 5000);
+        }, 2000);
       }
     }, 500);
   }
   
   /**
-   * Show the lose screen when the character dies.
+   * Shows the lose screen once the character's death animation has finished,
+   * so the animation is not cut off by stopping the game.
    * @returns {void}
    */
   checkLose() {
     let interval = setStoppableInterval(() => {
-      if (this.character.isDead()) {
-         stopAllSounds();
-        showLoseScreen();
-        clearInterval(interval);
-      }
+      if (!this.character.deadAnimationPlayed) return;
+      clearInterval(interval);
+      showLoseScreen();
     }, 200);
   }
   

@@ -18,6 +18,8 @@ class Character extends moveableObject {
   bubbleWasPressed = false;
   idleStartTime = 0;
   isSleeping = false;
+  deathStarted = false;
+  deadAnimationPlayed = false;
   IMAGES_IDLE = CHARACTER_IMAGES.idle;
   IMAGES_WALKING = CHARACTER_IMAGES.walking;
   IMAGES_ATTACK = CHARACTER_IMAGES.attack;
@@ -206,14 +208,24 @@ class Character extends moveableObject {
   }
 
   /**
-   * Show death animation frame-by-frame and sink the character.
+   * Show death animation frame-by-frame and sink the character. The frame
+   * counter is reset on the first call because it is shared with the swim and
+   * attack animations, which would otherwise skip the death frames entirely.
+   * Marks the animation as finished once the last frame was shown.
+   *
    * @returns {void}
    */
   playDeadAnimation() {
+    if (!this.deathStarted) {
+      this.deathStarted = true;
+      this.currentImage = 0;
+    }
     if (this.currentImage < this.IMAGES_DEAD.length) {
       let path = this.IMAGES_DEAD[this.currentImage];
       this.img = this.imageCache[path];
       this.currentImage++;
+    } else {
+      this.deadAnimationPlayed = true;
     }
     this.y += 2;
   }

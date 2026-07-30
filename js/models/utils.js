@@ -1,7 +1,8 @@
 let intervalIDs = [];
 
+let MUTE_STORAGE_KEY = "sharkie.isMuted";
 let allSounds = [];
-let isMuted = false;
+let isMuted = localStorage.getItem(MUTE_STORAGE_KEY) === "true";
 let pendingAutoplaySounds = new Set();
 
 /**
@@ -173,12 +174,21 @@ function registerSound(sound) {
 }
 
 /**
- * Toggles the global mute state and applies it to all registered sounds.
+ * Persists the current mute state so it survives a page reload.
+ * @returns {void}
+ */
+function saveMuteState() {
+  localStorage.setItem(MUTE_STORAGE_KEY, String(isMuted));
+}
+
+/**
+ * Toggles the global mute state, persists it, and applies it to all sounds.
  *
  * @returns {boolean} The new mute state.
  */
 function toggleMute() {
   isMuted = !isMuted;
+  saveMuteState();
   applyMuteState();
   return isMuted;
 }
