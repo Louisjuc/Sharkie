@@ -10,147 +10,147 @@
     <link rel="stylesheet" href="./style.css" />
     <link rel="icon" href="./img/1.Sharkie/1.IDLE/1.png" type="image/png" />
   </head>
-    <div class="rotate-hint">
-      <p>Please rotate your device to landscape mode</p>
-    </div>
-    <button onclick="Fullscreen()" class="btn-fullscreen">⛶</button>
-    <div class="game-wrapper" id="fullscreen">
-      <button id="muteBtn" class="btn" onclick="handleMuteClick()">Mute</button>
-      <div class="HUD">
-        <div class="d-pad">
-          <button id="btnLeft">&#8592;</button>
-          <button id="btnRight">&#8594;</button>
-          <button id="btnUp">&#8593;</button>
-          <button id="btnDown">&#8595;</button>
-        </div>
-        <div class="action-buttons">
-          <button id="btnAtk">Attack</button>
-          <button id="btnBubble">Bubble</button>
-        </div>
+  <div class="rotate-hint">
+    <p>Please rotate your device to landscape mode</p>
+  </div>
+  <button onclick="Fullscreen()" class="btn-fullscreen">⛶</button>
+  <div class="game-wrapper" id="fullscreen">
+    <button id="muteBtn" class="btn" onclick="handleMuteClick()">Mute</button>
+    <div class="HUD">
+      <div class="d-pad">
+        <button id="btnLeft">&#8592;</button>
+        <button id="btnRight">&#8594;</button>
+        <button id="btnUp">&#8593;</button>
+        <button id="btnDown">&#8595;</button>
       </div>
+      <div class="action-buttons">
+        <button id="btnAtk">Attack</button>
+        <button id="btnBubble">Bubble</button>
+      </div>
+    </div>
 
-      <div id="startScreen" class="start-screen">
-        <h1>Sharkie</h1>
-        <div class="start-inner">
-          <button onclick="startGame()" class="btn">Start Game</button>
-          <button
-            class="btn"
-            commandfor="example-dialog"
-            command="show-modal"
-            type="button"
-            id="open-dialog"
-          >
-            Controls
-          </button>
-          <dialog id="example-dialog" class="controls-dialog">
-            <div class="controls-content">
-              <div class="controls-row">
-                <img
-                  src="./img/6.Botones/Key/arrow keys.png"
-                  alt="Arrow keys"
-                  class="key-icon"
-                />
-                <p>Move</p>
-              </div>
-              <div class="controls-row">
-                <img
-                  src="./img/6.Botones/Key/Space Bar key.png"
-                  alt="Space key"
-                  class="space-icon"
-                />
-                <p>Attack</p>
-              </div>
-              <div class="controls-row">
-                <img
-                  src="./img/6.Botones/Key/D key.png"
-                  alt="D key"
-                  class="key-icon key-icon-d"
-                />
-                <p>Bubble Attack</p>
-              </div>
+    <div id="startScreen" class="start-screen">
+      <h1>Sharkie</h1>
+      <div class="start-inner">
+        <button onclick="startGame()" class="btn">Start Game</button>
+        <button
+          class="btn"
+          commandfor="example-dialog"
+          command="show-modal"
+          type="button"
+          id="open-dialog"
+        >
+          Controls
+        </button>
+        <dialog id="example-dialog" class="controls-dialog">
+          <div class="controls-content">
+            <div class="controls-row">
+              <img
+                src="./img/6.Botones/Key/arrow keys.png"
+                alt="Arrow keys"
+                class="key-icon"
+              />
+              <p>Move</p>
             </div>
-            <button
-              commandfor="example-dialog"
-              command="close"
-              type="button"
-              class="btn"
-            >
-              Close Controls
-            </button>
-          </dialog>
-
+            <div class="controls-row">
+              <img
+                src="./img/6.Botones/Key/Space Bar key.png"
+                alt="Space key"
+                class="space-icon"
+              />
+              <p>Attack</p>
+            </div>
+            <div class="controls-row">
+              <img
+                src="./img/6.Botones/Key/D key.png"
+                alt="D key"
+                class="key-icon key-icon-d"
+              />
+              <p>Bubble Attack</p>
+            </div>
+          </div>
           <button
-            class="btn"
-            commandfor="imprint-dialog"
-            command="show-modal"
+            commandfor="example-dialog"
+            command="close"
             type="button"
-            id="open-dialog"
+            class="btn"
           >
-            Imprint
+            Close Controls
           </button>
-          <dialog id="imprint-dialog">
-            <p>Legal Notice according to § 5 TMG</p>
-            <p>Louis Juchem</p>
-            <p>Schönstraße 106</p>
-            <p>81543 Munich</p>
-            <p>Germany</p>
+        </dialog>
 
-            <p>Contact:</p>
-            <p>Email: louis.juchem@web.de</p>
+        <button
+          class="btn"
+          commandfor="imprint-dialog"
+          command="show-modal"
+          type="button"
+          id="open-dialog"
+        >
+          Imprint
+        </button>
+        <dialog id="imprint-dialog">
+          <h3>Legal Notice according to § 5 TMG</h3>
+          <p>
+            Louis Juchem <br />
+            Schönstraße 106 <br />
+            81543 Munich<br />
+            Germany
+          </p>
 
-            <p>Responsible for content according to § 55 (2) RStV:</p>
-            <p>Louis Juchem, Schönstraße 106, 81543 Munich, Germany</p>
-            <button
-              commandfor="imprint-dialog"
-              command="close"
-              type="button"
-              class="btn"
-            >
-              Close
-            </button>
-          </dialog>
-        </div>
+          <h3>Contact:</h3>
+          <p>Email: louis.juchem@web.de</p>
+
+          <h3>Responsible for content according to § 55 (2) RStV:</h3>
+          <p>Louis Juchem, Schönstraße 106, 81543 Munich, Germany</p>
+          <button
+            commandfor="imprint-dialog"
+            command="close"
+            type="button"
+            class="btn"
+          >
+            Close
+          </button>
+        </dialog>
       </div>
-      <div id="winScreen" class="win-screen" style="display: none">
-        <div class="btn-group">
-          <p>You Win!</p>
-          <button onclick="restartGame()" class="btn">Play Again</button>
-          <button onclick="goHome()" class="btn">Back to Menu</button>
-        </div>
-        <p class="coin-center">
-          Coins collected: <span id="coinCount">0</span>
-        </p>
-      </div>
-      <div id="loseScreen" class="lose-screen" style="display: none">
-        <p>Game Over!</p>
-        <div class="btn-group">
-          <button onclick="restartGame()" class="btn">Try Again</button>
-          <button onclick="goHome()" class="btn">Back to Menu</button>
-        </div>
-      </div>
-      <canvas id="canvas" width="760" height="480"></canvas>
     </div>
-    <script src="./js/models/utils.js"></script>
-    <script src="./js/models/drawable-object.class.js"></script>
-    <script src="./js/models/moveable-object.class.js"></script>
-    <script src="./js/models/coin.class.js"></script>
-    <script src="./js/models/bubble.class.js"></script>
-    <script src="./js/models/character.images.js"></script>
-    <script src="./js/models/character.class.js"></script>
-    <script src="./js/models/fish.class.js"></script>
-    <script src="./js/models/jellyfish.class.js"></script>
-    <script src="./js/models/statusbar.class.js"></script>
-    <script src="./js/models/coinbar.class.js"></script>
-    <script src="./js/models/endbossstatusbar.class.js"></script>
-    <script src="./js/models/poisonbar.class.js"></script>
-    <script src="./js/models/poison.class.js"></script>
-    <script src="./js/models/light.class.js"></script>
-    <script src="./js/models/endboss.images.js"></script>
-    <script src="./js/models/endboss.class.js"></script>
-    <script src="./js/models/background-object.class.js"></script>
-    <script src="./js/models/keyboard.class.js"></script>
-    <script src="./js/models/level.class.js"></script>
-    <script src="./js/models/levels/level1.js"></script>
-    <script src="./js/models/world.class.js"></script>
-    <script src="./js/game.js"></script>
+    <div id="winScreen" class="win-screen" style="display: none">
+      <div class="btn-group">
+        <p>You Win!</p>
+        <button onclick="restartGame()" class="btn">Play Again</button>
+        <button onclick="goHome()" class="btn">Back to Menu</button>
+      </div>
+      <p class="coin-center">Coins collected: <span id="coinCount">0</span></p>
+    </div>
+    <div id="loseScreen" class="lose-screen" style="display: none">
+      <p>Game Over!</p>
+      <div class="btn-group">
+        <button onclick="restartGame()" class="btn">Try Again</button>
+        <button onclick="goHome()" class="btn">Back to Menu</button>
+      </div>
+    </div>
+    <canvas id="canvas" width="760" height="480"></canvas>
+  </div>
+  <script src="./js/models/utils.js"></script>
+  <script src="./js/models/drawable-object.class.js"></script>
+  <script src="./js/models/moveable-object.class.js"></script>
+  <script src="./js/models/coin.class.js"></script>
+  <script src="./js/models/bubble.class.js"></script>
+  <script src="./js/models/character.images.js"></script>
+  <script src="./js/models/character.class.js"></script>
+  <script src="./js/models/fish.class.js"></script>
+  <script src="./js/models/jellyfish.class.js"></script>
+  <script src="./js/models/statusbar.class.js"></script>
+  <script src="./js/models/coinbar.class.js"></script>
+  <script src="./js/models/endbossstatusbar.class.js"></script>
+  <script src="./js/models/poisonbar.class.js"></script>
+  <script src="./js/models/poison.class.js"></script>
+  <script src="./js/models/light.class.js"></script>
+  <script src="./js/models/endboss.images.js"></script>
+  <script src="./js/models/endboss.class.js"></script>
+  <script src="./js/models/background-object.class.js"></script>
+  <script src="./js/models/keyboard.class.js"></script>
+  <script src="./js/models/level.class.js"></script>
+  <script src="./js/models/levels/level1.js"></script>
+  <script src="./js/models/world.class.js"></script>
+  <script src="./js/game.js"></script>
 </html>

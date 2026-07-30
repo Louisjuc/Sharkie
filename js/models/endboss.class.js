@@ -2,7 +2,7 @@ class Endboss extends moveableObject {
   height = 350;
   width = 350;
   y = 0;
-  energy = 120;
+  energy = 100;
   isAttacking = false;
   speed = 10;
   statusbar = new EndbossStatusbar();
@@ -30,6 +30,14 @@ class Endboss extends moveableObject {
     this.updateStatusbar();
   }
   
+  /**
+   * The boss stays harmless until its introduction animation has finished.
+   * @returns {boolean} True once the introduction has played.
+   */
+  canDealDamage() {
+    return this.bossVisible;
+  }
+
   /**
    * Updates the boss health bar based on current energy.
    * @returns {void}
@@ -148,6 +156,7 @@ class Endboss extends moveableObject {
   checkAttack() {
     setStoppableInterval(() => {
       if (!this.world) return;
+      if (!this.bossVisible) return;
       if (this.isDead()) return;
       if (this.world.character?.isDead()) return;
       let distance = Math.abs(this.x - this.world.character.x);

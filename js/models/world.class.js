@@ -177,6 +177,7 @@ class World {
   checkEnemyCollisions() {
     this.level.enemies.forEach((enemy) => {
       if (enemy.isDead()) return;
+      if (!enemy.canDealDamage()) return;
       if (this.character.isColliding(enemy)) {
         this.applyDamage();
       }
@@ -244,7 +245,7 @@ class World {
     if (!this.character.isAttacking || !this.character.isAttackColliding(enemy))
       return;
     if (enemy.isDead()) return;
-    if (!enemy.isHurt()) enemy.hit();
+    if (this.character.registerAttackHit(enemy)) enemy.hit();
   }
   
   /**
@@ -255,7 +256,8 @@ class World {
     if (
       this.character.isAttacking &&
       this.character.isAttackColliding(this.endboss) &&
-      !this.endboss.isHurt()
+      !this.endboss.isDead() &&
+      this.character.registerAttackHit(this.endboss)
     ) {
       this.endboss.hit();
     }

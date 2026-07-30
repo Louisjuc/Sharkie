@@ -3,8 +3,7 @@ class Bubble extends moveableObject {
   width = 35;
   speed = 12;
   direction = 1;
-  damage = 5;
-  
+
   /**
    * Image used for poisoned bubbles.
    * @type {string[]}
@@ -21,7 +20,7 @@ class Bubble extends moveableObject {
   constructor(direction, startX, startY, poisoned = false) {
     super();
     this.direction = direction;
-    this.damage = poisoned ? 15 : 5;
+    this.damage = poisoned ? 40 : 20;
     this.IMAGES_BUBBLE = poisoned ? Bubble.IMAGES_POISONED : Bubble.IMAGES_NORMAL;
     this.loadImages(this.IMAGES_BUBBLE);
     this.x = startX;

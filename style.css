@@ -151,11 +151,10 @@ dialog p {
 }
 
 .win-screen {
-  background-image: none;
-  background-size: 300px;
-  background-position: top 60px center;
-  background-repeat: no-repeat;
-  background-color: rgba(184, 134, 11, 0.8);
+  background-image: url('img/6.Botones/Tittles/You win/win-screen-bg.png');
+  background-size: cover;
+  background-position: top center;
+  background-color: gold;
   display: flex;
   justify-content: center;
 }
@@ -208,6 +207,16 @@ dialog p {
   font-size: 30px;
   margin: 40px 0;
 }
+
+#imprint-dialog {
+  text-align: center;
+}
+#imprint-dialog h3{
+  color: #7fffe0;
+  font-size: clamp(18px, 2vw, 24px);
+  margin: 20px 0 10px 0;
+}
+
 
 #muteBtn {
   font-size: 18px;

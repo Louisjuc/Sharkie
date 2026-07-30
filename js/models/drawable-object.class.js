@@ -58,8 +58,8 @@ class drawableObject {
     try {
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     } catch (e) {
-      console.warn("Error loading Image", e);
-      console.log("Could not load Image", this.img?.src);
+      console.error("Error loading Image", e);
+      console.error("Could not load Image", this.img?.src);
     }
   }
 

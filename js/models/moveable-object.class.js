@@ -1,13 +1,10 @@
 class moveableObject extends drawableObject {
   speed = 0.15;
   otherDirection = false;
-  energy = 80;
+  energy = 20;
   lastHit = 0;
   opacity = 1;
   hurtSound = new Audio("./audio/hurt.mp3");
-
-  energy = 20;
-  opacity = 1;
   offset = {
     top: 25,
     left: 20,
@@ -42,7 +39,7 @@ class moveableObject extends drawableObject {
    * Reduces the object's energy, updates the last hit timestamp, and plays the hurt sound.
    * @returns {void}
    */
-  hit(damage = 5) {
+  hit(damage = 20) {
     if (this.isDead()) return;
     this.energy -= damage;
     if (this.energy < 0) {
@@ -51,6 +48,16 @@ class moveableObject extends drawableObject {
       this.lastHit = new Date().getTime();
     }
     playSound(this.hurtSound);
+  }
+
+  /**
+   * Whether this object may currently deal contact damage to the character.
+   * Subclasses can restrict this while they are not fully active yet.
+   *
+   * @returns {boolean} True unless a subclass overrides it.
+   */
+  canDealDamage() {
+    return true;
   }
 
   /**

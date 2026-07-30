@@ -6,11 +6,14 @@ class Character extends moveableObject {
   height = 300;
   width = 300;
   speed = 10;
-  energy = 100;
+  energy = 130;
   isAttacking = false;
   isBubbleAttacking = false;
   bubbleSpawnScheduled = false;
   attackSound = new Audio("./audio/attack.mp3");
+  ATTACK_COOLDOWN = 2000;
+  lastAttack = 0;
+  attackHitTargets = new Set();
   lastBubbleAttack = 0;
   bubbleWasPressed = false;
   idleStartTime = 0;
@@ -235,6 +238,7 @@ class Character extends moveableObject {
   attack() {
     if (this.isDead() || this.isAttacking || this.isOnCooldown()) return;
     this.isAttacking = true;
+    this.attackHitTargets.clear();
     this.idleStartTime = 0;
     this.isSleeping = false;
     this.lastAttack = new Date().getTime();
@@ -304,24 +308,32 @@ class Character extends moveableObject {
   }
 
   /**
-   * Returns true if attack cooldown is still active.
+   * Returns true if the melee attack cooldown is still active.
    * @returns {boolean}
    */
   isOnCooldown() {
-    let cooldown = 500;
-    return this.lastAttack && new Date().getTime() - this.lastAttack < cooldown;
+    return new Date().getTime() - this.lastAttack < this.ATTACK_COOLDOWN;
   }
 
   /**
-   * Returns true if bubble-attack cooldown is active.
+   * Returns true if the bubble attack cooldown is still active.
    * @returns {boolean}
    */
   isBubbleOnCooldown() {
-    let cooldown = 500;
-    return (
-      this.lastBubbleAttack &&
-      new Date().getTime() - this.lastBubbleAttack < cooldown
-    );
+    return new Date().getTime() - this.lastBubbleAttack < this.ATTACK_COOLDOWN;
+  }
+
+  /**
+   * Registers a target as hit by the current attack swing, so a single swing
+   * cannot damage the same target more than once.
+   *
+   * @param {DrawableObject} target - The enemy or boss that was hit.
+   * @returns {boolean} True if this swing had not hit the target yet.
+   */
+  registerAttackHit(target) {
+    if (this.attackHitTargets.has(target)) return false;
+    this.attackHitTargets.add(target);
+    return true;
   }
 
   /**
