@@ -199,6 +199,11 @@ dialog p {
   appearance: none;
 }
 
+.btn-link {
+  display: inline-block;
+  text-decoration: none;
+}
+
 .btn-fullscreen {
   padding: 10px;
   background-color: #531a82;
